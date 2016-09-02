@@ -1,0 +1,383 @@
+/*
+	Theme Name: 1stwebdesigner HTML5/CSS3 Layout
+	Date: March 2013
+	Description: Basic HTML5/CSS3 layout built on a responsive framework
+	Version: 1.0
+	Author: Christian Vasile
+	Author URL: http://christianvasile.com
+*/
+
+/* ===========================
+   ======= Body style ========
+   =========================== */
+
+body {
+    color: #000305;
+    font-size: 87.5%; /* Base font size: 14px */
+    font-family: 'Trebuchet MS', Trebuchet, 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    line-height: 1.429;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
+.body {
+    clear: both;
+    margin: 0 auto;
+    width: 90%;
+}
+
+img {
+    border-radius: 10px;
+}
+
+input,
+button{
+    font: 1em "Monotype Corsiva";
+    background-color: #E15007;
+    border-radius: 6px;
+    color: #E7E5E5;
+}
+
+button {
+    background-color: rgb(27, 76, 83);
+}
+
+h1 {
+    text-align: center;
+    font-size: 3em;
+}
+
+h2 {font-size: 1.571em}	/* 22px */
+h3 {font-size: 1.429em}	/* 20px */
+h4 {font-size: 1.286em}	/* 18px */
+h5 {font-size: 1.143em}	/* 16px */
+h6 {font-size: 1em}		/* 14px */
+
+h2, h3, h4, h5, h6 {
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: .8em;
+}
+
+div{
+    float: left;
+    /*border: 1px solid gold;*/
+}
+
+.ligne{
+    width:calc(100% - 2px);
+}
+
+.alert {
+    color:red !important;
+    padding-bottom: 10px;
+}
+
+.erreur {
+    color:violet !important;
+    width: 250px;
+    padding-left: 12px;
+}
+.ref{
+    color: #1916be;
+    font-style: oblique;
+}
+.ficheContact{
+    padding: 25px;
+    width: 40%;
+}
+
+.ficheContact a{
+    color: #6D1907;
+}
+
+/* ===========================
+   ======= Anchor style ======
+   =========================== */
+a {
+    outline: 0;
+    white-space: nowrap;
+    text-decoration: none;
+    color: #fff;
+    padding: 0 1px;
+}
+
+a img {
+    border: 0;
+    padding-top: 3px;
+}
+
+a:hover, a:active,
+a:link img, a:visited img{
+    background-color: inherit;
+}
+
+a.logo{
+}
+
+a.lng img{
+    width: 25px;
+    border-radius: 10px;
+    margin-top: 5px;
+}
+
+/* ===========================
+   ========= Headings ========
+   =========================== */
+
+header.mainHeader {
+    background-image: url("../img/Robot-Agricole-Prospero.jpg");
+    background-size: 100%;
+    background-position-y: -10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10PX;
+    -moz-border-bottom-left-radius: 10px;
+    -webkit-border-bottom-right-radius: 10px;
+    box-shadow: 8px 8px 4px #CCC;
+    margin-top: -10px;
+}
+
+header li.drapeu img {
+    width: 25px;
+    height: auto;
+    margin: 3% 0;
+}
+
+
+.mainHeader img.logo {
+    width: 10%;
+    height: auto;
+    margin: 3% 0;
+}
+
+.mainFooter nav,
+.mainHeader nav {
+    background: #9C1E16;
+    font-size: 1.143em;
+    height: 41px;
+    line-height: 30px;
+    text-align: center;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10PX;
+    -moz-border-bottom-left-radius: 10px;
+    -webkit-border-bottom-right-radius: 10px;
+    box-shadow: 8px 8px 4px #CCC;
+}
+
+.mainFooter nav{
+    margin: 15px 0;
+    border-radius: 10px;
+}
+
+.mainFooter nav ul,
+.mainHeader nav ul {
+    list-style: none;
+    margin: 0 auto;
+}
+
+.mainHeader nav ul {
+    width: 780px;
+}
+
+.mainFooter nav ul {
+    width: 500px;
+}
+
+.mainFooter nav ul li,
+.mainHeader nav ul li {
+    float: left;
+    display: inline;
+    margin: 0 auto;
+}
+
+.mainFooter nav a:link, .mainFooter nav a:visited,
+.mainHeader nav a:link, .mainHeader nav a:visited {
+    color: #fff;
+    display: inline-block;
+    height: 30px;
+    margin: 5px;
+    padding: 0 5px;
+    text-decoration: none;
+}
+.mainFooter nav a:hover, .mainFooter nav a:active,
+.mainFooter nav .active a:link, .mainFooter nav .active a:visited,
+.mainHeader nav a:hover, .mainHeader nav a:active,
+.mainHeader nav .active a:link, .mainHeader nav .active a:visited {
+    background: #E15007;
+    color: #fff;
+    text-shadow: none !important;
+}
+
+.mainFooter nav li a,
+.mainHeader nav li a {
+    border-radius: 20px;
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+}
+
+.mainHeader img {
+    height: auto;
+    margin: 3% 0;
+}
+
+/* ***************************
+   ===== Main Content =====
+   *************************** */
+.tableauprix{
+    background-color: rosybrown;
+}
+
+.mainContent {
+    overflow: hidden;
+    line-height: 25px;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+}
+
+.mainContent a{
+    color: #6D1907;
+}
+.mainContent .barre{
+    float: left;
+    width: 1px;
+    height: 400px;
+}
+/* ***************************
+   ===== Tableaux =====
+   *************************** */
+
+.trier{
+    border: solid #ccc 2px;
+    box-shadow: 8px 8px 4px #CCC;
+    border-radius: 10px;
+    background-color: white;
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+/* ***************************
+   ===== Fiches =====
+   *************************** */
+.quart img.trombi {
+    width: 240px;
+    height: 180px;
+}
+
+.quart{
+    width: 240px;
+    padding: 10px;
+    height: 420px;
+    border: solid #ccc 2px;
+    margin: 6px;
+    box-shadow: 8px 8px 4px #CCC;
+    border-radius: 10px;
+    background-color: white;
+}
+
+.quart .quart_photo{
+    height: 180px;
+}
+
+.quart .reserver{
+    width: 95%;
+    height: 25px;
+    /* margin-left: 5%; */
+    background-color: #E15007;
+    color: whitesmoke;
+    padding: 5px;
+    text-align: center;
+    border: solid #ccc 1px;
+    box-shadow: 4px 4px 2px #CCC;
+    border-radius: 6px;
+}
+
+.quart .reserver a{
+    color: #F6F6EF;
+    text-decoration: none;
+    font-size: medium;
+    font-weight: bold;
+}
+
+.quart .active {
+    background-color: #F49B01;
+}
+
+#formulaire.produits{
+    background-color: #55787D;
+    color: #E7E5E5;
+}
+
+/* ***************************
+   ===== Formulaire =====
+   *************************** */
+#ajout a {
+    color: #6D1907;
+    background-color: burlywood;
+    border-radius: 5px;
+    padding: 0 5px;
+}
+
+#formulaire {
+    padding:13px;
+    display:block;
+    width:600px;
+    margin-left: calc(50% - 300px );
+}
+
+#formulaire .ligneForm{
+    display:inline-block;
+    width:100%;
+    height: 40px;
+}
+
+#formulaire .ligneFile{
+    width:100%;
+    height: auto;
+    padding-bottom: 24px;
+}
+
+#formulaire .label,
+#formulaire .champs{
+    float:left;
+    width:50%;
+}
+
+#formulaire div.rectifier{
+    height: 64px;
+}
+
+#formulaire label.rectifier {
+    color:blue !important;
+}
+
+.reserve{
+    width: 100%;
+}
+.valider{
+    float: right;
+}
+
+#commandes{
+
+}
+
+#commandes a{
+    padding: 0;
+    margin-top: 2px;
+    margin-Bottom: 2px;
+}
+.reservee{
+    color:green;
+}
+.titre{
+    width: 20%;
+}
+.tronche,
+.personne,
+.prix {
+    width: 20%;
+    text-align: right;
+}
+

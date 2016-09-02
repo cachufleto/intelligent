@@ -1,0 +1,23 @@
+.facture{
+    width: 550px;
+    margin-left: calc(50% - 225px);
+    background-color: #CCCCCC;
+}
+
+.titre{
+    width: 34%;
+}
+.tronche,
+.personne,
+.prix {
+    width: 22%;
+    text-align: right;
+}
+.total{
+    background-color: #CCCCCC;
+}
+
+.couts{
+    border-bottom: double;
+}
+
