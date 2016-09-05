@@ -25,8 +25,8 @@ class salles extends \App\salles
         $_trad = setTrad();
         $msg = '';
 
-        $_id = $this->data_methodes('id');
-        $position = $this->data_methodes('position', 1);
+        $_id = data_methodes('id');
+        $position = data_methodes('position', 1);
 
         $this->reservationSalles();
         // control connexion
@@ -63,14 +63,14 @@ class salles extends \App\salles
         include VUE . 'salles/gestionSalles.tpl.php';
     }
 
-    public function backOff_editProduits()
+    public function backOff_editProduits($id)
     {
         $_trad = setTrad();
         include PARAM . 'backOff_produits.param.php';
         $this->modCheckProduits($_formulaire, $_id);
-        $form = $this->formulaireAfficher($_formulaire);
+        $form = formulaireAfficher($_formulaire);
 
-        $form .= $this->listeProduits(getSalles($_id));
+        $form .= $this->listeProduits($this->getSalles($_id));
         /*foreach($listePrix as $date=>$info){
             $_liste .= "<div class='ligne date'>" .
                                 reperDate($date)
@@ -113,9 +113,9 @@ class salles extends \App\salles
         $msg = '';
         if (isset($_POST['valide']) && postCheck($_formulaire, true)) {
 
-            if(!($msg = produitsValider($_formulaire))) {
+            if(!($msg = $this->produitsValider($_formulaire))) {
 
-                treeProduitsSalle($_formulaire, $_id);
+                $this->treeProduitsSalle($_formulaire, $_id);
             }
         }
 
@@ -134,13 +134,13 @@ class salles extends \App\salles
 
         // extraction des données SQL
         $form = $msg = '';
-        if (modCheckSalles($_formulaire, $_id, 'salles')) {
+        if ($this->modCheckSalles($_formulaire, $_id)) {
             // traitement POST du formulaire dans les parametres
             if ($_valider){
 
                 $msg = $_trad['erreur']['inconueConnexion'];
                 if(postCheck($_formulaire, TRUE)) {
-                    $msg = ficheSallesValider($_formulaire);
+                    $msg = $this->ficheSallesValider($_formulaire);
                 }
             }
 
@@ -181,7 +181,7 @@ class salles extends \App\salles
         }
 
         include VUE . 'salles/backOff_ficheSalles.tpl.php';
-        backOff_editProduits($_formulaire['id_salle']['valide']);
+        $this->backOff_editProduits($_formulaire['id_salle']['valide']);
     }
 
     public function backOff_editerSalles()
@@ -202,7 +202,7 @@ class salles extends \App\salles
 
         if (postCheck($_formulaire)) {
             if(isset($_POST['valide'])){
-                $msg = ($_POST['valide'] == 'cookie') ? 'cookie' : editerSallesValider($_formulaire);
+                $msg = ($_POST['valide'] == 'cookie') ? 'cookie' : $this->editerSallesValider($_formulaire);
             }
         }
 

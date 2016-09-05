@@ -41,7 +41,7 @@ class site extends \Model\site
     {
         $nav = 'backoffice';
         $_trad = setTrad();
-        if($nav=recupNav()){
+        if($nav=$this->recupNav()){
             header('location:' . basename($_SERVER['HTTP_REFERER']));
         }
         // phpinfo();
@@ -58,7 +58,7 @@ class site extends \Model\site
         $_trad = setTrad();
         $listConctact = array();
 
-        $membres = userSelectContactAll();
+        $membres = $this->userSelectContactAll();
 
         if ($membres->num_rows > 0) {
             while ($membre = $membres->fetch_assoc()) {

@@ -1,10 +1,10 @@
 <?php
 namespace users;
 
-include_once FUNC . 'users.php';
 include_once MODEL . 'users.php';
+include_once LIB . 'users.php';
 
-class users extends \Model\users
+class users extends \App\users
 {
     public function inscription()
     {
@@ -16,7 +16,7 @@ class users extends \Model\users
         $msg = '';
         if (isset($_POST['valide']) && postCheck($_formulaire, true)) {
             //$msg = ($_POST['valide'] == 'cookie') ? 'cookie' : inscriptionValider($_formulaire);
-            $msg = inscriptionValider($_formulaire);
+            $msg = $this->inscriptionValider($_formulaire);
         }
 
         $form = ('OK' != $msg) ? formulaireAfficher($_formulaire) : '';
@@ -31,7 +31,7 @@ class users extends \Model\users
 
         include PARAM . 'connection.param.php';
 
-        $msg = actifUser($_formulaire);
+        $msg = $this->actifUser($_formulaire);
 
         /////////////////////////////////////
         if (isset($_SESSION['connexion']) && $_SESSION['connexion'] < 0) {
@@ -63,14 +63,14 @@ class users extends \Model\users
             if (!empty($_GET['delete']) && $_GET['delete'] != 1) {
 
                 if ($_GET['delete'] != $_SESSION['user']['id']) {
-                    setUserActive($_GET['delete'], 0);
+                    $this->setUserActive($_GET['delete'], 0);
                 } else {
                     $msg = $_trad['vousNePouvezPasVousSupprimerVousMeme'];
                 }
 
             } elseif (!empty($_GET['active'])) {
 
-                setUserActive($_GET['active']);
+                $this->setUserActive($_GET['active']);
 
             } else if (!empty($_GET['delete']) && $_GET['delete'] == 1) {
 
@@ -92,7 +92,7 @@ class users extends \Model\users
         $table['info'] = array();
         if (isSuperAdmin()) {
 
-            $membres = usersMoinsAdmin();
+            $membres = $this->usersMoinsAdmin();
 
             if ($membres->num_rows > 0) {
                 while ($data = $membres->fetch_assoc()) {
@@ -112,7 +112,7 @@ class users extends \Model\users
             }
         }
 
-        $membres = selectUsersActive();
+        $membres = $this->selectUsersActive();
 
         while ($data = $membres->fetch_assoc()) {
             $table['info'][] = array(
@@ -147,12 +147,12 @@ class users extends \Model\users
         }
         // extraction des données SQL
         $msg = '';
-        if (modCheckMembres($_formulaire, $_id, 'membres')) {
+        if ($this->modCheckMembres($_formulaire, $_id, 'membres')) {
             // traitement POST du formulaire
             if ($_valider) {
                 $msg = $_trad['erreur']['inconueConnexion'];
                 if (postCheck($_formulaire, TRUE)) {
-                    $msg = ($_POST['valide'] == 'cookie') ? 'cookie' : profilValider($_formulaire);
+                    $msg = ($_POST['valide'] == 'cookie') ? 'cookie' : $this->profilValider($_formulaire);
                 }
             }
             if ('OK' == $msg) {
@@ -243,7 +243,7 @@ class users extends \Model\users
 
                             if (testFormatMail($valeur)) {
 
-                                $membre = selectMailUser($_formulaire['id']['sql'], $valeur);
+                                $membre = $this->selectMailUser($_formulaire['id']['sql'], $valeur);
 
                                 // si la requete retourne un enregisterme, c'est que 'email' est deja utilisé en BD.
                                 if ($membre->num_rows > 0) {
@@ -317,7 +317,7 @@ class users extends \Model\users
 
                         case 'statut':
 
-                            if (testADMunique($valeur, $id_membre)) {
+                            if ($this->testADMunique($valeur, $id_membre)) {
                                 $erreur = true;
                                 $msg .= '<br/>' . $_trad['numAdmInsufisant'];
                                 $_formulaire['statut']['valide'] = 'ADM';
@@ -356,7 +356,7 @@ class users extends \Model\users
         } else {
 
             if (!empty($sql_set)) {
-                userUpdate($sql_set, $_formulaire['id']['sql']);
+                $this->userUpdate($sql_set, $_formulaire['id']['sql']);
             } else {
                 $msg = $_trad['erreur']['inconueConnexion'];
             }
@@ -374,7 +374,7 @@ class users extends \Model\users
 
         include FUNC . 'form.func.php';
 
-        $msg = usersIdentifians();
+        $msg = $this->usersIdentifians();
 
         $form = formulaireAfficher($_formulaire);
 
@@ -391,12 +391,12 @@ class users extends \Model\users
         $msg = '';
         if (isset($_POST['valide']) && postCheck($_formulaire, true)) {
 
-            if (!($msg = changerMotPasseValider($_formulaire))) {
+            if (!($msg = $this->changerMotPasseValider($_formulaire))) {
 
-                $membre = getUserMail($_formulaire);
+                $membre = $this->getUserMail($_formulaire);
                 $checkinscription = hashCrypt("CHANGE" . date('m:D:d:s:Y:M'));
-                if (userChangerMDPInsert($checkinscription, $_formulaire)) {
-                    $msg = envoiMailChangeMDP($checkinscription, $membre);
+                if ($this->userChangerMDPInsert($checkinscription, $_formulaire)) {
+                    $msg = $this->envoiMailChangeMDP($checkinscription, $membre);
                 } else {
                     $msg = $_trad['erreur']['inconueConnexion'];
                 }
@@ -421,21 +421,21 @@ class users extends \Model\users
     public function validerInscription()
     {
         if (isset($_GET['jeton']) && !empty($_GET['jeton'])) {
-            userMDP($_GET['jeton']);
+            $this->userMDP($_GET['jeton']);
         }
     }
 
     public function validerChangementMDP()
     {
         if (isset($_GET['jeton']) && !empty($_GET['jeton'])) {
-            userMDP($_GET['jeton']);
+            $this->userMDP($_GET['jeton']);
         }
     }
 
     public function newMDP()
     {
         if (isset($_GET['jeton']) && !empty($_GET['jeton'])) {
-            userMDP($_GET['jeton']);
+            $this->userMDP($_GET['jeton']);
         }
     }
 

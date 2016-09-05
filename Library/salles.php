@@ -19,7 +19,7 @@ class salles extends \Model\salles
     {
         $_trad = setTrad();
         $balise = '<select class=" " id="' . $champ . '" name="' . $champ . '">';
-        $result = selectListeDistinc($champ, $table);
+        $result = $this->selectListeDistinc($champ, $table);
         while($data = $result->fetch_assoc()){
             $value = $data[$champ];
             $libelle = (isset($_trad['value'][$value]))? $_trad['value'][$value] : $value;
@@ -86,7 +86,7 @@ class salles extends \Model\salles
     # RETURN string alerte
     public function getSalles($_id)
     {
-        $data = selectSalleId($_id);
+        $data = $this->selectSalleId($_id);
         if($data->num_rows < 1) {
             return false;
         }
@@ -95,9 +95,9 @@ class salles extends \Model\salles
         foreach($salle as $key=>$info){
             $fiche[$key] = html_entity_decode($info);
         }
-        $fiche['produits'] = listeProduitsReservation($fiche);
+        $fiche['produits'] = $this->listeProduitsReservation($fiche);
     
-        $fiche['listePrix'] =  listeProduitsReservationPrix($fiche);
+        $fiche['listePrix'] =  $this->listeProduitsReservationPrix($fiche);
     
         return $fiche;
     }
@@ -113,12 +113,13 @@ class salles extends \Model\salles
         return $str;
     }
     
-    public function nomImage($_formulaire){
+    public function nomImage($_formulaire)
+    {
     
         $pays = (!empty($_formulaire['pays']['value']))? $_formulaire['pays']['value'] : $_formulaire['pays']['sql'];
         $ville = (!empty($_formulaire['ville']['value']))? $_formulaire['ville']['value'] : $_formulaire['ville']['sql'];
         $titre = (!empty($_formulaire['titre']['value']))? $_formulaire['titre']['value'] : $_formulaire['titre']['sql'];
-        $nomImage = str_replace(' ', '_', remplaceAccents($pays.'_'.$ville.'_'.$titre, $charset='utf-8'));
+        $nomImage = str_replace(' ', '_', $this->remplaceAccents($pays.'_'.$ville.'_'.$titre, $charset='utf-8'));
     
         return $nomImage;
     }
@@ -272,7 +273,7 @@ class salles extends \Model\salles
             $_formulaire['cap_min']['valide'] = intval($_formulaire['capacite']['valide']*.9);
         }
     
-        if(controlTranche($_formulaire)){
+        if($this->controlTranche($_formulaire)){
             $erreur = true;
             $_formulaire['tranche']['message'] = $_trad['erreur']['surLe'] . $_trad['champ']['tranche'] .
                 ': '.$_trad['erreur']['repartitionTranche'];
@@ -285,7 +286,7 @@ class salles extends \Model\salles
     
         }elseif(!empty($_FILES['photo']) && $_FILES['photo']['error'] != 4){
     
-            $erreur = controlImageUpload('photo', $_formulaire['photo'], nomImage($_formulaire))? true : $erreur;
+            $erreur = controlImageUpload('photo', $_formulaire['photo'], $this->nomImage($_formulaire))? true : $erreur;
             $valeur = $_formulaire['photo']['valide'];
     
             if(!$erreur){
@@ -300,7 +301,7 @@ class salles extends \Model\salles
     
             // mise à jour de la base des données
             if (!empty($sql_set)){
-                sallesUpdate($sql_set, $id_salle);
+                $this->sallesUpdate($sql_set, $id_salle);
             }
             else {
                 //header('Location:' . LINK . '?nav=salles&pos=P-' . ($position -1) . '');
@@ -348,6 +349,7 @@ class salles extends \Model\salles
         return false;
     
     }
+
     # Fonction editerSallesValider()
     # Verifications des informations en provenance du formulaire
     # @_formulaire => tableau des items
@@ -472,7 +474,7 @@ class salles extends \Model\salles
     
         if(!$erreur) {
     
-            $msg = setSalle($sql_champs, $sql_Value);//"OK";
+            $msg = $this->setSalle($sql_champs, $sql_Value);//"OK";
     
         }
     
@@ -587,7 +589,7 @@ class salles extends \Model\salles
         $affiche = [];
         if($prix = $this->selectProduitsSalle($data['id_salle'])){
             while($info = $prix->fetch_assoc() ){
-                $prixSalle= $this->listeCapacites($data, $info);
+                $prixSalle= listeCapacites($data, $info);
                 $ref = '';
                 foreach($prixSalle as $key =>$produit){
                     $ref .=  "<td>" . $produit['prix'] . "€</td>";
@@ -609,7 +611,7 @@ class salles extends \Model\salles
     {
         $data = [];
         $data['tranche'] = [];
-        if($reserves = selectSalleReservesMembres($date, $id)){
+        if($reserves = $this->selectSalleReservesMembres($date, $id)){
                 while ($info = $reserves->fetch_assoc()){
                     $data['tranche'][] = $info['tranche'];
                     $data[$info['tranche']] = $info['id_membre'];
@@ -625,7 +627,7 @@ class salles extends \Model\salles
         if(isset($_SESSION['panier'])){
             foreach($_SESSION['panier'] as $date => $salle){
                 foreach($salle as $id => $item){
-                    if($reserves = selectSalleReserves($date, $id)){
+                    if($reserves = $this->selectSalleReserves($date, $id)){
                         while ($info = $reserves->fetch_assoc()){
                             unset($_SESSION['panier'][$date][$id][$info['tranche']]);
                             //echo($_SESSION['panier'][$date][$id][$info['tranche']]);
@@ -655,7 +657,7 @@ class salles extends \Model\salles
         $affiche = $_listeReservation = [];
         $i = $_total = 0;
     
-        if($prix = selectProduitsSalle($data['id_salle'])){
+        if($prix = $this->selectProduitsSalle($data['id_salle'])){
             $disponible = $this->getdisponible($_SESSION['date'], $data['id_salle']);
             //var_dump($disponible);
             while($info = $prix->fetch_assoc() ){
@@ -719,7 +721,7 @@ class salles extends \Model\salles
        $_listeReservation = [];
         $i = $_total = 0;
     
-        if($prix = selectProduitsSalle($data['id_salle'])){
+        if($prix = $this->selectProduitsSalle($data['id_salle'])){
             while($info = $prix->fetch_assoc() ){
                 $prixSalle= listeCapacites($data, $info);
                 $i++;
@@ -772,7 +774,7 @@ class salles extends \Model\salles
             $listeOrdenee = sortIndice($_SESSION["panier"]);
             foreach ($listeOrdenee as $key => $date) {
                 if(isset($_SESSION["panier"][$date][$data['id_salle']])){
-                    $listePrix[$date] = listeProduitsPrixReservation($date, $data);
+                    $listePrix[$date] = $this->listeProduitsPrixReservation($date, $data);
                     /*"<div class='tronche'>{$produit['libelle']} :</div>
                             <div class='personne'>{$produit['num']} pers.</div>
                             <div class='prix'>{$produit['prix']}€</div>";
@@ -786,6 +788,7 @@ class salles extends \Model\salles
             }
         }
         return $listePrix;
+        /**********************************************/
         $_liste = '';
         $_total = 0;
         /*foreach($listePrix as $date=>$info){
@@ -806,9 +809,9 @@ class salles extends \Model\salles
             $listeOrdenee = sortIndice($_SESSION["panier"]);
             foreach ($listeOrdenee as $key => $date) {
                 foreach($_SESSION['panier'][$date] as $id=>$reserv){
-                    $data = selectSalleId($id);
+                    $data = $this->selectSalleId($id);
                     $salle = $data->fetch_assoc();
-                    $listePrix[$date][] = ['salle'=>$salle, 'reservation'=>listeProduitsPrixReservation($date, $salle)];
+                    $listePrix[$date][] = ['salle'=>$salle, 'reservation'=>$this->listeProduitsPrixReservation($date, $salle)];
                 }
             }
         }
@@ -818,21 +821,22 @@ class salles extends \Model\salles
     }
     
     
-    public function treeProduitsSalle($_formulaire, $_id){
+    public function treeProduitsSalle($_formulaire, $_id)
+    {
     
-        $existProduits = selectProduitsSalle($_id);
+        $existProduits = $this->selectProduitsSalle($_id);
     
         $produit = array();
         while($exist = $existProduits->fetch_assoc()){
             if(!isset($_POST['plagehoraire'][$exist['id_plagehoraire']])){
-                deleteProduit($exist['id']);
+                $this->deleteProduit($exist['id']);
             } else {
                 unset($_formulaire['plagehoraire']['valide'][$exist['id_plagehoraire']]);
             }
         }
     
         foreach($_formulaire['plagehoraire']['valide'] as $plage_horaire => $info){
-            setProduit($_id, $plage_horaire);
+            $this->setProduit($_id, $plage_horaire);
         }
     
         return true;
@@ -895,12 +899,12 @@ class salles extends \Model\salles
         if (isset($_GET)) {
             if (!empty($_GET['delete'])) {
     
-                setSallesActive($_GET['delete'], 0);
+                $this->setSallesActive($_GET['delete'], 0);
     
             } elseif (!empty($_GET['active'])) {
     
-                if(!empty(selectProduitsSalle($_GET['active'])->num_rows)){
-                    setSallesActive($_GET['active'], 1);
+                if(!empty($this->selectProduitsSalle($_GET['active'])->num_rows)){
+                    $this->setSallesActive($_GET['active'], 1);
                 } else {
                     return false;
                 }
@@ -916,7 +920,7 @@ class salles extends \Model\salles
     
             $_trad = setTrad();
             if(utilisateurConnecte()){
-             return (reservationSalles())? '' : $_trad['erreur']['produitChoix'];
+             return ($this->reservationSalles())? '' : $_trad['erreur']['produitChoix'];
             }
     
             $_SESSION['urlReservation'] = $_GET;

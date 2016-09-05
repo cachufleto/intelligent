@@ -11,7 +11,7 @@ use App\Bdd;
 
 class users extends Bdd
 {
-    function selecMembreJeton($jeton)
+    public function selecMembreJeton($jeton)
     {
         $sql = "SELECT membres.id
           FROM membres, checkinscription
@@ -27,7 +27,7 @@ class users extends Bdd
         return false;
     }
 
-    function updateMembreJeton($id)
+    public function updateMembreJeton($id)
     {
         $sql = "UPDATE membres SET active = 1 WHERE id = $id;";
         $sql .= "DELETE FROM `checkinscription` WHERE id_membre = $id;";
@@ -40,13 +40,13 @@ class users extends Bdd
      * @param $sql_Where
      * @return bool
      */
-    function usersSelectWhere($sql_Where)
+    public function usersSelectWhere($sql_Where)
     {
         $sql = "SELECT id FROM membres WHERE $sql_Where;";
         return executeRequete($sql);
     }
 
-    function usersMoinsAdmin()
+    public function usersMoinsAdmin()
     {
         // selection de tout les users sauffe le super-ADMIN
         $sql = "SELECT m.id, m.pseudo, m.nom, m.prenom, m.email, m.statut, m.active
@@ -56,14 +56,14 @@ class users extends Bdd
         return executeRequete($sql);
     }
 
-    function selectMailUser($id, $valeur)
+    public function selectMailUser($id, $valeur)
     {
         $sql = "SELECT email FROM membres WHERE id != " . $id . " and email='$valeur'";
         return executeRequete($sql);
     }
 
 
-    function userPseudoExist($pseudo)
+    public function userPseudoExist($pseudo)
     {
         $sql = "SELECT pseudo FROM membres WHERE pseudo='$pseudo'";
         $membre = executeRequete($sql);
@@ -73,21 +73,21 @@ class users extends Bdd
         return false;
     }
 
-    function setUserActive($id, $active = 1)
+    public function setUserActive($id, $active = 1)
     {
 
         $sql = "UPDATE membres SET active = $active WHERE id = $id";
         executeRequete($sql);
     }
 
-    function userUpdate($sql_set, $id)
+    public function userUpdate($sql_set, $id)
     {
         // mise à jour de la base des données
         $sql = "UPDATE membres SET $sql_set  WHERE id = $id";
         executeRequete($sql);
     }
 
-    function getUserMail($info)
+    public function getUserMail($info)
     {
         $sql = "SELECT id, nom, prenom, email FROM membres WHERE email = '" . $info['email']['valide'] . "'";
         $membre = executeRequete($sql);
@@ -98,7 +98,7 @@ class users extends Bdd
         return false;
     }
 
-    function getUserConnexion($sql_Where)
+    public function getUserConnexion($sql_Where)
     {
         $sql = "SELECT mdp, id, email, pseudo, statut, nom, prenom, active FROM membres WHERE $sql_Where ";
         $membre = executeRequete($sql); // la variable $pseudo existe grace a l'extract fait prealablemrent.
@@ -109,7 +109,7 @@ class users extends Bdd
         return false;
     }
 
-    function userChangerMDPInsert($checkinscription, $info)
+    public function userChangerMDPInsert($checkinscription, $info)
     {
         $sql = "INSERT INTO checkinscription (id_membre, checkinscription)
         VALUES ( (SELECT id FROM membres WHERE email = '" . $info['email']['valide'] . "'), '$checkinscription');";
@@ -117,7 +117,7 @@ class users extends Bdd
         return executeRequete($sql);
     }
 
-    function userInscriptionInsert($sql_champs, $sql_Value, $checkinscription, $info)
+    public function userInscriptionInsert($sql_champs, $sql_Value, $checkinscription, $info)
     {
 
         $sql = "INSERT INTO membres ($sql_champs, mdp) VALUES ($sql_Value, '$checkinscription');";
@@ -127,7 +127,7 @@ class users extends Bdd
         return executeMultiRequete($sql);
     }
 
-    function userMailExist($email)
+    public function userMailExist($email)
     {
         $sql = "SELECT email FROM membres WHERE email='$email'";
         $membre = executeRequete($sql);
@@ -137,7 +137,7 @@ class users extends Bdd
         return false;
     }
 
-    function selectUsersActive()
+    public function selectUsersActive()
     {
         $sql = "SELECT id, pseudo, nom, prenom, email, statut, active
         FROM membres  WHERE " . (!isSuperAdmin() ? "id != 1 AND active == 1 " : "active != 2") . "
@@ -145,7 +145,7 @@ class users extends Bdd
         return executeRequete($sql);
     }
 
-    function getUser($id)
+    public function getUser($id)
     {
 
         $sql = "SELECT id, prenom, nom, pseudo, email, telephone, gsm, sexe, ville, cp, adresse, statut
@@ -166,7 +166,7 @@ class users extends Bdd
 # $info tableau des items validées du formulaire
 # RETURN boolean
 
-    function testADMunique($statut, $id_membre)
+    public function testADMunique($statut, $id_membre)
     {
         if (utilisateurAdmin() && $id_membre == $_SESSION['user']['id'] && $statut != 'ADM') {
             // interdiction de modifier le statut pour le super administrateur
@@ -185,7 +185,7 @@ class users extends Bdd
 
     }
 
-    function userUpdateMDP($mdp, $id)
+    public function userUpdateMDP($mdp, $id)
     {
         $sql = "UPDATE membres SET mdp = '" . hashCrypt($mdp) . "' WHERE id = $id";
         executeRequete($sql);

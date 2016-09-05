@@ -1,7 +1,8 @@
 <?php
 namespace commande;
-include_once FUNC . 'commande.func.php';
 include_once MODEL . 'commande.php';
+include_once LIB . 'commande.php';
+
 /**
  * Created by PhpStorm.
  * User: Domoquick
@@ -9,13 +10,13 @@ include_once MODEL . 'commande.php';
  * Time: 01:02
  */
 
-class commande extends \Model\commande
+class commande extends \App\commande
 {
-public function validerCommande()
+    public function validerCommande()
     {
         $nav = 'commande';
         $_trad = setTrad();
-        $listePrix = listeProduitsFacture();
+        $listePrix = $this->listeProduitsFacture();
 
         include_once VUE . 'commande/validerCommande.tpl.php';
     }
@@ -23,15 +24,15 @@ public function validerCommande()
     public function validerFacture()
     {
         $_trad = setTrad();
-        $facture = generationProduitsFacture();
+        $facture = $this->generationProduitsFacture();
 
-        $id = setReservations();
+        $id = $this->setReservations();
         $date_facturation = date('Y-m-d H:i:s');
         foreach($facture as $key=>$commande){
             $commande['id_reservation'] = $id;
             $commande['date_facturation'] = $date_facturation;
             $commande['prix_ttc'] = ($commande['prix'] - $commande['reduction'] ) * (1 + TVA);
-            setComandes($commande);
+            $this->setComandes($commande);
         }
         unset($_SESSION['panier']);
         header('refresh:2;url=index.php');
@@ -42,7 +43,7 @@ public function validerCommande()
     {
         $nav = 'commande';
         $_trad = setTrad();
-        $listePrix = listeProduitsCommandes();
+        $listePrix = $this->listeProduitsCommandes();
 
         include_once VUE . 'commande/commandes.tpl.php';
     }
@@ -51,7 +52,7 @@ public function validerCommande()
     {
         $nav = 'commande';
         $_trad = setTrad();
-        $listePrix = listeProduitsGestionCommandes();
+        $listePrix = $this->listeProduitsGestionCommandes();
 
         include_once VUE . 'commande/gestionCommandes.tpl.php';
     }
