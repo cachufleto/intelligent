@@ -40,7 +40,7 @@ echo '
 <div class="ligne">
     <hr>
     <div class="reserve">';
-$listePrix = listeProduitsReservationPrixTotal();
+$listePrix = $this->listeProduitsReservationPrixTotal();
 
 $total = 0;
 $reservation = '';

@@ -1,6 +1,6 @@
 <?php
 include_once MODEL . 'salles.php';
-include_once FUNC . 'salles.func.php';
+include_once FUNC . 'salles.php';
 
 
 function recherche()

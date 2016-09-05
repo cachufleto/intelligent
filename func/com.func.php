@@ -139,47 +139,6 @@ function ouvrirSession($session, $control = false)
 }
 
 
-# Fonction isSuperAdmin()
-# Verifie SESSION ADMIN ACTIVE
-# RETURN Boolean
-function isSuperAdmin()
-{
-	
-	return(utilisateurAdmin() AND $_SESSION['user']['id'] == 1)? true : false;
-
-}
-
-# Fonction utilisateurAdmin()
-# Verifie SESSION ADMIN ACTIVE
-# RETURN Boolean
-function utilisateurAdmin()
-{
-	
-	return(utilisateurConnecte() AND $_SESSION['user']['statut'] == 'ADM')? true : false;
-
-}
-
-# Fonction utilisateurAdmin()
-# Verifie SESSION ADMIN ACTIVE
-# RETURN Boolean
-function utilisateurEstCollaborateur ()
-{
-	
-	return(utilisateurConnecte() AND $_SESSION['user']['statut'] == 'COL')? true : false;
-
-}
-
-# Fonction utilisateurConnecte()
-# Verifie SESSION ACTIVE
-# RETURN Boolean
-function utilisateurConnecte()
-{
-
-	return (!isset($_SESSION['user']))? false : true;
-	
-}
-
-
 function envoiMail($message, $to = WEBMAIL)
 {
 	$_trad = setTrad();
@@ -210,9 +169,7 @@ function setTrad()
 	if ($_SESSION['lang'] != 'fr') {
 		include CONF . 'trad/' . $_SESSION['lang'] . '/traduction.php';
 	}
-
 	return $_trad;
-
 }
 
 function setPrixPlage()
@@ -325,32 +282,4 @@ function reperDate($date)
 	return $form;
 }
 
-function controldate()
-{
-	$control = $_SESSION['date'];
-	$__date = isset($_POST['date'])? $_POST['date'] : (isset($_GET['reservee'])? $_GET['reservee'] : false );
-	if($__date){
-		// contrôl de la date inferieur à la date du jour
-		$dateMin = time()+(60*60*24);
-		$now = mktime(0,0,0,date('m', $dateMin),date('d', $dateMin),date('Y', $dateMin));
-		$control = date('Y-m-d', $dateMin);
-		if(preg_match('#^20(1|2)[0-9]-(0|1)[0-9]-[0-3][0-9]#' , $__date)){
-			$date = explode('-', $__date);
-			_debug($date, '$date');
-			if(checkdate($date[1],$date[2],$date[0])){
-				$timePost = mktime(0,0,0,$date[1],$date[2],$date[0]);
-				if(isset($_POST['date']) AND $timePost > $now){
-					$_SESSION['date'] =  $__date;
-				} else {
-					$_SESSION['date'] = $__date;
-				}
-
-				$_SESSION['dateTimeOk'] = ($timePost > $now)? true : false;
-
-			}
-		}
-	}
-
-	return $control;
-}
 

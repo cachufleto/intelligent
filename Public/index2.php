@@ -9,17 +9,20 @@ ob_start();
 $nav = array_key_exists($nav, $route)? $nav : 'erreur404';
 // insertion des pages dinamiques
 if ($nav != 'erreur404'){
-	include_once CONTROLEUR . $route[$nav]['Controleur'];
+	include_once CONTROLEUR . $route[$nav]['Controleur'] . '.php';
+	$app = new $route['erreur404']['Controleur']();
 	$function = $route[$nav]['action'];
-	if (function_exists($function)){
-		$function();
+	if (method_exists($app, $function)){
+		$app->$function();
 	} else {
-		include_once CONTROLEUR . $route['erreur404']['Controleur'];
-		$route['erreur404']['action']($nav);
+		include_once CONTROLEUR . $route['erreur404']['Controleur'] . '.php';
+		$app = new $route['erreur404']['Controleur']();
+		$app->$route['erreur404']['action']($nav);
 	}
 } else {
-	include_once CONTROLEUR . $route['erreur404']['Controleur'];
-	$route['erreur404']['action']('erreur404');
+	include_once CONTROLEUR . $route['erreur404']['Controleur'] . '.php';
+	$app = new $route['erreur404']['Controleur']();
+	$app->$route['erreur404']['action']('erreur404');
 }
 
 _debug($route[$nav], 'Route pour: ' . $nav);
