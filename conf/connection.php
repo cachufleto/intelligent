@@ -17,5 +17,5 @@ switch($_SERVER["SERVER_NAME"]){
 		$BDD['SERVEUR_BDD'] = 'localhost';
 		$BDD['USER'] = 'root';
 		$BDD['PASS'] = '';
-		$BDD['BDD'] = 'lokisalle';
+		$BDD['BDD'] = 'intelligent';
 }

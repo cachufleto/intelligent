@@ -28,3 +28,8 @@ function install()
 }
 
 install();
+function userUpdateMDP($mdp, $id)
+{
+    $sql = "UPDATE membres SET mdp = '" . hashCrypt($mdp) . "' WHERE id = $id";
+    executeRequete($sql);
+}
