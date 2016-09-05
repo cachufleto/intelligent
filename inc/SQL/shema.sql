@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `Intelligent_1206`
+-- Base de données :  `Intelligent  _1206`
 --
 
 -- --------------------------------------------------------
@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS `reservations` (
 
 DROP TABLE IF EXISTS `salles`;
 CREATE TABLE IF NOT EXISTS `salles` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_salle` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `pays` varchar(20) NOT NULL,
   `ville` varchar(20) NOT NULL,
   `adresse` text NOT NULL,
