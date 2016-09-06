@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `commandes` (
   `prix_TTC` float(8,2) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `reservations` (`id_salle`,`date_reserve`,`tranche`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Historique des réservations';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Historique des réservations';
 
 --
 -- Contenu de la table `commandes`
@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS `produits` (
   `id_salle` int(10) UNSIGNED NOT NULL,
   `id_plagehoraire` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='Prix des salles';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Prix des salles';
 
 --
 -- Contenu de la table `produits`
@@ -162,7 +162,7 @@ CREATE TABLE IF NOT EXISTS `reservations` (
   `id_membre` int(10) UNSIGNED NOT NULL,
   `date_facturacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `reservations`
@@ -194,7 +194,7 @@ CREATE TABLE IF NOT EXISTS `salles` (
   `active` int(1) DEFAULT '0',
   PRIMARY KEY (`id_salle`),
   KEY `id_salle` (`id_salle`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `salles`
