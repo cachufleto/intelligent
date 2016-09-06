@@ -38,7 +38,7 @@
 	echo $debug;
 	?>
 </section>
-<!-- Pied de Page -->
+<!-- PIED DE PAGE -->
 <footer class="mainFooter">
 	<div class="ligne">
 		<nav>
