@@ -12,10 +12,11 @@ class salles extends \Model\salles
 {
     public function __construct()
     {
+        parent::__construct();
         $this->getIndisponibilite();
     }
 
-    public function ListeDistinc($champ, $table, $info)
+    protected function ListeDistinc($champ, $table, $info)
     {
         $_trad = setTrad();
         $balise = '<select class=" " id="' . $champ . '" name="' . $champ . '">';
@@ -37,12 +38,12 @@ class salles extends \Model\salles
     # convertion avec htmlentities
     # $nomFormulaire => string nom du tableau
     # RETURN string alerte
-    public function modCheckProduits(&$_formulaire, $_id)
+    protected function modCheckProduits(&$_formulaire, $_id)
     {
     
         $sql = "SELECT id_plagehoraire FROM produits WHERE id_salle = ". $_id ;
     
-        $data = executeRequete($sql) or die ($sql);
+        $data = $this->executeRequete($sql) or die ($sql);
         if($data->num_rows < 1) return false;
     
         while ($produit = $data->fetch_assoc()){
@@ -58,13 +59,13 @@ class salles extends \Model\salles
     # convertion avec htmlentities
     # $nomFormulaire => string nom du tableau
     # RETURN string alerte
-    public function modCheckSalles(&$_formulaire, $_id)
+    protected function modCheckSalles(&$_formulaire, $_id)
     {
         $form = $_formulaire;
     
         $sql = "SELECT * FROM salles WHERE id_salle = ". $_id . ( !isSuperAdmin()? " AND active != 0" : "" );
     
-        $data = executeRequete($sql) or die ($sql);
+        $data = $this->executeRequete($sql) or die ($sql);
         $user = $data->fetch_assoc();
     
         if($data->num_rows < 1) return false;
@@ -84,7 +85,7 @@ class salles extends \Model\salles
     # convertion avec htmlentities
     # $nomFormulaire => string nom du tableau
     # RETURN string alerte
-    public function getSalles($_id)
+    protected function getSalles($_id)
     {
         $data = $this->selectSalleId($_id);
         if($data->num_rows < 1) {
@@ -102,7 +103,7 @@ class salles extends \Model\salles
         return $fiche;
     }
     
-    public function remplaceAccents($str, $charset='utf-8')
+    protected function remplaceAccents($str, $charset='utf-8')
     {
         $str = htmlentities($str, ENT_NOQUOTES, $charset);
     
@@ -113,7 +114,7 @@ class salles extends \Model\salles
         return $str;
     }
     
-    public function nomImage($_formulaire)
+    protected function nomImage($_formulaire)
     {
     
         $pays = (!empty($_formulaire['pays']['value']))? $_formulaire['pays']['value'] : $_formulaire['pays']['sql'];
@@ -125,7 +126,7 @@ class salles extends \Model\salles
     }
     
     
-    public function produitsValider(&$_formulaire)
+    protected function produitsValider(&$_formulaire)
     {
         global $minLen;
         $_trad = setTrad();
@@ -166,7 +167,7 @@ class salles extends \Model\salles
     # Verifications des informations en provenance du formulaire
     # @_formulaire => tableau des items
     # RETURN string msg
-    public function ficheSallesValider(&$_formulaire)
+    protected function ficheSallesValider(&$_formulaire)
     {
         global $minLen;
         $_trad = setTrad();
@@ -315,7 +316,7 @@ class salles extends \Model\salles
         return $msg;
     }
     
-    public function controlTranche(&$_formulaire)
+    protected function controlTranche(&$_formulaire)
     {
         $max = $_formulaire['capacite']['valide'];
         $min = $_formulaire['cap_min']['valide'];
@@ -354,7 +355,7 @@ class salles extends \Model\salles
     # Verifications des informations en provenance du formulaire
     # @_formulaire => tableau des items
     # RETURN string msg
-    public function editerSallesValider(&$_formulaire)
+    protected function editerSallesValider(&$_formulaire)
     {
     
         global $minLen;
@@ -481,7 +482,7 @@ class salles extends \Model\salles
         return $msg;
     }
     
-    public function orderSallesValide()
+    protected function orderSallesValide()
     {
         if(isset($_SESSION['orderSalles']['orderActive'])){
             if(isset($_POST['ord']) AND $_POST['ord'] == 'active'){
@@ -494,7 +495,7 @@ class salles extends \Model\salles
         return ($_SESSION['orderSalles']['orderActive'])? "active ASC, " : '';
     }
     
-    public function selectSallesReservations()
+    protected function selectSallesReservations()
     {
         $liste = '';
         if(isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
@@ -512,7 +513,7 @@ class salles extends \Model\salles
         return $this->listeSalles($liste);
     }
     
-    public function listeSalles($reservation = false)
+    protected function listeSalles($reservation = false)
     {
         $_trad = setTrad();
     
@@ -547,7 +548,7 @@ class salles extends \Model\salles
         return $table;
     }
     
-    public function listeSallesBO()
+    protected function listeSallesBO()
     {
         $_trad = setTrad();
     
@@ -583,7 +584,7 @@ class salles extends \Model\salles
         return $table;
     }
     
-    public function listeProduits(array $data)
+    protected function listeProduits(array $data)
     {
         $prix_salle = $ref ='';
         $affiche = [];
@@ -607,7 +608,7 @@ class salles extends \Model\salles
         return (empty($affiche))? $_trad['produitNonDispoble'] : "<table width='100%' border='1' cellspacing='1' BGCOLOR='#ccc'>$prix_salle</table>";
     }
     
-    public function getdisponible($date, $id)
+    protected function getdisponible($date, $id)
     {
         $data = [];
         $data['tranche'] = [];
@@ -621,7 +622,7 @@ class salles extends \Model\salles
         return $data;
     }
     
-    public function getIndisponibilite()
+    protected function getIndisponibilite()
     {
         $data = [];
         if(isset($_SESSION['panier'])){
@@ -650,7 +651,7 @@ class salles extends \Model\salles
         return $data;
     }
     
-    public function listeProduitsReservation(array $data)
+    protected function listeProduitsReservation(array $data)
     {
         $_trad = setTrad();
         $prix_salle = $ref = $disponibilite = [];
@@ -716,7 +717,7 @@ class salles extends \Model\salles
         return ['affiche'=>$affiche, 'disponibilite'=>$disponibilite];
     }
     
-    public function listeProduitsPrixReservation($date, $data)
+    protected function listeProduitsPrixReservation($date, $data)
     {
        $_listeReservation = [];
         $i = $_total = 0;
@@ -767,7 +768,7 @@ class salles extends \Model\salles
         return $_listeReservation;
     }
     
-    public function listeProduitsReservationPrix($data)
+    protected function listeProduitsReservationPrix($data)
     {
         $listePrix = [];
         if(isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
@@ -802,7 +803,7 @@ class salles extends \Model\salles
                                 <div class='prix total'>" . number_format ($_total, 2) . "€</div>";
     }
     
-    public function listeProduitsReservationPrixTotal()
+    protected function listeProduitsReservationPrixTotal()
     {
         $listePrix = [];
         if(isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
@@ -821,7 +822,7 @@ class salles extends \Model\salles
     }
     
     
-    public function treeProduitsSalle($_formulaire, $_id)
+    protected function treeProduitsSalle($_formulaire, $_id)
     {
     
         $existProduits = $this->selectProduitsSalle($_id);
@@ -842,7 +843,7 @@ class salles extends \Model\salles
         return true;
     }
     
-    public function orderSalles()
+    protected function orderSalles()
     {
         if(isset($_SESSION['orderSalles']['champ'])){
             if(isset($_POST['ord'])){
@@ -868,7 +869,7 @@ class salles extends \Model\salles
         return $_SESSION['orderSalles']['champ'] . " " . $_SESSION['orderSalles']['order'];
     }
     
-    public function reservationSalles()
+    protected function reservationSalles()
     {
         if (!empty($_POST)) {
             if (isset($_POST['reserver']) && $_SESSION['dateTimeOk']) {
@@ -894,7 +895,7 @@ class salles extends \Model\salles
         return true;
     }
     
-    public function activeSalles()
+    protected function activeSalles()
     {
         if (isset($_GET)) {
             if (!empty($_GET['delete'])) {
@@ -914,7 +915,7 @@ class salles extends \Model\salles
         return true;
     }
     
-    public function urlReservation(){
+    protected function urlReservation(){
     
         if(isset($_GET['reserver']) OR isset($_POST['reserver'])){
     

@@ -11,10 +11,10 @@ if(file_exists(CONF . 'connection.php')){
 	exit("<h2>L'Outil n'est pas instalé!<h2><p>Vous n'avez pas les parametres de connection à la base des donnes</p>");
 }
 
-// class de l'application
-require LIB . 'App.php';
 // class d'acces à la base des données
 require LIB . 'Bdd.php';
+// class de l'application
+require LIB . 'App.php';
 // functions de debug
 require FUNC . 'debug.php';
 // functions communes du noyeau
@@ -37,7 +37,6 @@ ob_start();
 
 $arg = ($nav = 'erreur404')? $nav : '';
 $app->{$__app->action}($arg);
-
 /*
 $nav = array_key_exists($nav, $route)? $nav : 'erreur404';
 // insertion des pages dinamiques

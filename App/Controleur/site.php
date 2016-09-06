@@ -7,7 +7,6 @@ class site extends \Model\site
 {
     public function home()
     {
-
         $nav = 'home';
         $_trad = setTrad();
 

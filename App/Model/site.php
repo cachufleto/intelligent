@@ -13,13 +13,18 @@ use App\Bdd;
  */
 class site extends Bdd
 {
-    function userSelectContactAll()
+    public function __construct()
     {
-        $sql = "SELECT * FROM membres WHERE statut != 'MEM';";
-        return executeRequete($sql);
+        parent::__construct();
     }
 
-    function selectSallesActive()
+    protected function userSelectContactAll()
+    {
+        $sql = "SELECT * FROM membres WHERE statut != 'MEM';";
+        return $this->executeRequete($sql);
+    }
+
+    protected function selectSallesActive()
     {
         // selection de tout les users sauffe le super-ADMIN
         $sql = "SELECT id_salle, pays, ville, titre, capacite, categorie, photo, description, active
@@ -27,6 +32,6 @@ class site extends Bdd
             WHERE active != 0
             ORDER BY titre
             LIMIT 0,3;";
-        return executeRequete($sql);
+        return $this->executeRequete($sql);
     }
 }

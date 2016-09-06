@@ -11,7 +11,7 @@ namespace App;
 
 class commande extends \Model\commande
 {
-    public function listeProduitsFacture()
+    protected function listeProduitsFacture()
     {
         $listePrix = [];
         if (isset($_SESSION['panier']) && !empty($_SESSION['panier'])) {
@@ -28,7 +28,7 @@ class commande extends \Model\commande
 
     }
 
-    public function listeProduitsCommandes()
+    protected function listeProduitsCommandes()
     {
         $listePrix = [];
         $salles = $this->selectProduitsCommandes();
@@ -43,7 +43,7 @@ class commande extends \Model\commande
         return $listePrix;
     }
 
-    public function listeProduitsGestionCommandes()
+    protected function listeProduitsGestionCommandes()
     {
         $listePrix = [];
         $salles = $this->selectProduitsGestionCommandes();
@@ -58,7 +58,7 @@ class commande extends \Model\commande
         return $listePrix;
     }
 
-    public function listeProduitsPrixFacture($date, $data)
+    protected function listeProduitsPrixFacture($date, $data)
     {
         $_listeReservation = $_reserve = [];
 
@@ -87,7 +87,7 @@ class commande extends \Model\commande
         return $_listeReservation;
     }
 
-    public function listeProduitsPrixCommandes($date, $data)
+    protected function listeProduitsPrixCommandes($date, $data)
     {
         $_listeReservation = $_reserve = [];
 
@@ -116,7 +116,7 @@ class commande extends \Model\commande
         return $_listeReservation;
     }
 
-    public function generationProduitsFacture()
+    protected function generationProduitsFacture()
     {
         $listePrix = [];
         if (isset($_SESSION['panier']) && !empty($_SESSION['panier'])) {
@@ -148,7 +148,7 @@ class commande extends \Model\commande
         return $_liste;
     }
 
-    public function generationProduitsPrixFacture($date, $data)
+    protected function generationProduitsPrixFacture($date, $data)
     {
         $liste = [];
         $i = $_total = 0;

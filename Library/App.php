@@ -9,7 +9,7 @@
 namespace App;
 
 
-class App
+class App extends Bdd
 {
     var $routeur = [];
     var $page = 'home';
@@ -21,6 +21,7 @@ class App
     public function __construct()
     {
         ## Ouverture des sessions
+        parent::__construct();
         session_start();
         $this->SetSession();
         $this->setLang();
@@ -36,7 +37,7 @@ class App
         //$this->setSessionMoteurRecherche();
     }
 
-    public function iniTarget()
+    protected function iniTarget()
     {
         /************************************************************
          * Creation du repertoire cible si inexistant
@@ -47,7 +48,7 @@ class App
             }
         }
     }
-    public function SetSession()
+    protected function SetSession()
     {
         // valeur par default
         $_SESSION['lang'] = (isset($_SESSION['lang']))? $_SESSION['lang'] : 'fr';
@@ -71,7 +72,7 @@ class App
 
     }
 
-    public function setLang()
+    protected function setLang()
     {
         // recuperation du cookis lang
         $_SESSION['lang'] = (isset($_COOKIE['Intelligent']))?
@@ -81,7 +82,7 @@ class App
             $_GET['lang'] : $_SESSION['lang'];
     }
 
-    public function setBackoffice()
+    protected function setBackoffice()
     {
         if (utilisateurAdmin()){
             if (isset($_GET['nav']) && $_GET['nav'] == 'backoffice') {
@@ -92,13 +93,13 @@ class App
         }
     }
 
-    public function setCookieLang()
+    protected function setCookieLang()
     {
         // définition des cookis
         setcookie( 'Intelligent[lang]' , $_SESSION['lang'], time()+360000 );
     }
 
-    public function controldate()
+    protected function controldate()
     {
         //$control = $_SESSION['date'];
         $__date = isset($_POST['date'])? $_POST['date'] : (isset($_GET['reservee'])? $_GET['reservee'] : false );
@@ -124,7 +125,7 @@ class App
         //return $control;
     }
 
-    public function destroy()
+    protected function destroy()
     {
         // Déconnection de l'utilisateur par tentative d'intrusion
         // comportement de déconnexion sur le site
@@ -149,7 +150,7 @@ class App
         }
     }
 
-    public function setPage()
+    protected function setPage()
     {
         if(!empty($_GET)){
             // page de navigation
@@ -164,7 +165,7 @@ class App
         }
     }
 
-    public function setControleur()
+    protected function setControleur()
     {
         if(array_key_exists($this->page, $this->routeur)){
             if(file_exists(CONTROLEUR . $this->routeur[$this->page]['Controleur'] . '.php')){
@@ -183,7 +184,7 @@ class App
         }
     }
 
-    /*public function setSession()
+    /*protected function setSession()
     {
         if(!empty($this->session)){
             if(!isset($_SESSION[$this->session])){

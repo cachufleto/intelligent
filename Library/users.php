@@ -8,7 +8,7 @@ namespace App;
 
 class users extends \Model\users
 {
-    public function changerMotPasseValider(&$_formulaire)
+    protected function changerMotPasseValider(&$_formulaire)
     {
         global $minLen;
         $_trad = setTrad();
@@ -59,7 +59,7 @@ class users extends \Model\users
         return $msg;
     }
     
-    public function mdpValider(&$_formulaire)
+    protected function mdpValider(&$_formulaire)
     {
         global $minLen;
         $_trad = setTrad();
@@ -111,7 +111,7 @@ class users extends \Model\users
         return $msg;
     }
     
-    public function inscriptionValider(&$_formulaire)
+    protected function inscriptionValider(&$_formulaire)
     {
     
         global $minLen;
@@ -293,7 +293,7 @@ class users extends \Model\users
         return $msg;
     }
     
-    public function actifUser($_formulaire)
+    protected function actifUser($_formulaire)
     {
         $_trad = setTrad();
     
@@ -328,7 +328,7 @@ class users extends \Model\users
         return $msg;
     }
     
-    public function connectionValider($_formulaire)
+    protected function connectionValider($_formulaire)
     {
     
         global $minLen;
@@ -441,7 +441,7 @@ class users extends \Model\users
         return $msg;
     }
     
-    public function usersIdentifians()
+    protected function usersIdentifians()
     {
         return;
     }
@@ -449,7 +449,7 @@ class users extends \Model\users
     /**
      * @return string
      */
-    public function usersChangerMotPasse(&$_formulaire)
+    protected function usersChangerMotPasse(&$_formulaire)
     {
     
         global $minLen;
@@ -515,7 +515,7 @@ class users extends \Model\users
         return $message;
     }
     
-    public function envoiMailChangeMDP($checkinscription, $membre)
+    protected function envoiMailChangeMDP($checkinscription, $membre)
     {
         $_trad = setTrad();
         // message
@@ -535,7 +535,7 @@ class users extends \Model\users
         return (envoiMail($message, $membre['email']))? "OK" : "ERREUR SEND MAIL";
     }
     
-    public function envoiMailInscrition($checkinscription, $info)
+    protected function envoiMailInscrition($checkinscription, $info)
     {
         $_trad = setTrad();
         // message
@@ -560,7 +560,7 @@ class users extends \Model\users
     # convertion avec htmlentities
     # $nomFormulaire => string nom du tableau
     # RETURN string alerte
-    public function modCheckMembres(&$_formulaire, $_id)
+    protected function modCheckMembres(&$_formulaire, $_id)
     {
         $form = $_formulaire;
     
@@ -576,7 +576,7 @@ class users extends \Model\users
         return true;
     }
     
-    public function userMDP($jeton)
+    protected function userMDP($jeton)
     {
         $_trad = setTrad();
         include PARAM . 'userMDP.param.php';

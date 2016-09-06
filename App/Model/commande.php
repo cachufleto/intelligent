@@ -10,31 +10,36 @@ use App\Bdd;
  */
 class commande extends Bdd
 {
-    public function selectSalleId($_id)
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    protected function selectSalleId($_id)
     {
         $sql = "SELECT * FROM salles WHERE id_salle = " . $_id .
             (!isSuperAdmin() ? " AND active != 0" : "") .
             recherchePernonnes();
-        return executeRequete($sql);
+        return $this->executeRequete($sql);
     }
 
-    public function selectProduitsSalle($id)
+    protected function selectProduitsSalle($id)
     {
         $sql = "SELECT p.*, h.description
             FROM produits p, plagehoraires h
             WHERE id_salle = $id
               AND p.id_plagehoraire = h.id
             ORDER BY id_plagehoraire ASC";
-        return executeRequete($sql);
+        return $this->executeRequete($sql);
     }
 
-    public function setReservations()
+    protected function setReservations()
     {
         $sql = "INSERT INTO `reservations` (`id`, `id_membre`, `date_facturacion`) VALUES (NULL, '{$_SESSION['user']['id']}', CURRENT_TIMESTAMP)";
-        return executeRequeteInsert($sql);
+        return $this->executeRequeteInsert($sql);
     }
 
-    public function setComandes($commande)
+    protected function setComandes($commande)
     {
         $sql = "INSERT INTO `commandes` (`id`, `id_reservation`, `id_salle`, `date_facturacion`, `date_reserve`,
                                       `tranche`, `capacitee`, `prix`, `reduction`, `prix_ttc`)
@@ -42,10 +47,10 @@ class commande extends Bdd
                                       '{$commande['date_facturation']}', '{$commande['date']}',
                                       '{$commande['tranche']}', '{$commande['capacitee']}', '{$commande['prix']}',
                                       '{$commande['reduction']}', '{$commande['prix_ttc']}');";
-        return executeRequeteInsert($sql);
+        return $this->executeRequeteInsert($sql);
     }
 
-    public function selectProduitsCommandes()
+    protected function selectProduitsCommandes()
     {
         $date = date('Y-m-d H:i:s', (time() - 10 * (60 * 60 * 24)));
         $req = "SELECT
@@ -58,10 +63,10 @@ class commande extends Bdd
               AND c.id_salle = s.id_salle
               AND r.id = c.id_reservation
             ORDER BY c.date_reserve ASC, c.tranche ASC";
-        return executeRequete($req);
+        return $this->executeRequete($req);
     }
 
-    public function selectProduitsGestionCommandes()
+    protected function selectProduitsGestionCommandes()
     {
         $date = date('Y-m-d H:i:s', (time() - 10 * (60 * 60 * 24)));
         $req = "SELECT
@@ -75,6 +80,6 @@ class commande extends Bdd
               AND c.id_salle = s.id_salle
               AND r.id_membre = m.id
             ORDER BY c.tranche ASC, c.date_reserve ASC";
-        return executeRequete($req);
+        return $this->executeRequete($req);
     }
 }
