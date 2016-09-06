@@ -18,10 +18,10 @@ class users extends Bdd
 
     protected function selecMembreJeton($jeton)
     {
-        $sql = "SELECT membres.id
-          FROM membres, checkinscription
-          WHERE membres.id = checkinscription.id_membre
-              AND checkinscription.checkinscription = '$jeton'";
+        $sql = "SELECT m.id
+          FROM membres m, checkinscription c
+          WHERE m.id = c.id_membre
+              AND c.checkinscription = '$jeton'";
 
         $inscription = $this->executeRequete($sql);
         if ($inscription->field_count == 1) {
@@ -37,7 +37,7 @@ class users extends Bdd
         $sql = "UPDATE membres SET active = 1 WHERE id = $id;";
         $sql .= "DELETE FROM `checkinscription` WHERE id_membre = $id;";
 
-        return executeMultiRequete($sql);
+        return $this->executeMultiRequete($sql);
 
     }
 
@@ -129,7 +129,7 @@ class users extends Bdd
         $sql .= "INSERT INTO checkinscription (id_membre, checkinscription)
         VALUES ( (SELECT id FROM membres WHERE email = '" . $info['email']['valide'] . "'), '$checkinscription');";
 
-        return executeMultiRequete($sql);
+        return $this->executeMultiRequete($sql);
     }
 
     protected function userMailExist($email)

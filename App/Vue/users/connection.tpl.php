@@ -1,6 +1,6 @@
-<?php $_trad = setTrad(); ?>
+<?php //$this->_trad ?>
 <div class="ligne">
-    <h1><?php echo $_trad['titre']['connection']; ?></h1>
+    <h1><?php echo $this->_trad['titre']['connection']; ?></h1>
 </div>
 <div class="ligne">
     <div id="formulaire">
@@ -9,12 +9,12 @@
         <?php echo $form; ?>
         </form>
         <div class="ligneForm">
-            <label class="label"><?php echo $_trad['pasEncoreMembre']; ?></label>
-            <div class="champs"><a href="<?php echo LINK; ?>?nav=inscription"><?php echo $_trad['inscrivezVous']; ?></a></div>
+            <label class="label"><?php echo $this->_trad['pasEncoreMembre']; ?></label>
+            <div class="champs"><a href="<?php echo LINK; ?>?nav=inscription"><?php echo $this->_trad['inscrivezVous']; ?></a></div>
         </div>
         <div class="ligneForm">
-            <label class="label"><?php echo $_trad['motPasseOublie']; ?></label>
-            <div class="champs"><a href="<?php echo LINK; ?>?nav=changermotpasse"><?php echo $_trad['demandeDeMotPasse']; ?></a></div>
+            <label class="label"><?php echo $this->_trad['motPasseOublie']; ?></label>
+            <div class="champs"><a href="<?php echo LINK; ?>?nav=changermotpasse"><?php echo $this->_trad['demandeDeMotPasse']; ?></a></div>
         </div>
     </div>
 </div>

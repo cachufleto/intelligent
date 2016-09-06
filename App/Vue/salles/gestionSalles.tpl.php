@@ -1,7 +1,7 @@
-<?php $_trad = setTrad(); ?>
+<?php //$this->_trad ?>
 <div class="ligne">
-    <h1><?php echo $_trad['titre']['gestionSalles']; ?></h1>
-    <span id="ajout"><?php echo $_trad['ajouterSalle']; ?></span>
+    <h1><?php echo $this->_trad['titre']['gestionSalles']; ?></h1>
+    <span id="ajout"><?php echo $this->_trad['ajouterSalle']; ?></span>
 </div>
 <div class="ligne">
     <?php echo $msg; ?>
@@ -20,6 +20,7 @@
         ?>
     </tr>
     <?php
+    if(is_array($table) AND !empty($table['info'])){
     foreach($table['info'] as $ligne=>$salle){
             $class = ($ligne%2 == 1)? 'lng1':'lng2' ; ?>
         <tr class="<?php echo $class; ?>">
@@ -29,7 +30,8 @@
             }
         ?>
         </tr>
-        <?php } ?>
+        <?php }
+        } ?>
     </table>
 </div>
 <?php echo $alert; ?>

@@ -1,6 +1,6 @@
-<?php $_trad = setTrad(); ?>
+<?php //$this->_trad ?>
 <div class="ligne">
-    <h1><?php echo $_trad['titre']['users']; ?></h1>
+    <h1><?php echo $this->_trad['titre']['users']; ?></h1>
 </div>
 <div class="ligne">
     <p><?php echo $msg; ?></p>

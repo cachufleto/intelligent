@@ -7,10 +7,10 @@ $_formulaire['mdp'] = array(
     'type' => 'password',
     'content' => 'text',
     'maxlength' => 14,
-    'defaut' => $_trad['defaut']['MotPasse'],
+    'defaut' => $this->_trad['defaut']['MotPasse'],
     'obligatoire' => true,
     'rectification' => true);
 
 $_formulaire['valide'] = array(
     'type' => 'submit',
-    'defaut' => $_trad['defaut']['SeConnecter']);
+    'defaut' => $this->_trad['defaut']['SeConnecter']);

@@ -5,7 +5,7 @@
  * Date: 12/06/2016
  * Time: 11:08
  */
-$_trad = setTrad();
+//$this->_trad
 
 $_prixPlage = [];
 $_prixPlage[4]['taux'] = 1.15;

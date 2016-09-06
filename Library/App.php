@@ -21,7 +21,6 @@ class App extends Bdd
     public function __construct()
     {
         ## Ouverture des sessions
-        parent::__construct();
         session_start();
         $this->SetSession();
         $this->setLang();
@@ -31,10 +30,10 @@ class App extends Bdd
         $this->controldate();
         $this->routeur = file_contents_route();
         $this->setPage();
-
-        $this->_trad = setTrad();
+        //$this->_trad
         $this->iniTarget();
         //$this->setSessionMoteurRecherche();
+        parent::__construct();
     }
 
     protected function iniTarget()

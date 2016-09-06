@@ -65,10 +65,11 @@ function envoiMail($message, $to = WEBMAIL)
 function setTrad()
 {
 	// on charge la langue de base
-	require CONF . 'trad/fr/traduction.php';
+	require CONF . 'trad' . DIRECTORY_SEPARATOR . 'fr' . DIRECTORY_SEPARATOR . 'traduction.php';
+	require CONF . 'trad' . DIRECTORY_SEPARATOR . 'fr' . DIRECTORY_SEPARATOR . 'traduction.php';
 	// on surcharge la langue de l'utilisateur si different à celle de base
 	if ($_SESSION['lang'] != 'fr') {
-		include CONF . 'trad/' . $_SESSION['lang'] . '/traduction.php';
+		include CONF . 'trad' . DIRECTORY_SEPARATOR. $_SESSION['lang'] . DIRECTORY_SEPARATOR . 'traduction.php';
 	}
 	return $_trad;
 }

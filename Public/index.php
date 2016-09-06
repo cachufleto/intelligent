@@ -30,13 +30,12 @@ $app = new $__app->controleur();
 require CONF . 'init.php';
 require_once INC . 'init.inc.php';
 
-//exit('OK');
-
 /*************************************************************/
 ob_start();
 
 $arg = ($nav = 'erreur404')? $nav : '';
 $app->{$__app->action}($arg);
+
 /*
 $nav = array_key_exists($nav, $route)? $nav : 'erreur404';
 // insertion des pages dinamiques

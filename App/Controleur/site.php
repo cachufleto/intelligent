@@ -8,7 +8,7 @@ class site extends \Model\site
     public function home()
     {
         $nav = 'home';
-        $_trad = setTrad();
+        //$this->_trad
 
         $salles = $this->selectSallesActive();
 
@@ -39,7 +39,7 @@ class site extends \Model\site
     public function backoffice()
     {
         $nav = 'backoffice';
-        $_trad = setTrad();
+        //$this->_trad
         if($nav=$this->recupNav()){
             header('location:' . basename($_SERVER['HTTP_REFERER']));
         }
@@ -54,7 +54,7 @@ class site extends \Model\site
 
     public function contact()
     {
-        $_trad = setTrad();
+        //$this->_trad
         $listConctact = array();
 
         $membres = $this->userSelectContactAll();
@@ -82,11 +82,11 @@ class site extends \Model\site
 
     public function erreur404($nav)
     {
-        $_trad = setTrad();
+        //$this->_trad
 
         $msg = ($nav=='erreur404')?
-            $_trad['erreur']['erreur404'] :
-            $_trad['enConstruccion'];
+            $this->_trad['erreur']['erreur404'] :
+            $this->_trad['enConstruccion'];
 
         include VUE . 'site/erreur404.tpl.php';
     }

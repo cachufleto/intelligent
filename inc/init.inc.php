@@ -13,7 +13,7 @@ require FUNC . 'site.func.php';
 // chargement de la langue
 
 // gestion de session
-include INC . 'install.inc.php';
+include LIB . 'install.php';
 
 // options du menu de navigation
 include_once CONF . 'nav.php';

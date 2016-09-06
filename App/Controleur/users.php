@@ -8,7 +8,7 @@ class users extends \App\users
 {
     public function inscription()
     {
-        $_trad = setTrad();
+        //$this->_trad
         include PARAM . 'inscription.param.php';
         include FUNC . 'form.func.php';
 
@@ -27,7 +27,7 @@ class users extends \App\users
     public function connection()
     {
         $nav = 'connection';
-        $_trad = setTrad();
+        //$this->_trad
 
         include PARAM . 'connection.param.php';
 
@@ -36,7 +36,7 @@ class users extends \App\users
         /////////////////////////////////////
         if (isset($_SESSION['connexion']) && $_SESSION['connexion'] < 0) {
             // affichage
-            $msg = $_trad['erreur']['acces'];
+            $msg = $this->_trad['erreur']['acces'];
 
         } else {
 
@@ -51,7 +51,7 @@ class users extends \App\users
     {
         $msg = '';
         $nav = 'users';
-        $_trad = setTrad();
+        //$this->_trad
         //include PARAM . 'profil.param.php';
 
         if (!utilisateurAdmin()) {
@@ -65,7 +65,7 @@ class users extends \App\users
                 if ($_GET['delete'] != $_SESSION['user']['id']) {
                     $this->setUserActive($_GET['delete'], 0);
                 } else {
-                    $msg = $_trad['vousNePouvezPasVousSupprimerVousMeme'];
+                    $msg = $this->_trad['vousNePouvezPasVousSupprimerVousMeme'];
                 }
 
             } elseif (!empty($_GET['active'])) {
@@ -74,7 +74,7 @@ class users extends \App\users
 
             } else if (!empty($_GET['delete']) && $_GET['delete'] == 1) {
 
-                $msg = $_trad['numAdmInsufisant'];
+                $msg = $this->_trad['numAdmInsufisant'];
 
             }
 
@@ -82,12 +82,12 @@ class users extends \App\users
 
         $table = array();
         $table['champs'] = array();
-        $table['champs']['pseudo'] = $_trad['champ']['pseudo'];
-        $table['champs']['nom'] = $_trad['champ']['nom'];
-        $table['champs']['prenom'] = $_trad['champ']['prenom'];
-        $table['champs']['email'] = $_trad['champ']['email'];
-        $table['champs']['statut'] = $_trad['champ']['statut'];
-        $table['champs']['active'] = $_trad['champ']['active'];
+        $table['champs']['pseudo'] = $this->_trad['champ']['pseudo'];
+        $table['champs']['nom'] = $this->_trad['champ']['nom'];
+        $table['champs']['prenom'] = $this->_trad['champ']['prenom'];
+        $table['champs']['email'] = $this->_trad['champ']['email'];
+        $table['champs']['statut'] = $this->_trad['champ']['statut'];
+        $table['champs']['active'] = $this->_trad['champ']['active'];
 
         $table['info'] = array();
         if (isSuperAdmin()) {
@@ -101,7 +101,7 @@ class users extends \App\users
                         $data['nom'],
                         $data['prenom'],
                         '<a href="mailto:' . $data['email'] . '">' . $data['email'] . '</a>',
-                        $_trad['value'][$data['statut']],
+                        $this->_trad['value'][$data['statut']],
                         '<a href="' . LINK . '?nav=profil&id=' . $data['id'] . '" >
                         <img width="25px" src="img/modifier.png"></a>' . (($data['active'] == 2) ? "NEW" : ""),
                         (($data['active'] == 1) ?
@@ -120,7 +120,7 @@ class users extends \App\users
                 $data['nom'],
                 $data['prenom'],
                 '<a href="mailto:' . $data['email'] . '">' . $data['email'] . '</a>',
-                $_trad['value'][$data['statut']],
+                $this->_trad['value'][$data['statut']],
                 '<a href="' . LINK . '?nav=profil&id=' . $data['id'] . '" ><img width="25px" src="img/modifier.png"></a>',
                 (($data['active'] == 1) ?
                     ' <a href="' . LINK . '?nav=users&delete=' . $data['id'] . '"><img width="25px" src="img/activerKo.png"></a>' :
@@ -135,7 +135,7 @@ class users extends \App\users
     public function profil()
     {
         $nav = 'profil';
-        $_trad = setTrad();
+        //$this->_trad
         include PARAM . 'profil.param.php';
         if (utilisateurAdmin()) {
             include PARAM . 'backOff_profil.param.php';
@@ -150,25 +150,25 @@ class users extends \App\users
         if ($this->modCheckMembres($_formulaire, $_id, 'membres')) {
             // traitement POST du formulaire
             if ($_valider) {
-                $msg = $_trad['erreur']['inconueConnexion'];
+                $msg = $this->_trad['erreur']['inconueConnexion'];
                 if (postCheck($_formulaire, TRUE)) {
                     $msg = ($_POST['valide'] == 'cookie') ? 'cookie' : $this->profilValider($_formulaire);
                 }
             }
             if ('OK' == $msg) {
                 // on renvoi ver connection
-                $msg = $_trad['lesModificationOntEteEffectues'];
+                $msg = $this->_trad['lesModificationOntEteEffectues'];
                 // on évite d'afficher les info du mot de passe
                 unset($_formulaire['mdp']);
                 $form = formulaireAfficherInfo($_formulaire);
             } else {
                 if (!empty($msg) || $_modifier) {
-                    $_formulaire['valide']['defaut'] = $_trad['defaut']['MiseAJ'];
+                    $_formulaire['valide']['defaut'] = $this->_trad['defaut']['MiseAJ'];
                     $form = formulaireAfficherMod($_formulaire);
                 } elseif (
                     !empty($_POST['valide']) &&
-                    $_POST['valide'] == $_trad['Out'] &&
-                    $_POST['origin'] != $_trad['defaut']['MiseAJ']
+                    $_POST['valide'] == $this->_trad['Out'] &&
+                    $_POST['origin'] != $this->_trad['defaut']['MiseAJ']
                 ) {
                     header('Location:' . LINK . '?nav=users');
                     exit();
@@ -178,7 +178,7 @@ class users extends \App\users
                 }
             }
         } else {
-            $form = 'Erreur 500: ' . $_trad['erreur']['NULL'];
+            $form = 'Erreur 500: ' . $this->_trad['erreur']['NULL'];
         }
         include VUE . 'users/profil.tpl.php';
     }
@@ -191,12 +191,12 @@ class users extends \App\users
     {
         global $minLen;
 
-        $_trad = setTrad();
+        //$this->_trad
 
         // control d'intrusion du membre
         if ($_formulaire['id']['sql'] != $_formulaire['id']['defaut']) {
             //_debug($_formulaire, 'SQL');
-            return '<div class="alert">' . $_trad['erreur']['NULL'] . '!!!!!</div>';
+            return '<div class="alert">' . $this->_trad['erreur']['NULL'] . '!!!!!</div>';
         }
         $msg = $erreur = false;
         $sql_set = '';
@@ -207,7 +207,7 @@ class users extends \App\users
 
         foreach ($_formulaire as $key => $info) {
 
-            $label = $_trad['champ'][$key];
+            $label = $this->_trad['champ'][$key];
             $valeur = (isset($info['valide'])) ? $info['valide'] : NULL;
 
             if ('valide' != $key && 'id' != $key) {
@@ -215,16 +215,16 @@ class users extends \App\users
                 if (isset($info['maxlength']) && !testLongeurChaine($valeur, $info['maxlength']) && !empty($valeur)) {
 
                     $erreur = true;
-                    $_formulaire[$key]['message'] = $_trad['erreur']['surLe'] . $label .
-                        ': ' . $_trad['erreur']['doitContenirEntre'] . $minLen .
-                        ' et ' . $info['maxlength'] . $_trad['erreur']['caracteres'];
+                    $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                        ': ' . $this->_trad['erreur']['doitContenirEntre'] . $minLen .
+                        ' et ' . $info['maxlength'] . $this->_trad['erreur']['caracteres'];
 
                 }
 
                 if ('vide' != testObligatoire($info) && !testObligatoire($info) && empty($valeur)) {
 
                     $erreur = true;
-                    $_formulaire[$key]['message'] = $label . $_trad['erreur']['obligatoire'];
+                    $_formulaire[$key]['message'] = $label . $this->_trad['erreur']['obligatoire'];
 
                 } else {
 
@@ -248,14 +248,14 @@ class users extends \App\users
                                 // si la requete retourne un enregisterme, c'est que 'email' est deja utilisé en BD.
                                 if ($membre->num_rows > 0) {
                                     $erreur = true;
-                                    $msg .= '<br/>' . $_trad['erreur']['emailexistant'];
+                                    $msg .= '<br/>' . $this->_trad['erreur']['emailexistant'];
                                 }
 
                             } else {
 
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $_trad['erreur']['surLe'] . $label . ' "' . $valeur .
-                                    '", ' . $_trad['erreur']['aphanumeriqueSansSpace'];
+                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label . ' "' . $valeur .
+                                    '", ' . $this->_trad['erreur']['aphanumeriqueSansSpace'];
 
                             }
 
@@ -265,8 +265,8 @@ class users extends \App\users
 
                             if (empty($valeur)) {
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $_trad['erreur']['surLe'] . $label .
-                                    ': ' . $_trad['erreur']['vousDevezChoisireUneOption'];
+                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                    ': ' . $this->_trad['erreur']['vousDevezChoisireUneOption'];
                             }
 
                             break;
@@ -275,14 +275,14 @@ class users extends \App\users
                         case 'prenom': // il est obligatoire
                             if (!testLongeurChaine($valeur)) {
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $_trad['erreur']['surLe'] . $label .
-                                    ': ' . $_trad['erreur']['nonVide'];
+                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                    ': ' . $this->_trad['erreur']['nonVide'];
 
                             } elseif (!testAlphaNumerique($valeur)) {
 
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $_trad['erreur']['surLe'] . $label . ' "' . $valeur .
-                                    '", ' . $_trad['erreur']['aphanumeriqueSansSpace'];
+                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label . ' "' . $valeur .
+                                    '", ' . $this->_trad['erreur']['aphanumeriqueSansSpace'];
 
                             }
 
@@ -301,14 +301,14 @@ class users extends \App\users
                                 if (isset($info['length']) && (strlen($valeur) < $info['length'] || strlen($valeur) > $info['length'] + 4)) {
 
                                     $erreur = true;
-                                    $_formulaire[$key]['message'] = $_trad['erreur']['surLe'] . $label .
-                                        ': ' . $_trad['erreur']['doitContenir'] . $info['length'] . $_trad['erreur']['caracteres'];
+                                    $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                        ': ' . $this->_trad['erreur']['doitContenir'] . $info['length'] . $this->_trad['erreur']['caracteres'];
                                 }
 
                                 if (testNumerique($valeur)) {
                                     $erreur = true;
-                                    $_formulaire[$key]['message'] = $_trad['erreur']['surLe'] . $label .
-                                        ': ' . $_trad['erreur']['queDesChiffres'];
+                                    $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                        ': ' . $this->_trad['erreur']['queDesChiffres'];
                                 }
 
                             }
@@ -319,7 +319,7 @@ class users extends \App\users
 
                             if ($this->testADMunique($valeur, $id_membre)) {
                                 $erreur = true;
-                                $msg .= '<br/>' . $_trad['numAdmInsufisant'];
+                                $msg .= '<br/>' . $this->_trad['numAdmInsufisant'];
                                 $_formulaire['statut']['valide'] = 'ADM';
                             }
 
@@ -329,8 +329,8 @@ class users extends \App\users
                             $long = (isset($info['maxlength'])) ? $info['maxlength'] : 250;
                             if (!empty($valeur) && !testLongeurChaine($valeur, $long)) {
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $_trad['erreur']['surLe'] . $label .
-                                    ': ' . $_trad['erreur']['minimumAphaNumerique'] . ' ' . $minLen . ' ' . $_trad['erreur']['caracteres'];
+                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                    ': ' . $this->_trad['erreur']['minimumAphaNumerique'] . ' ' . $minLen . ' ' . $this->_trad['erreur']['caracteres'];
                             }
                     }
                 }
@@ -346,19 +346,19 @@ class users extends \App\users
         // au moins un doit être sonseigné
         if ($controlTelephone) {
             $erreur = true;
-            $_formulaire['telephone']['message'] = $_trad['erreur']['controlTelephone'];
+            $_formulaire['telephone']['message'] = $this->_trad['erreur']['controlTelephone'];
         }
 
         // si une erreur c'est produite
         if ($erreur) {
-            $msg = '<div class="alert">' . $_trad['ERRORSaisie'] . $msg . '</div>';
+            $msg = '<div class="alert">' . $this->_trad['ERRORSaisie'] . $msg . '</div>';
 
         } else {
 
             if (!empty($sql_set)) {
                 $this->userUpdate($sql_set, $_formulaire['id']['sql']);
             } else {
-                $msg = $_trad['erreur']['inconueConnexion'];
+                $msg = $this->_trad['erreur']['inconueConnexion'];
             }
             // ouverture d'une session
             $msg = "OK";
@@ -369,7 +369,7 @@ class users extends \App\users
 
     public function identifians()
     {
-        $_trad = setTrad();
+        //$this->_trad
         include PARAM . 'identifians.param.php';
 
         include FUNC . 'form.func.php';
@@ -384,7 +384,7 @@ class users extends \App\users
     public function changermotpasse()
     {
 
-        $_trad = setTrad();
+        //$this->_trad
         include FUNC . 'form.func.php';
         include PARAM . 'changermotpasse.param.php';
 
@@ -398,7 +398,7 @@ class users extends \App\users
                 if ($this->userChangerMDPInsert($checkinscription, $_formulaire)) {
                     $msg = $this->envoiMailChangeMDP($checkinscription, $membre);
                 } else {
-                    $msg = $_trad['erreur']['inconueConnexion'];
+                    $msg = $this->_trad['erreur']['inconueConnexion'];
                 }
 
             }
@@ -407,7 +407,7 @@ class users extends \App\users
         /////////////////////////////////////
         if (isset($_SESSION['connexion']) && $_SESSION['connexion'] < 0) {
             // affichage
-            $msg = $_trad['erreur']['acces'];
+            $msg = $this->_trad['erreur']['acces'];
 
         } else {
 

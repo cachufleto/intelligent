@@ -12,4 +12,4 @@ $_formulaire['email'] = array(
 
 $_formulaire['valide'] = array(
     'type' => 'submit',
-    'defaut' => $_trad['defaut']['valider']);
+    'defaut' => $this->_trad['defaut']['valider']);

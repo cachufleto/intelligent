@@ -9,17 +9,17 @@ $_id = (int)(isset($_POST['id_salle'])? $_POST['id_salle'] : (isset($_GET['id'])
 // recuparation de l'id par GET ou POST
 $position = (int)(isset($_POST['pos'])? $_POST['pos'] : (isset($_GET['pos'])? $_GET['pos'] : false) );
 // edition pour modification
-$_modifier = (isset($_POST['valide']) && $_POST['valide'] == $_trad['defaut']['modifier'])? true : false;
+$_modifier = (isset($_POST['valide']) && $_POST['valide'] == $this->_trad['defaut']['modifier'])? true : false;
 // validation du formaulare
-$_valider = (isset($_POST['valide']) && $_POST['valide'] == $_trad['defaut']['MiseAJ'])? true : false;
+$_valider = (isset($_POST['valide']) && $_POST['valide'] == $this->_trad['defaut']['MiseAJ'])? true : false;
 
 /*************************************************************************************************************/
 
 // affichage du boutton de validation
-$_formulaire['valide']['defaut'] = $_trad['defaut']['modifier'];
-$_formulaire['valide']['annuler']  = $_trad['Out'];
-$_formulaire['valide']['origin']  = (isset($_POST['valide']) && $_POST['valide'] == $_trad['defaut']['modifier'])?
-	$_trad['defaut']['MiseAJ'] : '';
+$_formulaire['valide']['defaut'] = $this->_trad['defaut']['modifier'];
+$_formulaire['valide']['annuler']  = $this->_trad['Out'];
+$_formulaire['valide']['origin']  = (isset($_POST['valide']) && $_POST['valide'] == $this->_trad['defaut']['modifier'])?
+	$this->_trad['defaut']['MiseAJ'] : '';
 
 $_formulaire['pos'] = array(
 	'type' => 'hidden',

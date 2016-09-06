@@ -1,14 +1,14 @@
-<?php $_trad = setTrad(); ?>
+<?php //$this->_trad ?>
 <div class="ligne">
-    <h1><?php echo $_trad['titre']['validerInscription']; ?></h1>
+    <h1><?php echo $this->_trad['titre']['validerInscription']; ?></h1>
 </div>
 <div class="ligne">
     <?php
     // affichage
     if ($_jeton) {
-        echo $_trad['redirigeVerConnection'];
+        echo $this->_trad['redirigeVerConnection'];
     } else {
-        echo $_trad['erreur']['redirigeVerConnection'];
+        echo $this->_trad['erreur']['redirigeVerConnection'];
     }
     ?>
 </div>

@@ -45,7 +45,7 @@ $listePrix = $this->listeProduitsReservationPrixTotal();
 $total = 0;
 $reservation = '';
 if(!empty($listePrix)){
-    $reservation .= "<div class='ligne'><h4>{$_trad['votreReservation']}</h4></div>";
+    $reservation .= "<div class='ligne'><h4>{$this->_trad['votreReservation']}</h4></div>";
 foreach($listePrix as $date=>$data){
     $reservation .= "<div class='ligne'><div class='ligne date'>" .
         reperDate($date)
@@ -57,7 +57,7 @@ foreach($listePrix as $date=>$data){
         foreach($info['reservation'] as $_ligne=>$reserve) {
             $reservation .= "<div class='ligne'>
                             <div class='titre'>$titre</div>
-                            <div class='tronche'>{$_trad['value'][$reserve['libelle']]} :</div>
+                            <div class='tronche'>{$this->_trad['value'][$reserve['libelle']]} :</div>
                             <div class='personne'>{$reserve['num']} pers.</div>
                             <div class='prix'>". number_format($reserve['prix'],2) . "€</div></div>";
             $total = $total + $reserve['prix'];

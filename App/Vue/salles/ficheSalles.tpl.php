@@ -1,5 +1,5 @@
 <?php
-$_trad = setTrad();
+//$this->_trad
 
 /***************** ficheSalles.tpl ****************************/
 $href = imageExiste($salle['photo']);
@@ -13,7 +13,7 @@ $formdate = disponibilite();
 if(isset($_SESSION['panier'][$_SESSION['date']][$salle['id_salle']])){
     $active = "active";
     $reserver = 'enlever';
-    $modifier = '<input type="submit" name="reserver" value="'.$_trad['modifier'].'">';
+    $modifier = '<input type="submit" name="reserver" value="'.$this->_trad['modifier'].'">';
 }
 $min = ($salle['cap_min']<=1)? intval($salle['capacite']*0.3) : $salle['cap_min'];
 
@@ -26,16 +26,16 @@ if(!empty($salle['produits']['affiche'])){
     $i = $_total = 0;
     foreach($salle['produits']['disponibilite'] as $key=>$data){
         $i++;
-        $prix_salle .= "<tr><td>{$_trad['value'][$key]}</td>";
+        $prix_salle .= "<tr><td>{$this->_trad['value'][$key]}</td>";
 
         foreach($data as $indice => $info ){
 
             $ref = ($info['reservee'])?
-                (($info['membre'])? $_trad['RESERVEE'] : (($_SESSION['dateTimeOk'])? $_trad['INDISPONIBLE']:"---")) :
+                (($info['membre'])? $this->_trad['RESERVEE'] : (($_SESSION['dateTimeOk'])? $this->_trad['INDISPONIBLE']:"---")) :
                 (($_SESSION['dateTimeOk'])? number_format($info['produit']['prix'], 2).
                     "€ <input type='radio' name='prix[$i]' value='$indice' {$info['checked']}>" : "---");
 
-            $liteReservation .= ($info['checked'])? "<div class='tronche'>{$_trad['value'][$info['produit']['libelle']]} :</div>
+            $liteReservation .= ($info['checked'])? "<div class='tronche'>{$this->_trad['value'][$info['produit']['libelle']]} :</div>
                                     <div class='personne'>{$info['produit']['num']} pers.</div>
                                     <div class='prix'>" . number_format($info['produit']['prix'], 2) . "€</div>" : "";
 
@@ -51,7 +51,7 @@ if(!empty($salle['produits']['affiche'])){
             $prix_salle
           </table>";
 } else {
-    $tableu = $_trad['produitNonDispoble'];
+    $tableu = $this->_trad['produitNonDispoble'];
 }
 
 $liteReservation = '';
@@ -61,7 +61,7 @@ if(!empty($salle['listePrix'])){
        $lite = '';
       foreach($data as $id=>$info){
           $lite .= "<div class='ligne'>
-                    <div class='tronche'>{$_trad['value'][$info['libelle']]}</div>
+                    <div class='tronche'>{$this->_trad['value'][$info['libelle']]}</div>
                     <div class='personne'>{$info['num']}</div>
                     <div class='prix'>".number_format($info['prix'],2)."€</div>
                     </div>";
@@ -81,7 +81,7 @@ $liteReservation .= "<div class='ligne total'>
 
 echo <<<EOL
  <div class="ligne">
-    <h1>{$_trad['titre']['ficheSalles']}</h1>
+    <h1>{$this->_trad['titre']['ficheSalles']}</h1>
 </div>
 <div class="ligne">
     <form name="" method="POST" action="?nav=ficheSalles&id={$salle['id_salle']}&pos=$position">
@@ -106,13 +106,13 @@ echo <<<EOL
                     <input type="hidden" name="id" value="{$salle['id_salle']}">
                     <input type="hidden" name="pos" value="$position">
                     <div class="categorie">
-                        Cat. {$_trad['value'][$salle['categorie']]} :: $min - {$salle['capacite']} {$_trad['personnes']}
+                        Cat. {$this->_trad['value'][$salle['categorie']]} :: $min - {$salle['capacite']} {$this->_trad['personnes']}
                     </div>
                     <div>
                         {$salle['description']}
                     </div>
                     <div class="reserve">
-                        {$_trad['votreReservation']}
+                        {$this->_trad['votreReservation']}
                         <hr>
                         $liteReservation
                     </div>
@@ -122,12 +122,12 @@ echo <<<EOL
              <div class="ligne">
             </div>
             <div class="reserver $active">
-                <input type="submit" name="$reserver" value="{$_trad[$reserver]}">
+                <input type="submit" name="$reserver" value="{$this->_trad[$reserver]}">
                 $modifier
             </div>
             <div class="reserver lien">
-                <a href="$lien"><button type="button">{$_trad['revenir']}</button></a> :
-                <a href="?nav=reservation"><button type="button">{$_trad['nav']['reservation']}</button></a>
+                <a href="$lien"><button type="button">{$this->_trad['revenir']}</button></a> :
+                <a href="?nav=reservation"><button type="button">{$this->_trad['nav']['reservation']}</button></a>
             </div>
         </div>
     </div>

@@ -15,7 +15,7 @@ class commande extends \App\commande
     public function validerCommande()
     {
         $nav = 'commande';
-        $_trad = setTrad();
+        //$this->_trad
         $listePrix = $this->listeProduitsFacture();
 
         include_once VUE . 'commande/validerCommande.tpl.php';
@@ -23,7 +23,7 @@ class commande extends \App\commande
 
     public function validerFacture()
     {
-        $_trad = setTrad();
+        //$this->_trad
         $facture = $this->generationProduitsFacture();
 
         $id = $this->setReservations();
@@ -36,13 +36,13 @@ class commande extends \App\commande
         }
         unset($_SESSION['panier']);
         header('refresh:2;url=index.php');
-        echo "<h4>{$_trad['factureOk']}</h4>";
+        echo "<h4>{$this->_trad['factureOk']}</h4>";
     }
 
     public function commandes()
     {
         $nav = 'commande';
-        $_trad = setTrad();
+        //$this->_trad
         $listePrix = $this->listeProduitsCommandes();
 
         include_once VUE . 'commande/commandes.tpl.php';
@@ -51,7 +51,7 @@ class commande extends \App\commande
     public function backOff_gestionCommandes()
     {
         $nav = 'commande';
-        $_trad = setTrad();
+        //$this->_trad
         $listePrix = $this->listeProduitsGestionCommandes();
 
         include_once VUE . 'commande/gestionCommandes.tpl.php';

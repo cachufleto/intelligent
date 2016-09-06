@@ -21,7 +21,7 @@ if(!empty($table['info'])){
             <div class="ligne">
 
                     <h4 class="in_catalogue">{$salle['categorie']}</h4>
-                    <p>{$_trad['champ']['capacite']} {$salle['capacite']} {$_trad['personnes']}<br>
+                    <p>{$this->_trad['champ']['capacite']} {$salle['capacite']} {$this->_trad['personnes']}<br>
                         REF:{$salle['ref']}
                     </p>
             </div>

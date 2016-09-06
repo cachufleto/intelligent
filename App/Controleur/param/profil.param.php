@@ -8,9 +8,9 @@ include PARAM . 'inscription.param.php';
 $_id = $_SESSION['user']['id'];
 // état de présentation
 // edition pour modification
-$_modifier = (isset($_POST['valide']) && $_POST['valide'] == $_trad['defaut']['modifier'])? true : false;
+$_modifier = (isset($_POST['valide']) && $_POST['valide'] == $this->_trad['defaut']['modifier'])? true : false;
 // validation du formaulare
-$_valider = (isset($_POST['valide']) && $_POST['valide'] == $_trad['defaut']['MiseAJ'])? true : false;
+$_valider = (isset($_POST['valide']) && $_POST['valide'] == $this->_trad['defaut']['MiseAJ'])? true : false;
 
 //unset($_formulaire['mdp']['rectification']);
 unset($_formulaire['email']['rectification']);
@@ -27,9 +27,9 @@ $_formulaire['id'] = array(
 //$_formulaire['mdp']['acces'] = 'private';
 
 // affichage du boutton de validation
-$_formulaire['valide']['defaut'] = $_trad['defaut']['modifier'];
-$_formulaire['valide']['annuler']  = $_trad['Out'];
+$_formulaire['valide']['defaut'] = $this->_trad['defaut']['modifier'];
+$_formulaire['valide']['annuler']  = $this->_trad['Out'];
 $_formulaire['valide']['origin']  = (
 	isset($_POST['valide']) &&
-	$_POST['valide'] == $_trad['defaut']['modifier']
-	)? $_trad['defaut']['MiseAJ'] : '';
+	$_POST['valide'] == $this->_trad['defaut']['modifier']
+	)? $this->_trad['defaut']['MiseAJ'] : '';

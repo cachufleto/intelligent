@@ -54,14 +54,14 @@ foreach($listePrix as $reservee=>$produit){
 
 echo <<<EOL
 <div class="ligne">
-    <h1>{$_trad['nav'][$nav]}</h1>
+    <h1>{$this->_trad['nav'][$nav]}</h1>
 </div>
 <div id="commandes" class="ligne commandes">
 <div class='ligne row'>
-<div class='titre'>{$_trad['salle']}</div>
-<div class='tronche'>{$_trad['dateReservee']}</div>
-<div class='personne'>{$_trad['horarirePers']}</div>
-<div class='prix'>{$_trad['prix']} €</div>
+<div class='titre'>{$this->_trad['salle']}</div>
+<div class='tronche'>{$this->_trad['dateReservee']}</div>
+<div class='personne'>{$this->_trad['horarirePers']}</div>
+<div class='prix'>{$this->_trad['prix']} €</div>
 </div>
     $_liste
 </div>

@@ -11,7 +11,7 @@ class salles extends \App\salles
     {
         $nav = 'salles';
         $msg = '';
-        $_trad = setTrad();
+        //$this->_trad
         $this->reservationSalles();
         $alert = $this->urlReservation();
 
@@ -22,7 +22,7 @@ class salles extends \App\salles
     public function ficheSalles()
     {
         $nav = 'ficheSalles';
-        $_trad = setTrad();
+        //$this->_trad
         $msg = '';
 
         $_id = data_methodes('id');
@@ -52,10 +52,10 @@ class salles extends \App\salles
     {
         $nav = 'gestionSalles';
         $alert = $msg = '';
-        $_trad = setTrad();
+        //$this->_trad
 
         if(!$this->activeSalles()){
-            $alert = "<script>alert('{$_trad['erreur']['manqueProduit']}');</script>";
+            $alert = "<script>alert('{$this->_trad['erreur']['manqueProduit']}');</script>";
         }
 
         $table = $this->listeSallesBO();
@@ -65,7 +65,7 @@ class salles extends \App\salles
 
     public function backOff_editProduits($id)
     {
-        $_trad = setTrad();
+        //$this->_trad
         include PARAM . 'backOff_produits.param.php';
         $this->modCheckProduits($_formulaire, $_id);
         $form = formulaireAfficher($_formulaire);
@@ -85,7 +85,7 @@ class salles extends \App\salles
                 $ref .=  "<td class='tableauprix'>$col pers.</td>";
             }
             $prix_salle = "<tr><td class='tableauprix' width='90'>Max. </td>$ref</tr>" . $prix_salle;
-            $_trad['produitNonDispoble'] = "Produits non disponibles";
+            $this->_trad['produitNonDispoble'] = "Produits non disponibles";
 
             $tableau = "<table width='100%' border='1' cellspacing='1' BGCOLOR='#ccc'>$prix_salle</table>";
             $reserve = ($_total)? $_listeReservation .
@@ -94,7 +94,7 @@ class salles extends \App\salles
                                     <div class='prix total'>" . number_format ($_total, 2) . "€</div>"
                                     : "";
             if(empty($affiche)){
-                return ['tableau'=>$_trad['produitNonDispoble'], 'reserve'=>''];
+                return ['tableau'=>$this->_trad['produitNonDispoble'], 'reserve'=>''];
             }
         */
         //return ['tableau'=>$tableau, 'reserve'=>$reserve];
@@ -106,7 +106,7 @@ class salles extends \App\salles
     public function backOff_gestionProduits()
     {
      echo 'je suis la';
-        $_trad = setTrad();
+        //$this->_trad
         include FUNC . 'form.func.php';
         include PARAM . 'backOff_produits.param.php';
 
@@ -127,7 +127,7 @@ class salles extends \App\salles
     {
         $nav = 'ficheSalles';
         $msg = '';
-        $_trad = setTrad();
+        //$this->_trad
 
         include PARAM . 'backOff_ficheSalles.param.php';
         include FUNC . 'form.func.php';
@@ -138,7 +138,7 @@ class salles extends \App\salles
             // traitement POST du formulaire dans les parametres
             if ($_valider){
 
-                $msg = $_trad['erreur']['inconueConnexion'];
+                $msg = $this->_trad['erreur']['inconueConnexion'];
                 if(postCheck($_formulaire, TRUE)) {
                     $msg = $this->ficheSallesValider($_formulaire);
                 }
@@ -146,21 +146,21 @@ class salles extends \App\salles
 
             if ('OK' == $msg) {
                 // on renvoi ver connection
-                $msg = $_trad['lesModificationOntEteEffectues'];
+                $msg = $this->_trad['lesModificationOntEteEffectues'];
                 // on évite d'afficher les info du mot de passe
                 $form = formulaireAfficherInfo($_formulaire);
             } else {
 
                 if (!empty($msg) || $_modifier) {
 
-                    $_formulaire['valide']['defaut'] = $_trad['defaut']['MiseAJ'];
+                    $_formulaire['valide']['defaut'] = $this->_trad['defaut']['MiseAJ'];
 
                     $form = formulaireAfficherMod($_formulaire);
 
                 } elseif (
                     !empty($_POST['valide']) &&
-                    $_POST['valide'] == $_trad['Out'] &&
-                    $_POST['origin'] != $_trad['defaut']['MiseAJ']
+                    $_POST['valide'] == $this->_trad['Out'] &&
+                    $_POST['origin'] != $this->_trad['defaut']['MiseAJ']
                 ){
                     header('Location:' . LINK . '?nav=salles&pos=P-' . $position . '');
                     exit();
@@ -176,7 +176,7 @@ class salles extends \App\salles
 
         } else {
 
-            $form = 'Error 500: ' . $_trad['erreur']['NULL'];
+            $form = 'Error 500: ' . $this->_trad['erreur']['NULL'];
 
         }
 
@@ -192,7 +192,7 @@ class salles extends \App\salles
         $nomImage = '';
 
         $nav = 'editerSalles';
-        $_trad = setTrad();
+        //$this->_trad
 
         // traitement du formulaire
         include PARAM . 'backOff_editerSalles.param.php';
@@ -221,12 +221,12 @@ class salles extends \App\salles
 
     public function reservation()
     {
-        $_trad = setTrad();
+        //$this->_trad
         $this->reservationSalles();
 
         $nav = 'reservation';
         $table = $this->selectSallesReservations();
-        $msg = (!empty($table))? $_trad['reservationOk'] : $_trad['erreur']['reservationVide'];
+        $msg = (!empty($table))? $this->_trad['reservationOk'] : $this->_trad['erreur']['reservationVide'];
         $alert = $this->urlReservation();
 
         include VUE . "salles/sallesReservation.tpl.php";

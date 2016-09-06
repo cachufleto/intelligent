@@ -18,12 +18,12 @@ class salles extends \Model\salles
 
     protected function ListeDistinc($champ, $table, $info)
     {
-        $_trad = setTrad();
+        //$this->_trad
         $balise = '<select class=" " id="' . $champ . '" name="' . $champ . '">';
         $result = $this->selectListeDistinc($champ, $table);
         while($data = $result->fetch_assoc()){
             $value = $data[$champ];
-            $libelle = (isset($_trad['value'][$value]))? $_trad['value'][$value] : $value;
+            $libelle = (isset($this->_trad['value'][$value]))? $this->_trad['value'][$value] : $value;
             $check = selectCheck($info, $value);
             $balise .= '<option value="' .  $value . '" ' . $check . ' >'.$libelle.'</option>';
         }
@@ -129,7 +129,7 @@ class salles extends \Model\salles
     protected function produitsValider(&$_formulaire)
     {
         global $minLen;
-        $_trad = setTrad();
+        //$this->_trad
     
         $msg = '';
         $erreur = false;
@@ -139,12 +139,12 @@ class salles extends \Model\salles
     
         foreach ($_formulaire as $key => $info){
     
-            $label = $_trad['champ'][$key];
+            $label = $this->_trad['champ'][$key];
             $valeur = (isset($info['valide']))? $info['valide'] : NULL;
             if(testObligatoire($info) && empty($valeur)) {
                 $erreur = true;
                 $_formulaire[$key]['message'] = inputMessage(
-                    $_formulaire[$key], $label . $_trad['erreur']['obligatoire']);
+                    $_formulaire[$key], $label . $this->_trad['erreur']['obligatoire']);
             }
     
             switch ($key){
@@ -156,7 +156,7 @@ class salles extends \Model\salles
         if($erreur) // si la variable $msg est vide alors il n'y a pas d'erreurr !
         {  // le pseudo n'existe pas en BD donc on peut lancer l'inscription
     
-            $msg .= '<br />'.$_trad['erreur']['uneErreurEstSurvenue'];
+            $msg .= '<br />'.$this->_trad['erreur']['uneErreurEstSurvenue'];
     
         }
     
@@ -170,7 +170,7 @@ class salles extends \Model\salles
     protected function ficheSallesValider(&$_formulaire)
     {
         global $minLen;
-        $_trad = setTrad();
+        //$this->_trad
         $msg = 	$erreur = false;
         $sql_set = '';
         // active le controle pour les champs telephone et gsm
@@ -180,7 +180,7 @@ class salles extends \Model\salles
         $exclure = array('pos','valide','id_salle','photo');
         foreach ($_formulaire as $key => $info){
     
-            $label = $_trad['champ'][$key];
+            $label = $this->_trad['champ'][$key];
             $valeur = (isset($info['valide']))? $info['valide'] : NULL;
             if(!in_array($key,$exclure))
             {
@@ -190,9 +190,9 @@ class salles extends \Model\salles
                     {
     
                         $erreur = true;
-                        $_formulaire[$key]['message'] = $_trad['erreur']['surLe'] . $label.
-                            ': ' . $_trad['erreur']['doitContenirEntre'] . $minLen .
-                            ' et ' . $info['maxlength'] . $_trad['erreur']['caracteres'];
+                        $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label.
+                            ': ' . $this->_trad['erreur']['doitContenirEntre'] . $minLen .
+                            ' et ' . $info['maxlength'] . $this->_trad['erreur']['caracteres'];
     
                     }
     
@@ -200,7 +200,7 @@ class salles extends \Model\salles
                     else if (testObligatoire($info) && empty($valeur)){
     
                         $erreur = true;
-                        $_formulaire[$key]['message'] = $label . $_trad['erreur']['obligatoire'];
+                        $_formulaire[$key]['message'] = $label . $this->_trad['erreur']['obligatoire'];
     
                     } else {
     
@@ -212,8 +212,8 @@ class salles extends \Model\salles
                                 if(empty($valeur = intval($valeur)))
                                 {
                                     $erreur = true;
-                                    $_formulaire[$key]['message'] = $_trad['erreur']['surLe'] . $label .
-                                        ': '.$_trad['erreur']['minimumNumerique'];
+                                    $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                        ': '.$this->_trad['erreur']['minimumNumerique'];
                                 }
                                 $_formulaire[$key]['valide'] = $valeur;
                                 break;
@@ -222,8 +222,8 @@ class salles extends \Model\salles
                                 if(($valeur = doubleval(str_replace(',', '.', $valeur))) < PRIX)
                                 {
                                     $erreur = true;
-                                    $_formulaire[$key]['message'] = $_trad['erreur']['surLe'] . $label .
-                                        ': '.$_trad['erreur']['prixPersonne'];
+                                    $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                        ': '.$this->_trad['erreur']['prixPersonne'];
                                     $valeur = PRIX;
                                 }
                                 $_formulaire[$key]['valide'] = $valeur;
@@ -241,8 +241,8 @@ class salles extends \Model\salles
                                 if(empty($valeur))
                                 {
                                     $erreur = true;
-                                    $_formulaire[$key]['message'] = $_trad['erreur']['surLe'] . $label .
-                                        ': '.$_trad['erreur']['vousDevezChoisireUneOption'];
+                                    $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                        ': '.$this->_trad['erreur']['vousDevezChoisireUneOption'];
                                 }
     
                                 break;
@@ -252,8 +252,8 @@ class salles extends \Model\salles
                                 if(!empty($valeur) && !testLongeurChaine($valeur, $long))
                                 {
                                     $erreur = true;
-                                    $_formulaire[$key]['message'] = $_trad['erreur']['surLe'] . $label .
-                                        ': '.$_trad['erreur']['minimumAphaNumerique'].' ' . $minLen . ' '.$_trad['erreur']['caracteres'];
+                                    $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                        ': '.$this->_trad['erreur']['minimumAphaNumerique'].' ' . $minLen . ' '.$this->_trad['erreur']['caracteres'];
     
                                 }
     
@@ -269,21 +269,21 @@ class salles extends \Model\salles
         if(!$erreur && intval($_formulaire['capacite']['valide']*.9) < $_formulaire['cap_min']['valide']){
     
             $erreur = true;
-            $_formulaire['cap_min']['message'] = $_trad['erreur']['surLe'] . $_trad['champ']['cap_min'] .
-                ': '.$_trad['erreur']['capaciteMinSuperieur'];
+            $_formulaire['cap_min']['message'] = $this->_trad['erreur']['surLe'] . $this->_trad['champ']['cap_min'] .
+                ': '.$this->_trad['erreur']['capaciteMinSuperieur'];
             $_formulaire['cap_min']['valide'] = intval($_formulaire['capacite']['valide']*.9);
         }
     
         if($this->controlTranche($_formulaire)){
             $erreur = true;
-            $_formulaire['tranche']['message'] = $_trad['erreur']['surLe'] . $_trad['champ']['tranche'] .
-                ': '.$_trad['erreur']['repartitionTranche'];
+            $_formulaire['tranche']['message'] = $this->_trad['erreur']['surLe'] . $this->_trad['champ']['tranche'] .
+                ': '.$this->_trad['erreur']['repartitionTranche'];
         }
     
         // si une erreur c'est produite
         if($erreur)
         {
-            $msg = '<div class="alert">'.$_trad['ERRORSaisie']. $msg . '</div>';
+            $msg = '<div class="alert">'.$this->_trad['ERRORSaisie']. $msg . '</div>';
     
         }elseif(!empty($_FILES['photo']) && $_FILES['photo']['error'] != 4){
     
@@ -359,7 +359,7 @@ class salles extends \Model\salles
     {
     
         global $minLen;
-        $_trad = setTrad();
+        //$this->_trad
     
     
         $msg = 	$erreur = false;
@@ -369,7 +369,7 @@ class salles extends \Model\salles
     
         foreach ($_formulaire as $key => $info){
             _debug($info, $key);
-            $label = $_trad['champ'][$key];
+            $label = $this->_trad['champ'][$key];
             $valeur = (isset($info['valide']))? $info['valide'] : NULL;
     
             if('valide' != $key && 'photo' != $key)
@@ -377,14 +377,14 @@ class salles extends \Model\salles
                 {
     
                     $erreur = true;
-                    $_formulaire[$key]['message'] = $_trad['erreur']['surLe'] . $label.
-                        ': ' . $_trad['erreur']['doitContenirEntre'] . $minLen .
-                        ' et ' . $info['maxlength'] . $_trad['erreur']['caracteres'];
+                    $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label.
+                        ': ' . $this->_trad['erreur']['doitContenirEntre'] . $minLen .
+                        ' et ' . $info['maxlength'] . $this->_trad['erreur']['caracteres'];
     
                 } elseif (testObligatoire($info) && empty($valeur)){
     
                     $erreur = true;
-                    $_formulaire[$key]['message'] = $label . $_trad['erreur']['obligatoire'];
+                    $_formulaire[$key]['message'] = $label . $this->_trad['erreur']['obligatoire'];
     
                 } else {
     
@@ -396,8 +396,8 @@ class salles extends \Model\salles
                             if(empty($valeur = intval($valeur)))
                             {
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $_trad['erreur']['surLe'] . $label .
-                                    ': '.$_trad['erreur']['minimumNumerique'];
+                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                    ': '.$this->_trad['erreur']['minimumNumerique'];
                             }
     
                             $_formulaire[$key]['valide'] = $valeur;
@@ -407,8 +407,8 @@ class salles extends \Model\salles
                             if(($valeur = doubleval(str_replace(',', '.', $valeur))) < PRIX)
                             {
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $_trad['erreur']['surLe'] . $label .
-                                    ': '.$_trad['erreur']['prixPersonne'];
+                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                    ': '.$this->_trad['erreur']['prixPersonne'];
                                 $valeur = PRIX;
                             }
                             $_formulaire[$key]['valide'] = $valeur;
@@ -424,8 +424,8 @@ class salles extends \Model\salles
                             if(empty($valeur))
                             {
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $_trad['erreur']['surLe'] . $label .
-                                    ': '.$_trad['erreur']['vousDevezChoisireUneOption'];
+                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                    ': '.$this->_trad['erreur']['vousDevezChoisireUneOption'];
                             }
     
                             break;
@@ -435,8 +435,8 @@ class salles extends \Model\salles
                             if(!empty($valeur) && !testLongeurChaine($valeur, $long))
                             {
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $_trad['erreur']['surLe'] . $label .
-                                    ': '.$_trad['erreur']['minimumAphaNumerique'].' ' . $minLen . ' '.$_trad['erreur']['caracteres'];
+                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                    ': '.$this->_trad['erreur']['minimumAphaNumerique'].' ' . $minLen . ' '.$this->_trad['erreur']['caracteres'];
     
                             }
     
@@ -454,7 +454,7 @@ class salles extends \Model\salles
         // si une erreur c'est produite
         if($erreur)
         {
-            $msg = '<div class="alert">'.$_trad['ERRORSaisie']. $msg . '</div>';
+            $msg = '<div class="alert">'.$this->_trad['ERRORSaisie']. $msg . '</div>';
     
         }else{
     
@@ -515,7 +515,7 @@ class salles extends \Model\salles
     
     protected function listeSalles($reservation = false)
     {
-        $_trad = setTrad();
+        //$this->_trad
     
         $table = array();
         $position = 1;
@@ -530,12 +530,12 @@ class salles extends \Model\salles
                 'ref'=>$data['id_salle'],
                 'nom'=>html_entity_decode($data['titre']),
                 'capacite'=>"$min - {$data['capacite']}",
-                'categorie'=>$_trad['value'][$data['categorie']],
+                'categorie'=>$this->_trad['value'][$data['categorie']],
                 'photo'=>'<a href="' . LINK . '?nav=ficheSalles&id=' . $data['id_salle'] . '&pos=' . $position . '" " >
                     <img class="trombi" src="' . imageExiste($data['photo']) . '" ></a>',
                 'reservation'=>(isset($panier[$data['id_salle']])) ?
-                    '<a href="' . LINK . '?nav=' . $nav . '&enlever=' . $data['id_salle'] . '&pos=' . $position . '" >' . $_trad['enlever'] . '</a>' :
-                    ' <a href="' . LINK . '?nav=' . $nav . '&reserver=' . $data['id_salle'] . '&pos=' . $position . '">' . $_trad['reserver'] . '</a>',
+                    '<a href="' . LINK . '?nav=' . $nav . '&enlever=' . $data['id_salle'] . '&pos=' . $position . '" >' . $this->_trad['enlever'] . '</a>' :
+                    ' <a href="' . LINK . '?nav=' . $nav . '&reserver=' . $data['id_salle'] . '&pos=' . $position . '">' . $this->_trad['reserver'] . '</a>',
                 /*'total' => (isset($panier[$data['id_salle']]['total'])?
                             "[ Total:" . number_format($panier[$data['id_salle']]['total'], 2) . "€ ]" :
                             ""), */
@@ -550,17 +550,17 @@ class salles extends \Model\salles
     
     protected function listeSallesBO()
     {
-        $_trad = setTrad();
+        //$this->_trad
     
         $table = array();
     
         $table['champs']['id_salle'] = 'REF';
-        $table['champs']['titre'] = $_trad['champ']['titre'];
-        $table['champs']['capacite'] = $_trad['champ']['capacite'];
-        $table['champs']['categorie'] = $_trad['champ']['categorie'];
-        $table['champs']['produit'] = $_trad['champ']['produit'];
-        $table['champs']['photo'] = $_trad['champ']['photo'];
-        $table['champs']['active'] = $_trad['champ']['active'];
+        $table['champs']['titre'] = $this->_trad['champ']['titre'];
+        $table['champs']['capacite'] = $this->_trad['champ']['capacite'];
+        $table['champs']['categorie'] = $this->_trad['champ']['categorie'];
+        $table['champs']['produit'] = $this->_trad['champ']['produit'];
+        $table['champs']['photo'] = $this->_trad['champ']['photo'];
+        $table['champs']['active'] = $this->_trad['champ']['active'];
     
         $position = 1;
         $salles = $this->selectSallesUsers($this->orderSallesValide() . $this->orderSalles());
@@ -570,7 +570,7 @@ class salles extends \Model\salles
                 $data['id_salle'],
                 html_entity_decode($data['titre']),
                 "MIN. {$data['cap_min']}, MAX. : {$data['capacite']}<br> prix ref: {$data['prix_personne']}",
-                $_trad['value'][$data['categorie']],
+                $this->_trad['value'][$data['categorie']],
                 $this->listeProduits($data),
                     '<a href="' . LINK . '?nav=ficheSalles&id=' . $data['id_salle'] . '&pos=' . $position . '" id="P-' . $position . '" >
                 <img class="trombi" src="' . imageExiste($data['photo']) . '" ></a>',
@@ -604,8 +604,8 @@ class salles extends \Model\salles
             $ref .=  "<td class='tableauprix'>$col pers.</td>";
         }
         $prix_salle = "<tr><td class='tableauprix' width='90'>Max. </td>$ref</tr>" . $prix_salle;
-        $_trad['produitNonDispoble'] = "Produits non disponibles";
-        return (empty($affiche))? $_trad['produitNonDispoble'] : "<table width='100%' border='1' cellspacing='1' BGCOLOR='#ccc'>$prix_salle</table>";
+        $this->_trad['produitNonDispoble'] = "Produits non disponibles";
+        return (empty($affiche))? $this->_trad['produitNonDispoble'] : "<table width='100%' border='1' cellspacing='1' BGCOLOR='#ccc'>$prix_salle</table>";
     }
     
     protected function getdisponible($date, $id)
@@ -653,7 +653,7 @@ class salles extends \Model\salles
     
     protected function listeProduitsReservation(array $data)
     {
-        $_trad = setTrad();
+        //$this->_trad
         $prix_salle = $ref = $disponibilite = [];
         $affiche = $_listeReservation = [];
         $i = $_total = 0;
@@ -701,7 +701,7 @@ class salles extends \Model\salles
             $ref .=  "<td class='tableauprix'>$col pers.</td>";
         }
         $prix_salle = "<tr><td class='tableauprix' width='90'>Max. </td>$ref</tr>" . $prix_salle;
-        $_trad['produitNonDispoble'] = "Produits non disponibles";
+        $this->_trad['produitNonDispoble'] = "Produits non disponibles";
     
         $tableau = "<table width='100%' border='1' cellspacing='1' BGCOLOR='#ccc'>$prix_salle</table>";
         $reserve = ($_total)? $_listeReservation .
@@ -710,7 +710,7 @@ class salles extends \Model\salles
                                 <div class='prix total'>" . number_format ($_total, 2) . "€</div>"
                                 : "";
         if(empty($affiche)){
-            return ['tableau'=>$_trad['produitNonDispoble'], 'reserve'=>''];
+            return ['tableau'=>$this->_trad['produitNonDispoble'], 'reserve'=>''];
         }
     */
         //return ['tableau'=>$tableau, 'reserve'=>$reserve];
@@ -919,14 +919,14 @@ class salles extends \Model\salles
     
         if(isset($_GET['reserver']) OR isset($_POST['reserver'])){
     
-            $_trad = setTrad();
+            //$this->_trad
             if(utilisateurConnecte()){
-             return ($this->reservationSalles())? '' : $_trad['erreur']['produitChoix'];
+             return ($this->reservationSalles())? '' : $this->_trad['erreur']['produitChoix'];
             }
     
             $_SESSION['urlReservation'] = $_GET;
             header('refresh:0;url=index.php?nav=actif');
-            echo "<html>{$_trad['erreur']['produitConnexion']}</html>";
+            echo "<html>{$this->_trad['erreur']['produitConnexion']}</html>";
         }
     
     }
