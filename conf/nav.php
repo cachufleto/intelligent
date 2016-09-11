@@ -20,7 +20,15 @@ $_pages['reservation'] = array(
 		'link' => LINK,
 		'affiche' => false);
 
+$_pages['reservationArticle'] = array(
+		'link' => LINK,
+		'affiche' => false);
+
 $_pages['recherche'] = array(
+		'link' => LINK,
+		'affiche' => false);
+
+$_pages['rechercheArticle'] = array(
 		'link' => LINK,
 		'affiche' => false);
 
@@ -56,7 +64,15 @@ $_pages['salles'] = array(
 		'link' => LINK,
 		'affiche' => false);
 
+$_pages['articles'] = array(
+		'link' => LINK,
+		'affiche' => false);
+
 $_pages['ficheSalles'] = array(
+	'link' => LINK,
+	'affiche' => false);
+
+$_pages['ficheArticles'] = array(
 	'link' => LINK,
 	'affiche' => false);
 
@@ -117,7 +133,15 @@ $_pages['gestionSalles'] = array(
 		'link' => LINK,
 		'affiche' => false);
 
+$_pages['gestionArtcles'] = array(
+		'link' => LINK,
+		'affiche' => false);
+
 $_pages['editerSalles'] = array(
+	'link' => LINK,
+	'affiche' => false);
+
+$_pages['editerArticles'] = array(
 	'link' => LINK,
 	'affiche' => false);
 
@@ -129,13 +153,13 @@ $_pages['changermotpasse'] = array(
 
 // Onglets à activer dans le menu de navigation selon le profil listeMenu();
 //$_reglesAll = array('home', 'inscription', 'salles', 'reservation', 'recherche', 'actif');
-$_reglesAll = array('home', 'inscription', 'salles', 'reservation', 'actif');
+$_reglesAll = array('home', 'inscription', 'salles', 'articles', 'reservation', 'actif');
 //$_reglesMembre = array('home', 'profil', 'salles', 'reservation', 'recherche', 'out');
-$_reglesMembre = array('home', 'profil', 'salles', 'reservation', 'commandes', 'out');
+$_reglesMembre = array('home', 'profil', 'salles', 'articles', 'reservation', 'commandes', 'out');
 //$_reglesAdmin = array('home', 'profil', 'salles', 'reservation', 'recherche', 'backoffice', 'out');
-$_reglesAdmin = array('home', 'profil', 'salles', 'reservation', 'backoffice', 'out');
+$_reglesAdmin = array('home', 'profil', 'salles', 'articles', 'reservation', 'backoffice', 'out');
 
-$navAdmin = array('home', 'salles','users','commandes','out' );
+$navAdmin = array('home', 'salles', 'articles', 'users', 'commandes', 'out' );
 
 //$navFooter = array('mentions', 'cgv', 'plan', 'newsletter', 'contact' );
 $navFooter = array('mentions', 'cgv', 'contact' );

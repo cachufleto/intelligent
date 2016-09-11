@@ -63,10 +63,10 @@ $route['session']['Controleur'] = 'site';
 $route['session']['action'] = 'session';
 
 /****** USERS ******/
-$route['changermotpasse']['Controleur'] = 'users';
+$route['changermotpasse']['Controleur'] = 'connection';
 $route['changermotpasse']['action'] = 'changermotpasse';
 
-$route['connection']['Controleur'] = 'users';
+$route['connection']['Controleur'] = 'connection';
 $route['connection']['action'] = 'connection';
 
 $route['inscription']['Controleur'] = 'users';
@@ -100,6 +100,19 @@ $route['reservation']['action'] = 'reservation';
 $route['salles']['Controleur'] = 'salles';
 $route['salles']['action'] = (utilisateurAdmin() && isset($_SESSION['BO']))? 'backOff_salles' : 'salles';
 
+/****** ARTICLES ******/
+$route['ficheArticles']['Controleur'] = 'articles';
+$route['ficheArticles']['action'] = (utilisateurAdmin() && isset($_SESSION['BO']))? 'backOff_ficheArticles' : 'ficheArticles';
+
+$route['rechercheArticles']['Controleur'] = 'articles';
+$route['rechercheArticles']['action'] = 'recherche';
+
+$route['reservationArticles']['Controleur'] = 'articles';
+$route['reservationArticles']['action'] = 'reservation';
+
+$route['articles']['Controleur'] = 'articles';
+$route['articles']['action'] = (utilisateurAdmin() && isset($_SESSION['BO']))? 'backOff_articles' : 'articles';
+
 /****** ADMINISTRATION ******/
 
 if (utilisateurConnecte()) {
@@ -122,12 +135,23 @@ if (utilisateurAdmin() && isset($_SESSION['BO'])) {
     $route['users']['Controleur'] = 'users';
     $route['users']['action'] = 'backOff_users';
 
+    /****** SALLES ******/
     $route['editerSalles']['Controleur'] = 'salles';
     $route['editerSalles']['action'] = 'backOff_editerSalles';
 
-    /****** SALLES ******/
+    /****** ARTICLES ******/
+    $route['editerArticles']['Controleur'] = 'articles';
+    $route['editerArticles']['action'] = 'backOff_editerArticles';
+
+    /****** PRODUITS ******/
     $route['produits']['Controleur'] = 'salles';
     $route['produits']['action'] = 'backOff_gestionProduits';
+    /****** ******/
+    $route['location']['Controleur'] = 'salles';
+    $route['location']['action'] = 'backOff_gestionProduits';
+
+    $route['magasin']['Controleur'] = 'articles';
+    $route['magasin']['action'] = 'backOff_gestionProduits';
 
     /****** COMMANDES ******/
     $route['validerCommande']['action'] = 'backOff_commande';

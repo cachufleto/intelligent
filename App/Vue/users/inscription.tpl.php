@@ -5,10 +5,10 @@
 <div class="ligne">
     <div id="formulaire">
         <?php
-        if('OK' == $msg){ ?>
+        if('OK' == $this->form->msg){ ?>
             <a href="<?php echo LINK; ?>?"> <?php echo $this->_trad['validerInscription'] ?> </a>;
         <?php } else{
-            echo $msg; ?>
+            echo $this->form->msg; ?>
             <form action="#" method="POST">
         <?php echo $form; ?>
             </form>

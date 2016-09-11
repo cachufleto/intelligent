@@ -9,8 +9,8 @@
 $pos = isset($_GET['pos'])? '&pos=' . $_GET['pos'] : '';
 ?>
 <div class="ligne">
-    <div id="formulaire" class="fichesalle produits">
-    <form action="?nav=location&id=<?php echo $_GET['id'], $pos; ?>" method="POST">
+    <div id="formulaire" class="fichearticle produits">
+    <form action="?nav=magasin&id=<?php echo $_GET['id'], $pos; ?>" method="POST">
         <?php echo $form; ?>
     </form>
     </div>

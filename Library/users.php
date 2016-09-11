@@ -8,33 +8,32 @@ namespace App;
 
 class users extends \Model\users
 {
-    protected function changerMotPasseValider(&$_formulaire)
+    protected function changerMotPasseValider()
     {
         global $minLen;
         //$this->_trad
     
-        $msg = '';
         $erreur = false;
         $sql_Where = '';
         $control = true;
         $message ='';
     
-        foreach ($_formulaire as $key => $info){
+        foreach ($this->form->_formulaire as $key => $info){
     
             $label = $this->_trad['champ'][$key];
             $valeur = (isset($info['valide']))? $info['valide'] : NULL;
-            if(testObligatoire($info) && empty($valeur)) {
+            if($this->form->testObligatoire($info) && empty($valeur)) {
                 $erreur = true;
-                $_formulaire[$key]['message'] = inputMessage(
-                    $_formulaire[$key], $label . $this->_trad['erreur']['obligatoire']);
+                $this->form->_formulaire[$key]['message'] = $this->form->inputMessage(
+                    $this->form->_formulaire[$key], $label . $this->_trad['erreur']['obligatoire']);
             }
     
             if('valide' != $key)
-                if (isset($info['maxlength']) && !testLongeurChaine($valeur, $info['maxlength']))
+                if (isset($info['maxlength']) && !$this->form->testLongeurChaine($valeur, $info['maxlength']))
                 {
                     $erreur = true;
-                    $_formulaire[$key]['message'] = inputMessage(
-                        $_formulaire[$key], $this->_trad['erreur']['surLe'] .$label.
+                    $this->form->_formulaire[$key]['message'] = $this->form->inputMessage(
+                        $this->form->_formulaire[$key], $this->_trad['erreur']['surLe'] .$label.
                         ': ' . $this->_trad['erreur']['doitContenirEntre'] . $minLen .
                         ' et ' . $info['maxlength'] . $this->_trad['erreur']['caracteres']);
     
@@ -43,7 +42,7 @@ class users extends \Model\users
                 case 'email':
                     if(!$this->userMailExist($valeur)){
                         $erreur = true;
-                        $msg = $this->_trad['erreur']['mailInexistant'];
+                        $this->form->msg = $this->_trad['erreur']['mailInexistant'];
                     }
                     break;
             }
@@ -52,11 +51,11 @@ class users extends \Model\users
         if($erreur) // si la variable $msg est vide alors il n'y a pas d'erreurr !
         {  // le pseudo n'existe pas en BD donc on peut lancer l'inscription
     
-            $msg .= '<br />'.$this->_trad['erreur']['uneErreurEstSurvenue'];
+            $this->form->msg .= '<br />'.$this->_trad['erreur']['uneErreurEstSurvenue'];
     
         }
     
-        return $msg;
+        //return $msg;
     }
     
     protected function mdpValider(&$_formulaire)
@@ -74,17 +73,17 @@ class users extends \Model\users
     
             $label = $this->_trad['champ'][$key];
             $valeur = (isset($info['valide']))? $info['valide'] : NULL;
-            if(testObligatoire($info) && empty($valeur)) {
+            if($this->form->testObligatoire($info) && empty($valeur)) {
                 $erreur = true;
-                $_formulaire[$key]['message'] = inputMessage(
+                $_formulaire[$key]['message'] = $this->form->inputMessage(
                     $_formulaire[$key], $label . $this->_trad['erreur']['obligatoire']);
             }
     
             if('valide' != $key)
-                if (isset($info['maxlength']) && !testLongeurChaine($valeur, $info['maxlength']))
+                if (isset($info['maxlength']) && !$this->form->testLongeurChaine($valeur, $info['maxlength']))
                 {
                     $erreur = true;
-                    $_formulaire[$key]['message'] = inputMessage(
+                    $_formulaire[$key]['message'] = $this->form->inputMessage(
                         $_formulaire[$key], $this->_trad['erreur']['surLe'] .$label.
                         ': ' . $this->_trad['erreur']['doitContenirEntre'] . $minLen .
                         ' et ' . $info['maxlength'] . $this->_trad['erreur']['caracteres']);
@@ -111,7 +110,7 @@ class users extends \Model\users
         return $msg;
     }
     
-    protected function inscriptionValider(&$_formulaire)
+    protected function inscriptionValider()
     {
     
         global $minLen;
@@ -123,13 +122,13 @@ class users extends \Model\users
         // active le controle pour les champs telephone et gsm
         $controlTelephone = true;
     
-        foreach ($_formulaire as $key => $info){
+        foreach ($this->form->_formulaire as $key => $info){
     
             $label = $this->_trad['champ'][$key];
             $valeur = (isset($info['valide']))? $info['valide'] : NULL;
     
             if('valide' != $key)
-                if (isset($info['maxlength']) && !testLongeurChaine($valeur, $info['maxlength'])  && !empty($valeur))
+                if (isset($info['maxlength']) && !$this->form->testLongeurChaine($valeur, $info['maxlength'])  && !empty($valeur))
                 {
     
                     $erreur = true;
@@ -137,7 +136,7 @@ class users extends \Model\users
                         ': ' . $this->_trad['erreur']['doitContenirEntre'] . $minLen .
                         ' et ' . $info['maxlength'] . $this->_trad['erreur']['caracteres'];
     
-                } elseif (testObligatoire($info) && empty($valeur)){
+                } elseif ($this->form->testObligatoire($info) && empty($valeur)){
     
                     $erreur = true;
                     $_formulaire[$key]['message'] = $label . $this->_trad['erreur']['obligatoire'];
@@ -152,7 +151,7 @@ class users extends \Model\users
                         */
                         case 'pseudo': // il est obligatoire
     
-                            if (!testAlphaNumerique($valeur))
+                            if (!$this->form->testAlphaNumerique($valeur))
                             {
                                 $erreur = true;
                                 $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label. ' "' .$valeur.
@@ -173,7 +172,7 @@ class users extends \Model\users
     
                         case 'email': // il est obligatoire
     
-                            if (testFormatMail($valeur)) {
+                            if ($this->form->testFormatMail($valeur)) {
                                 // si la requete retourne un enregisterme, c'est que 'email' est deja utilisé en BD.
                                 if($this->userMailExist($valeur))
                                 {
@@ -204,13 +203,13 @@ class users extends \Model\users
     
                         case 'nom': // est obligatoire
                         case 'prenom': // il est obligatoire
-                            if(!testLongeurChaine($valeur) )
+                            if(!$this->form->testLongeurChaine($valeur) )
                             {
                                 $erreur = true;
                                 $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
                                     ': '.$this->_trad['erreur']['nonVide'];
     
-                            } elseif (!testAlphaNumerique($valeur)){
+                            } elseif (!$this->form->testAlphaNumerique($valeur)){
     
                                 $erreur = true;
                                 $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label. ' "' .$valeur.
@@ -238,7 +237,7 @@ class users extends \Model\users
                                         ': ' . $this->_trad['erreur']['doitContenir'] . $info['length'] . $this->_trad['erreur']['caracteres'];
                                 }
     
-                                if(testNumerique($valeur))
+                                if($this->form->testNumerique($valeur))
                                 {
                                     $erreur = true;
                                     $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
@@ -251,7 +250,7 @@ class users extends \Model\users
                             break;
     
                         default:
-                            if(!empty($valeur) && !testLongeurChaine($valeur))
+                            if(!empty($valeur) && !$this->form->testLongeurChaine($valeur))
                             {
                                 $erreur = true;
                                 $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
@@ -293,11 +292,11 @@ class users extends \Model\users
         return $msg;
     }
     
-    protected function actifUser($_formulaire)
+    protected function actifUser()
     {
         //$this->_trad
     
-        include FUNC . 'form.func.php';
+        //include FUNC . 'form.func.php';
         // recuperation du pseudo
         if (empty($_POST) && isset($_COOKIE['Intelligent']['pseudo'])) {
             $_POST['valide'] = 'cookie';
@@ -307,14 +306,14 @@ class users extends \Model\users
         }
     
         // traitement du formulaire
-        $msg = '';
-        if (isset($_POST['valide']) && postCheck($_formulaire)) {
-            $msg = ($_POST['valide'] == 'cookie') ? 'cookie' : $this->connectionValider($_formulaire);
+        $this->form->msg = '';
+        if (isset($_POST['valide']) && $this->form->postCheck()) {
+            $this->form->msg = ($_POST['valide'] == 'cookie') ? 'cookie' : $this->connectionValider();
         }
     
         $form = '';
         // affichage des messages d'erreur
-        if ('OK' == $msg) {
+        if ('OK' == $this->form->msg) {
             // l'utilisateur est automatiquement connécté
             // et re-dirigé ver l'accueil
             urlSuivante();
@@ -325,10 +324,10 @@ class users extends \Model\users
             header('Location:'.$_nav);
             exit();*/
         }
-        return $msg;
+        //return $msg;
     }
     
-    protected function connectionValider($_formulaire)
+    protected function connectionValider()
     {
     
         global $minLen;
@@ -342,14 +341,14 @@ class users extends \Model\users
     
         if(!isset($_SESSION['connexion'])) $_SESSION['connexion'] = 3;
     
-        foreach ($_formulaire as $key => $info){
+        foreach ($this->form->_formulaire as $key => $info){
     
             $label = $this->_trad['champ'][$key];
             $valeur = (isset($info['valide']))? $info['valide'] : NULL;
             $obligatoire = (!empty($info['obligatoire']))? true : false ;
     
             if('valide' != $key)
-                if (isset($info['maxlength']) && !testLongeurChaine($valeur, $info['maxlength']))
+                if (isset($info['maxlength']) && !$this->form->testLongeurChaine($valeur, $info['maxlength']))
                 {
     
                     $erreur = true;
@@ -357,7 +356,7 @@ class users extends \Model\users
                         ': ' . $this->_trad['erreur']['doitContenirEntre'] . $minLen .
                         ' et ' . $info['maxlength'] . $this->_trad['erreur']['caracteres'];
     
-                } elseif (testObligatoire($info) && empty($valeur)){
+                } elseif ($this->form->testObligatoire($info) && empty($valeur)){
     
                     $erreur = true;
                     $_formulaire[$key]['message'] = $label . $this->_trad['erreur']['obligatoire'];
@@ -375,7 +374,7 @@ class users extends \Model\users
     
                         case 'pseudo':
     
-                            if (!testAlphaNumerique($valeur))
+                            if (!$this->form->testAlphaNumerique($valeur))
                             {
                                 $erreur = true;
                                 $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label. ' "' .$valeur.
@@ -385,7 +384,7 @@ class users extends \Model\users
                             break;
     
                         default:
-                            if($obligatoire && !testLongeurChaine($valeur) )
+                            if($obligatoire && !$this->form->testLongeurChaine($valeur) )
                             {
                                 $erreur = true;
                                 $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .

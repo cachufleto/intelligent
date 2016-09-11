@@ -1,50 +1,36 @@
 <?php
 namespace users;
 
+use App\formuliare;
+
 include_once MODEL . 'users.php';
 include_once LIB . 'users.php';
 
 class users extends \App\users
 {
-    public function inscription()
+    var $form = '';
+
+    public function __construct()
     {
-        //$this->_trad
-        include PARAM . 'inscription.param.php';
-        include FUNC . 'form.func.php';
-
-        // traitement POST du formulaire
-        $msg = '';
-        if (isset($_POST['valide']) && postCheck($_formulaire, true)) {
-            //$msg = ($_POST['valide'] == 'cookie') ? 'cookie' : inscriptionValider($_formulaire);
-            $msg = $this->inscriptionValider($_formulaire);
-        }
-
-        $form = ('OK' != $msg) ? formulaireAfficher($_formulaire) : '';
-        // affichage des messages d'erreur
-        include VUE . 'users/inscription.tpl.php';
+        $this->form = new formuliare();
+        parent::__construct();
     }
 
-    public function connection()
+    public function inscription()
     {
-        $nav = 'connection';
-        //$this->_trad
+        include PARAM . 'inscription.param.php';
+        // traitement POST du formulaire
+        $this->form->_formulaire = $_formulaire;
 
-        include PARAM . 'connection.param.php';
-
-        $msg = $this->actifUser($_formulaire);
-
-        /////////////////////////////////////
-        if (isset($_SESSION['connexion']) && $_SESSION['connexion'] < 0) {
-            // affichage
-            $msg = $this->_trad['erreur']['acces'];
-
-        } else {
-
-            // RECUPERATION du formulaire
-            $form = formulaireAfficher($_formulaire);
+        $this->form->msg = '';
+        if (isset($_POST['valide']) && $this->form->postCheck(true)) {
+            //$msg = ($_POST['valide'] == 'cookie') ? 'cookie' : inscriptionValider($_formulaire);
+            $msg = $this->inscriptionValider();
         }
 
-        include VUE . 'users/connection.tpl.php';
+        $form = ('OK' != $this->form->msg) ? $this->form->formulaireAfficher() : '';
+        // affichage des messages d'erreur
+        include VUE . 'users/inscription.tpl.php';
     }
 
     public function backOff_users()
@@ -381,7 +367,7 @@ class users extends \App\users
         include VUE . 'users/identifians.tpl.php';
     }
 
-    public function changermotpasse()
+    /*public function changermotpasse()
     {
 
         //$this->_trad
@@ -416,7 +402,7 @@ class users extends \App\users
         }
 
         include VUE . 'users/changermotpasse.tpl.php';
-    }
+    }*/
 
     public function validerInscription()
     {

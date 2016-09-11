@@ -6,19 +6,19 @@
 # convertion avec htmlentities
 # $nomFormulaire => string nom du tableau
 # RETURN string alerte
-function postCheck(&$_formulaire, $mod=FALSE)
+/*function postCheck(&$_formulaire, $mod=FALSE)
 {
 	if(isset($_POST['valide'])){
 		return postValide($_formulaire, $mod);
 	}
 	return true;
-}
+}*/
 
 # Fonction formulaireAfficher()
 # Mise en forme des differents items du formulaire
 #$_form => tableau des items
 # RETURN string du formulaire
-function formulaireAfficher($_form)
+/*function formulaireAfficher($_form)
 {
 
 	$_trad = setTrad();
@@ -48,13 +48,13 @@ function formulaireAfficher($_form)
 	}
 	
 	return $formulaire; // texte
-}
+}*/
 
 # Fonction typeForm() de mise en forme des differents balises html
 # $champ => nom de l'item
 # $info => tableau des informations relatives a l'item
 # RETURN [balises] texte
-function typeForm($champ, $info)
+/*function typeForm($champ, $info)
 {
 	
 
@@ -171,16 +171,17 @@ function typeForm($champ, $info)
 			return ($champ == 'statut')? $_trad['value'][$valeur] : $valeur;
 			
 	}
-}
+}*/
 
-function inputMessage($form, $message)
+/*function inputMessage($form, $message)
 {
 	if(empty($form['message'])){
 		return $message;
 	} else {
 		return $form['message'] . '<br>' . $message;
 	}
-}
+}*/
+
 # Fonction postValide()
 # Control des informations Postées
 # convertion avec htmlentities
@@ -278,24 +279,24 @@ function postValide(&$_formulaire, $mod=FALSE)
 # $info => array(...'valide'), valeurs du champs
 # $value => valeur à comparer
 # RETURN string
-function radioCheck($info, $value)
+/*function radioCheck($info, $value)
 {
 	// info['valide'] => valeur du formulaire
 	return (!empty($info['valide']) && $info['valide'] == $value)? true : false;
 
-}
+}*/
 
 # Fonction radioCheck()
 # Vérifie la valeur du check
 # $info => array(...'valide'), valeurs du champs
 # $value => valeur à comparer
 # RETURN string
-function checkboxCheck($info, $value)
+/*function checkboxCheck($info, $value)
 {
 	// info['valide'] => valeur du formulaire
 	return (!empty($info['valide']) && in_array($value, $info['valide']))? true : false;
 
-}
+}*/
 
 # Fonction selectCheck()
 # Vérifie la valeur du check 
@@ -323,11 +324,11 @@ function testNumerique($valeur)
 # Vérifie la valeur alphanumerique d'une chaine de caracteres 
 # $value => valeur à tester
 # RETURN Boolean
-function testAlphaNumerique($valeur)
+/*function testAlphaNumerique($valeur)
 {
 	return preg_match('#^[a-zA-Z0-9._-]+$#', $valeur );
 
-}
+}*/
 
 # Fonction testFormatMail()
 # Vérifie la valeur alphanumerique d'une chaine de caracteres 
@@ -343,11 +344,11 @@ function testFormatMail($valeur)
 # Vérifie la valeur alphanumerique d'une chaine de caracteres 
 # $value => valeur à tester
 # RETURN Boolean
-function testObligatoire($info)
+/*function testObligatoire($info)
 {
 	return isset($info['obligatoire'])? $info['obligatoire'] : false;			
 
-}
+}*/
 
 # Fonction testLongeurChaine()
 # Vérifie la longeure d'une chaine de caracteres 
@@ -355,7 +356,7 @@ function testObligatoire($info)
 # $maxLen => limite maximal 250 par default
 # @minLen => limite minimal établi par default
 # RETURN Boolean true si authorizé
-function testLongeurChaine($valeur, $maxLen=250)
+/*function testLongeurChaine($valeur, $maxLen=250)
 {
 	global $minLen;
 	
@@ -364,7 +365,7 @@ function testLongeurChaine($valeur, $maxLen=250)
 
 	return ($taille < $minLen  || $taille > $maxLen)? false : true;
 
-}
+}*/
 
 # Fonction AfficherInfo()
 # Mise en forme des differents items du formulaire
@@ -509,7 +510,7 @@ function formulaireAfficherMod($_form)
 #$key => champ
 #$info => donées relatives au champ
 # RETURN boolean
-function controlImageUpload($key, &$info, $nomImage = 'salle')
+function controlImageUpload($key, &$info, $nomImage = 'image')
 {
 	$_trad = setTrad();
 	// Tableaux de donnees

@@ -34,4 +34,15 @@ class site extends Bdd
             LIMIT 0,3;";
         return $this->executeRequete($sql);
     }
+
+    protected function selectArticlesActive()
+    {
+        // selection de tout les users sauffe le super-ADMIN
+        $sql = "SELECT id_article, pays, ville, titre, capacite, categorie, photo, description, active
+            FROM articles
+            WHERE active != 0
+            ORDER BY titre
+            LIMIT 0,3;";
+        return $this->executeRequete($sql);
+    }
 }

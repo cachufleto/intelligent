@@ -1,3 +1,4 @@
+#ficheArticles,
 #ficheSalles{
     width: 800px;
     margin-left:calc(50% - 400px);
@@ -37,6 +38,7 @@
     height: 50px;
 }
 
+#fiche .article,
 #fiche .salle {
     padding: inherit;
 }

@@ -4,10 +4,10 @@
 </div>
 <div class="ligne">
     <div id="formulaire">
-        <?php if($msg == 'OK'){
+        <?php if($this->form->msg == 'OK'){
             echo $this->_trad['priseEnCompteMDP'];
         } else {
-            echo $msg; ?>
+            echo $this->form->msg; ?>
         <form action="#" method="POST">
             <?php echo $form; ?>
         </form>

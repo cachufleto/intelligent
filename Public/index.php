@@ -15,6 +15,8 @@ if(file_exists(CONF . 'connection.php')){
 require LIB . 'Bdd.php';
 // class de l'application
 require LIB . 'App.php';
+// class des formulaires
+require LIB . 'formulaire.php';
 // functions de debug
 require FUNC . 'debug.php';
 // functions communes du noyeau
