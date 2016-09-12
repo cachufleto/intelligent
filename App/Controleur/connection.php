@@ -7,7 +7,7 @@
  */
 
 namespace connection;
-use App\formuliare;
+use App\formulaire;
 
 include_once MODEL . 'users.php';
 include_once LIB . 'users.php';
@@ -18,7 +18,7 @@ class connection extends \App\users
 
     public function __construct()
     {
-        $this->form = new formuliare();
+        $this->form = new formulaire();
         parent::__construct();
     }
 
@@ -55,14 +55,14 @@ class connection extends \App\users
         //$this->form->msg = '';
         if (isset($_POST['valide']) && $this->form->postCheck(true)) {
 
-            if (!($msg = $this->changerMotPasseValider())) {
+            if (!($this->form->msg = $this->changerMotPasseValider())) {
 
-                $membre = $this->getUserMail($_formulaire);
+                $membre = $this->getUserMail($this->form->_formulaire['email']['valide']);
                 $checkinscription = hashCrypt("CHANGE" . date('m:D:d:s:Y:M'));
-                if ($this->userChangerMDPInsert($checkinscription, $_formulaire)) {
-                    $msg = $this->envoiMailChangeMDP($checkinscription, $membre);
+                if ($this->userChangerMDPInsert($checkinscription, $this->form->_formulaire['email']['valide'])) {
+                    $this->form->msg = $this->envoiMailChangeMDP($checkinscription, $membre);
                 } else {
-                    $msg = $this->_trad['erreur']['inconueConnexion'];
+                    $this->form->msg = $this->_trad['erreur']['inconueConnexion'];
                 }
 
             }
@@ -71,7 +71,7 @@ class connection extends \App\users
         /////////////////////////////////////
         if (isset($_SESSION['connexion']) && $_SESSION['connexion'] < 0) {
             // affichage
-            $msg = $this->_trad['erreur']['acces'];
+            $this->form->msg = $this->_trad['erreur']['acces'];
 
         } else {
 

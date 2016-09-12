@@ -4,7 +4,7 @@
     <span id="ajout"><?php echo $this->_trad['ajouterArticle']; ?></span>
 </div>
 <div class="ligne">
-    <?php echo $msg; ?>
+    <?php echo $this->form->msg; ?>
     <table>
     <tr>
         <?php

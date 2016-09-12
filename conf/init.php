@@ -25,7 +25,7 @@ $options = [
 $minLen = 3;
 
 // déclaration d'une variable qui nous servira à afficher des messages à l'utilisateur
-$msg = "";
+//$msg = "";
 
 // déclaration d'une variable qui nous servira à afficher des messages de debug
 $_debug = array();

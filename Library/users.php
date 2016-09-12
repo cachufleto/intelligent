@@ -58,56 +58,49 @@ class users extends \Model\users
         //return $msg;
     }
     
-    protected function mdpValider(&$_formulaire)
+    protected function mdpValider()
     {
         global $minLen;
         //$this->_trad
     
-        $msg = '';
         $erreur = false;
-        $sql_Where = '';
-        $control = true;
-        $message ='';
-    
-        foreach ($_formulaire as $key => $info){
-    
+        foreach ($this->form->_formulaire as $key => $info){
             $label = $this->_trad['champ'][$key];
             $valeur = (isset($info['valide']))? $info['valide'] : NULL;
             if($this->form->testObligatoire($info) && empty($valeur)) {
                 $erreur = true;
-                $_formulaire[$key]['message'] = $this->form->inputMessage(
-                    $_formulaire[$key], $label . $this->_trad['erreur']['obligatoire']);
+                $this->form->_formulaire[$key]['message'] = $this->form->inputMessage(
+                    $this->form->_formulaire[$key], $label . $this->_trad['erreur']['obligatoire']);
             }
     
             if('valide' != $key)
                 if (isset($info['maxlength']) && !$this->form->testLongeurChaine($valeur, $info['maxlength']))
                 {
                     $erreur = true;
-                    $_formulaire[$key]['message'] = $this->form->inputMessage(
-                        $_formulaire[$key], $this->_trad['erreur']['surLe'] .$label.
+                    $this->form->_formulaire[$key]['message'] = $this->form->inputMessage(
+                        $this->form->_formulaire[$key], $this->_trad['erreur']['surLe'] .$label.
                         ': ' . $this->_trad['erreur']['doitContenirEntre'] . $minLen .
                         ' et ' . $info['maxlength'] . $this->_trad['erreur']['caracteres']);
     
                 }
         }
-    
+
         if($erreur) // si la variable $msg est vide alors il n'y a pas d'erreurr !
         {  // le pseudo n'existe pas en BD donc on peut lancer l'inscription
     
-            $msg .= '<br />'.$this->_trad['erreur']['uneErreurEstSurvenue'];
+            $this->form->msg .= '<br />'.$this->_trad['erreur']['uneErreurEstSurvenue'];
     
         } else {
     
             // la variable $pseudo existe grace a l'extract fait prealablemrent.
-            if($membre = $this->selecMembreJeton($_formulaire['jeton']['defaut'])){
-                $this->userUpdateMDP($_formulaire['mdp']['valide'], $membre);
+            if($membre = $this->selecMembreJeton($this->form->_formulaire['jeton']['valide'])){
+                $this->userUpdateMDP($this->form->_formulaire['mdp']['valide'], $membre);
                 $this->updateMembreJeton($membre);
                 header('location:index.php?nav=actif');
             } else {
                 header('location:index.php?nav=expiration');
             }
         }
-        return $msg;
     }
     
     protected function inscriptionValider()
@@ -117,7 +110,8 @@ class users extends \Model\users
     
         //$this->_trad
     
-        $msg = 	$erreur = false;
+        //$msg =
+        $erreur = false;
         $sql_champs = $sql_Value = '';
         // active le controle pour les champs telephone et gsm
         $controlTelephone = true;
@@ -132,14 +126,14 @@ class users extends \Model\users
                 {
     
                     $erreur = true;
-                    $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label.
+                    $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label.
                         ': ' . $this->_trad['erreur']['doitContenirEntre'] . $minLen .
                         ' et ' . $info['maxlength'] . $this->_trad['erreur']['caracteres'];
     
                 } elseif ($this->form->testObligatoire($info) && empty($valeur)){
     
                     $erreur = true;
-                    $_formulaire[$key]['message'] = $label . $this->_trad['erreur']['obligatoire'];
+                    $this->form->_formulaire[$key]['message'] = $label . $this->_trad['erreur']['obligatoire'];
     
                 } else {
     
@@ -154,7 +148,7 @@ class users extends \Model\users
                             if (!$this->form->testAlphaNumerique($valeur))
                             {
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label. ' "' .$valeur.
+                                $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label. ' "' .$valeur.
                                     '", ' . $this->_trad['erreur']['aphanumeriqueSansSpace'];
     
                             } else {
@@ -163,7 +157,7 @@ class users extends \Model\users
                                 if($this->userPseudoExist($valeur))
                                 {
                                     $erreur = true;
-                                    $msg .= '<br/>' . $this->_trad['erreur']['pseudoIndisponble'];
+                                    $this->form->msg .= '<br/>' . $this->_trad['erreur']['pseudoIndisponble'];
                                 }
     
                             }
@@ -177,13 +171,13 @@ class users extends \Model\users
                                 if($this->userMailExist($valeur))
                                 {
                                     $erreur = true;
-                                    $_formulaire[$key]['message'] = '<br/>' . $this->_trad['erreur']['emailexistant'];
+                                    $this->form->_formulaire[$key]['message'] = '<br/>' . $this->_trad['erreur']['emailexistant'];
                                 }
     
                             } else {
     
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label. ' "' .$valeur.
+                                $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label. ' "' .$valeur.
                                     '", ' . $this->_trad['erreur']['aphanumeriqueSansSpace'];
     
                             }
@@ -195,7 +189,7 @@ class users extends \Model\users
                             if(empty($valeur))
                             {
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
                                     ': '.$this->_trad['erreur']['vousDevezChoisireUneOption'];
                             }
     
@@ -206,13 +200,13 @@ class users extends \Model\users
                             if(!$this->form->testLongeurChaine($valeur) )
                             {
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
                                     ': '.$this->_trad['erreur']['nonVide'];
     
                             } elseif (!$this->form->testAlphaNumerique($valeur)){
     
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label. ' "' .$valeur.
+                                $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label. ' "' .$valeur.
                                     '", ' . $this->_trad['erreur']['aphanumeriqueSansSpace'] ;
     
                             }
@@ -233,14 +227,14 @@ class users extends \Model\users
                                 {
     
                                     $erreur = true;
-                                    $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label.
+                                    $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label.
                                         ': ' . $this->_trad['erreur']['doitContenir'] . $info['length'] . $this->_trad['erreur']['caracteres'];
                                 }
     
                                 if($this->form->testNumerique($valeur))
                                 {
                                     $erreur = true;
-                                    $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                    $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
                                         ': '.$this->_trad['erreur']['queDesChiffres'];
     
                                 }
@@ -248,12 +242,20 @@ class users extends \Model\users
                             }
     
                             break;
-    
+
+                        case 'cp':
+                            if ($this->form->testNumerique($valeur)) {
+                                $erreur = true;
+                                $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                    ': ' . $this->_trad['erreur']['queDesChiffres'];
+                            }
+                        break;
+
                         default:
                             if(!empty($valeur) && !$this->form->testLongeurChaine($valeur))
                             {
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
                                     ': '.$this->_trad['erreur']['minimumAphaNumerique'].' ' . $minLen . ' '.$this->_trad['erreur']['caracteres'];
     
                             }
@@ -273,23 +275,23 @@ class users extends \Model\users
         // au moins un doit être renseigné
         if($controlTelephone) {
             $erreur = true;
-            $_formulaire['telephone']['message'] =  $this->_trad['erreur']['controlTelephone'] ;
+            $this->form->_formulaire['telephone']['message'] =  $this->_trad['erreur']['controlTelephone'] ;
         }
         // si une erreur c'est produite
         if($erreur)
         {
-            $msg = '<div class="alert">'.$this->_trad['ERRORSaisie']. $msg . '</div>';
+            $this->form->msg = '<div class="alert">'.$this->_trad['ERRORSaisie']. $this->form->msg . '</div>';
     
         } else {
             $checkinscription = hashCrypt($sql_Value);
-            if($this->userInscriptionInsert($sql_champs, $sql_Value, $checkinscription, $_formulaire)){
-                $msg = $this->envoiMailInscrition($checkinscription, $_formulaire);
+            if($this->userInscriptionInsert($sql_champs, $sql_Value, $checkinscription, $this->form->_formulaire)){
+                $this->form->msg = $this->envoiMailInscrition($checkinscription, $this->form->_formulaire);
             } else {
-                $msg = $this->_trad['erreur']['inconueConnexion'];
+                $this->form->msg = $this->_trad['erreur']['inconueConnexion'];
             }
         }
     
-        return $msg;
+        //return $msg;
     }
     
     protected function actifUser()
@@ -333,7 +335,7 @@ class users extends \Model\users
         global $minLen;
         //$this->_trad
     
-        $msg = '';
+        //$msg = '';
         $erreur = false;
         $sql_Where = '';
         $control = true;
@@ -352,14 +354,14 @@ class users extends \Model\users
                 {
     
                     $erreur = true;
-                    $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] .$label.
+                    $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] .$label.
                         ': ' . $this->_trad['erreur']['doitContenirEntre'] . $minLen .
                         ' et ' . $info['maxlength'] . $this->_trad['erreur']['caracteres'];
     
                 } elseif ($this->form->testObligatoire($info) && empty($valeur)){
     
                     $erreur = true;
-                    $_formulaire[$key]['message'] = $label . $this->_trad['erreur']['obligatoire'];
+                    $this->form->_formulaire[$key]['message'] = $label . $this->_trad['erreur']['obligatoire'];
     
                 } else {
     
@@ -377,7 +379,7 @@ class users extends \Model\users
                             if (!$this->form->testAlphaNumerique($valeur))
                             {
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label. ' "' .$valeur.
+                                $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label. ' "' .$valeur.
                                     '", ' . $this->_trad['erreur']['aphanumeriqueSansSpace'];
                             }
     
@@ -387,7 +389,7 @@ class users extends \Model\users
                             if($obligatoire && !$this->form->testLongeurChaine($valeur) )
                             {
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
                                     ': '.$this->_trad['erreur']['minimumAphaNumerique'].' ' . $minLen . ' '.$this->_trad['erreur']['caracteres'];
                             }
                             break;
@@ -400,7 +402,7 @@ class users extends \Model\users
         if($erreur) // si la variable $msg est vide alors il n'y a pas d'erreurr !
         {  // le pseudo n'existe pas en BD donc on peut lancer l'inscription
     
-            $msg .= '<br />'.$this->_trad['erreur']['uneErreurEstSurvenue'];
+            $this->form->msg .= '<br />'.$this->_trad['erreur']['uneErreurEstSurvenue'];
     
         } else {
     
@@ -410,14 +412,14 @@ class users extends \Model\users
             if($session = $this->getUserConnexion($sql_Where)) // si la requete tourne un enregisterme,cest cest que le pseudo est deja utilisé en BD.
             {
                 if(isset($crypte)){
-                    $_formulaire[$crypte]['sql'] = $session[$crypte];
-                    if(hashDeCrypt($_formulaire[$crypte])){
+                    $this->form->_formulaire[$crypte]['sql'] = $session[$crypte];
+                    if(hashDeCrypt($this->form->_formulaire[$crypte])){
                         // overture d'une session Membre
                         if ($session['active'] == 1) {
                             ouvrirSession($session, $control);
-                            $msg = 'OK';
+                            $this->form->msg = 'OK';
                         } else if ($session['active'] == 2){
-                            $msg .= $this->_trad['erreur']['validerInscriptionMail'] . $session['email'];
+                            $this->form->msg .= $this->_trad['erreur']['validerInscriptionMail'] . $session['email'];
                         }
                         // on reinitialise les tentatives de connexion
                         unset($_SESSION['connexion']);
@@ -426,18 +428,18 @@ class users extends \Model\users
     
     
             } else if (isset($session->num_rows)) {
-                $msg .= '<br/ >'. $this->_trad['erreur']['erreurConnexion'];
+                $this->form->msg .= '<br/ >'. $this->_trad['erreur']['erreurConnexion'];
                 $_SESSION['connexion'] -= 1;
     
             } else {
     
-                $msg .= '<br />'. $this->_trad['erreur']['inconueConnexion'];
+                $this->form->msg .= '<br />'. $this->_trad['erreur']['inconueConnexion'];
     
             }
     
     
         }
-        return $msg;
+        return $this->form->msg;
     }
     
     protected function usersIdentifians()
@@ -448,7 +450,7 @@ class users extends \Model\users
     /**
      * @return string
      */
-    protected function usersChangerMotPasse(&$_formulaire)
+    protected function usersChangerMotPasse()
     {
     
         global $minLen;
@@ -457,9 +459,9 @@ class users extends \Model\users
         $message = '';
         $sql_Where = '';
     
-        postCheck($_formulaire);
+        $this->form->postCheck();
     
-        foreach ($_formulaire as $key => $info){
+        foreach ($this->form->_formulaire as $key => $info){
     
             $label = $this->_trad['champ'][$key];
             $valeur = (isset($info['valide']))? $info['valide'] : NULL;
@@ -498,9 +500,9 @@ class users extends \Model\users
         {
             if ($membre = $this->usersSelectWhere($sql_Where))
             {
-                if (isset($crypte) && hashDeCrypt($_formulaire[$crypte])){
-                    $_formulaire[$crypte]['sql'] = $membre[$crypte];
-                    if (hashDeCrypt($_formulaire[$crypte])){
+                if (isset($crypte) && hashDeCrypt($this->form->_formulaire[$crypte])){
+                    $this->form->_formulaire[$crypte]['sql'] = $membre[$crypte];
+                    if (hashDeCrypt($this->form->_formulaire[$crypte])){
                         // overture d'une session Membre
                         ouvrirSession($membre);
                         $message = 'OK';
@@ -559,15 +561,15 @@ class users extends \Model\users
     # convertion avec htmlentities
     # $nomFormulaire => string nom du tableau
     # RETURN string alerte
-    protected function modCheckMembres(&$_formulaire, $_id)
+    protected function modCheckMembres($_id)
     {
-        $form = $_formulaire;
+        $form = $this->form->_formulaire;
     
         if($user = $this->getUser($_id)) {
             foreach($form as $key => $info){
                 if($key != 'valide' && key_exists ( $key , $user )){
-                    $_formulaire[$key]['valide'] = $user[$key];
-                    $_formulaire[$key]['sql'] = $user[$key];
+                    $this->form->_formulaire[$key]['valide'] = $user[$key];
+                    $this->form->_formulaire[$key]['sql'] = $user[$key];
                 }
             }
         }
@@ -579,9 +581,11 @@ class users extends \Model\users
     {
         //$this->_trad
         include PARAM . 'userMDP.param.php';
-        include FUNC . 'form.func.php';
-    
-        $msg = $form = '';
+        // include FUNC . 'form.func.php';
+        $this->form->_formulaire = $_formulaire;
+
+        //$msg =
+        $form = '';
         $id_membre = $this->selecMembreJeton($jeton);
         $_jeton = false;
         if ($_POST) {
@@ -591,23 +595,23 @@ class users extends \Model\users
                 header('location:index.php?nav=expiration');
             }
     
-            $_formulaire['jeton']['defaut'] = $_POST['jeton'];
-            if (isset($_POST['valide']) && postCheck($_formulaire, true)) {
-                $msg = $this->mdpValider($_formulaire);
+            $this->form->_formulaire['jeton']['defaut'] = $_POST['jeton'];
+            if (isset($_POST['valide']) && $this->form->postCheck(true)) {
+                $this->mdpValider();
             }
             // affichage des messages d'erreur
-            if ('OK' == $msg) {
+            if ('OK' == $this->form->msg) {
                 $this->updateMembreJeton($id_membre);
                 header("refresh:5;url=index.php?nav=actif");
                 exit();
             } else {
-                $form = formulaireAfficher($_formulaire);
+                $form = $this->form->formulaireAfficher();
             }
     
         } else {
             if ($id_membre) {
-                $_formulaire['jeton']['defaut'] = $jeton;
-                $form = formulaireAfficher($_formulaire);
+                $this->form->_formulaire['jeton']['defaut'] = $jeton;
+                $form = $this->form->formulaireAfficher();
             } else {
                 header("refresh:5;url=index.php?nav=expiration");
             }

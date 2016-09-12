@@ -4,7 +4,7 @@
 </div>
 <div class="ligne">
     <div id="formulaire" class="fichesalles">
-        <?php echo $msg; ?>
+        <?php echo $this->form->msg; ?>
         <form action="#<?php echo "P-".($position -1); ?>" enctype="multipart/form-data" method="POST">
         <?php echo $form; ?>
         </form>

@@ -12,7 +12,7 @@ echo <<<EOL
     <h1>{$this->_trad['nav'][$nav]}</h1>
 </div>
 <div class="ligne">
-    <p>{$msg}</p>
+    <p>{$this->form->msg}</p>
     <div class="trier">
         <div>{$this->_trad['trierPar']}</div>
         <div>

@@ -88,7 +88,7 @@ echo <<<EOL
     <div id="fiche" class="article">
         <div class="ligne">
             <div class="ville">{$article['ville']} ({$article['pays']})</div>
-            <div>{$msg}</div>
+            <div>{$this->form->msg}</div>
         </div>
         <div class="ligne">
             <div class="photo">

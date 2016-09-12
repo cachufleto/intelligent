@@ -33,7 +33,7 @@ ob_end_clean();
 ob_start();
 if(DEBUG) {
 	// affichage des debug
-	$_trad = setTrad();
+	//$_trad = setTrad();
 	debugParam($_trad);
 	debugPhpInfo();
 	debugCost();

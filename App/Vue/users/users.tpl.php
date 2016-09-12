@@ -3,7 +3,7 @@
     <h1><?php echo $this->_trad['titre']['users']; ?></h1>
 </div>
 <div class="ligne">
-    <p><?php echo $msg; ?></p>
+    <p><?php echo $this->form->msg; ?></p>
     <table>
         <tr>
         <?php

@@ -24,7 +24,7 @@ class articles extends \Model\articles
         while($data = $result->fetch_assoc()){
             $value = $data[$champ];
             $libelle = (isset($this->_trad['value'][$value]))? $this->_trad['value'][$value] : $value;
-            $check = selectCheck($info, $value);
+            $check = $this->form->selectCheck($info, $value);
             $balise .= '<option value="' .  $value . '" ' . $check . ' >'.$libelle.'</option>';
         }
         // Balise par defaut
@@ -38,7 +38,7 @@ class articles extends \Model\articles
     # convertion avec htmlentities
     # $nomFormulaire => string nom du tableau
     # RETURN string alerte
-    protected function modCheckProduits(&$_formulaire, $_id)
+    protected function modCheckProduits($_id)
     {
     
         $sql = "SELECT id_plagehoraire FROM produits WHERE id_article = ". $_id ;
@@ -47,8 +47,8 @@ class articles extends \Model\articles
         if($data->num_rows < 1) return false;
     
         while ($produit = $data->fetch_assoc()){
-            $_formulaire['plagehoraire']['valide'][] = $produit['id_plagehoraire'];
-            $_formulaire['plagehoraire']['sql'][] = $produit['id_plagehoraire'];
+            $this->form->_formulaire['plagehoraire']['valide'][] = $produit['id_plagehoraire'];
+            $this->form->_formulaire['plagehoraire']['sql'][] = $produit['id_plagehoraire'];
         }
     
         return true;
@@ -59,9 +59,9 @@ class articles extends \Model\articles
     # convertion avec htmlentities
     # $nomFormulaire => string nom du tableau
     # RETURN string alerte
-    protected function modCheckArticles(&$_formulaire, $_id)
+    protected function modCheckArticles($_id)
     {
-        $form = $_formulaire;
+        $form = $this->form->_formulaire;
     
         $sql = "SELECT * FROM articles WHERE id_article = ". $_id . ( !isSuperAdmin()? " AND active != 0" : "" );
     
@@ -72,8 +72,8 @@ class articles extends \Model\articles
     
         foreach($form as $key => $info){
             if($key != 'valide' && key_exists ( $key , $user )){
-                $_formulaire[$key]['valide'] = $user[$key];
-                $_formulaire[$key]['sql'] = $user[$key];
+                $this->form->_formulaire[$key]['valide'] = $user[$key];
+                $this->form->_formulaire[$key]['sql'] = $user[$key];
             }
         }
     
@@ -114,37 +114,37 @@ class articles extends \Model\articles
         return $str;
     }
     
-    protected function nomImage($_formulaire)
+    protected function nomImage()
     {
     
-        $pays = (!empty($_formulaire['pays']['value']))? $_formulaire['pays']['value'] : $_formulaire['pays']['sql'];
-        $ville = (!empty($_formulaire['ville']['value']))? $_formulaire['ville']['value'] : $_formulaire['ville']['sql'];
-        $titre = (!empty($_formulaire['titre']['value']))? $_formulaire['titre']['value'] : $_formulaire['titre']['sql'];
+        $pays = (!empty($this->form->_formulaire['pays']['value']))? $this->form->_formulaire['pays']['value'] : $this->form->_formulaire['pays']['sql'];
+        $ville = (!empty($this->form->_formulaire['ville']['value']))? $this->form->_formulaire['ville']['value'] : $this->form->_formulaire['ville']['sql'];
+        $titre = (!empty($this->form->_formulaire['titre']['value']))? $this->form->_formulaire['titre']['value'] : $this->form->_formulaire['titre']['sql'];
         $nomImage = str_replace(' ', '_', $this->remplaceAccents($pays.'_'.$ville.'_'.$titre, $charset='utf-8'));
     
         return $nomImage;
     }
     
     
-    protected function produitsValider(&$_formulaire)
+    protected function produitsValider()
     {
         global $minLen;
         //$this->_trad
     
-        $msg = '';
+        //$msg = '';
         $erreur = false;
         $sql_Where = '';
         $control = true;
         $message ='';
     
-        foreach ($_formulaire as $key => $info){
+        foreach ($this->form->_formulaire as $key => $info){
     
             $label = $this->_trad['champ'][$key];
             $valeur = (isset($info['valide']))? $info['valide'] : NULL;
-            if(testObligatoire($info) && empty($valeur)) {
+            if($this->form->testObligatoire($info) && empty($valeur)) {
                 $erreur = true;
-                $_formulaire[$key]['message'] = inputMessage(
-                    $_formulaire[$key], $label . $this->_trad['erreur']['obligatoire']);
+                $this->form->_formulaire[$key]['message'] = inputMessage(
+                    $this->form->_formulaire[$key], $label . $this->_trad['erreur']['obligatoire']);
             }
     
             switch ($key){
@@ -156,29 +156,30 @@ class articles extends \Model\articles
         if($erreur) // si la variable $msg est vide alors il n'y a pas d'erreurr !
         {  // le pseudo n'existe pas en BD donc on peut lancer l'inscription
     
-            $msg .= '<br />'.$this->_trad['erreur']['uneErreurEstSurvenue'];
+            $this->form->msg .= '<br />'.$this->_trad['erreur']['uneErreurEstSurvenue'];
     
         }
     
-        return $msg;
+        //return $msg;
     }
     
     # Fonction ficheArticlesValider()
     # Verifications des informations en provenance du formulaire
     # @_formulaire => tableau des items
     # RETURN string msg
-    protected function ficheArticlesValider(&$_formulaire)
+    protected function ficheArticlesValider()
     {
         global $minLen;
         //$this->_trad
-        $msg = 	$erreur = false;
+        //$msg =
+        $erreur = false;
         $sql_set = '';
         // active le controle pour les champs telephone et gsm
         $controlTelephone = true;
     
-        $id_article = $_formulaire['id_article']['sql'];
+        $id_article = $this->form->_formulaire['id_article']['sql'];
         $exclure = array('pos','valide','id_article','photo');
-        foreach ($_formulaire as $key => $info){
+        foreach ($this->form->_formulaire as $key => $info){
     
             $label = $this->_trad['champ'][$key];
             $valeur = (isset($info['valide']))? $info['valide'] : NULL;
@@ -186,21 +187,21 @@ class articles extends \Model\articles
             {
                 if($info['valide'] != $info['sql'])
                 {
-                    if (isset($info['maxlength']) && !testLongeurChaine($valeur, $info['maxlength']) && !empty($valeur))
+                    if (isset($info['maxlength']) && !$this->form->testLongeurChaine($valeur, $info['maxlength']) && !empty($valeur))
                     {
     
                         $erreur = true;
-                        $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label.
+                        $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label.
                             ': ' . $this->_trad['erreur']['doitContenirEntre'] . $minLen .
                             ' et ' . $info['maxlength'] . $this->_trad['erreur']['caracteres'];
     
                     }
     
                     //if ('vide' != testObligatoire($info) && !testObligatoire($info) && empty($valeur)){
-                    else if (testObligatoire($info) && empty($valeur)){
+                    else if ($this->form->testObligatoire($info) && empty($valeur)){
     
                         $erreur = true;
-                        $_formulaire[$key]['message'] = $label . $this->_trad['erreur']['obligatoire'];
+                        $this->form->_formulaire[$key]['message'] = $label . $this->_trad['erreur']['obligatoire'];
     
                     } else {
     
@@ -212,27 +213,27 @@ class articles extends \Model\articles
                                 if(empty($valeur = intval($valeur)))
                                 {
                                     $erreur = true;
-                                    $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                    $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
                                         ': '.$this->_trad['erreur']['minimumNumerique'];
                                 }
-                                $_formulaire[$key]['valide'] = $valeur;
+                                $this->form->_formulaire[$key]['valide'] = $valeur;
                                 break;
     
                             case 'prix_personne':
                                 if(($valeur = doubleval(str_replace(',', '.', $valeur))) < PRIX)
                                 {
                                     $erreur = true;
-                                    $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                    $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
                                         ': '.$this->_trad['erreur']['prixPersonne'];
                                     $valeur = PRIX;
                                 }
-                                $_formulaire[$key]['valide'] = $valeur;
+                                $this->form->_formulaire[$key]['valide'] = $valeur;
                                 break;
     
                             case 'photo':
     
                                 $erreur = (controlImageUpload($key, $info))? true : $erreur;
-                                $_formulaire[$key]['message'] = isset($info['message'])? $info['message'] : '' ;
+                                $this->form->_formulaire[$key]['message'] = isset($info['message'])? $info['message'] : '' ;
                                 $valeur = $info['valide'];
     
                             break;
@@ -241,7 +242,7 @@ class articles extends \Model\articles
                                 if(empty($valeur))
                                 {
                                     $erreur = true;
-                                    $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                    $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
                                         ': '.$this->_trad['erreur']['vousDevezChoisireUneOption'];
                                 }
     
@@ -249,10 +250,10 @@ class articles extends \Model\articles
     
                             default:
                                 $long = (isset($info['maxlength']))? $info['maxlength'] : 250;
-                                if(!empty($valeur) && !testLongeurChaine($valeur, $long))
+                                if(!empty($valeur) && !$this->form->testLongeurChaine($valeur, $long))
                                 {
                                     $erreur = true;
-                                    $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                    $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
                                         ': '.$this->_trad['erreur']['minimumAphaNumerique'].' ' . $minLen . ' '.$this->_trad['erreur']['caracteres'];
     
                                 }
@@ -266,36 +267,36 @@ class articles extends \Model\articles
             }
         }
     
-        if(!$erreur && intval($_formulaire['capacite']['valide']*.9) < $_formulaire['cap_min']['valide']){
+        if(!$erreur && intval($this->form->_formulaire['capacite']['valide']*.9) < $this->form->_formulaire['cap_min']['valide']){
     
             $erreur = true;
-            $_formulaire['cap_min']['message'] = $this->_trad['erreur']['surLe'] . $this->_trad['champ']['cap_min'] .
+            $this->form->_formulaire['cap_min']['message'] = $this->_trad['erreur']['surLe'] . $this->_trad['champ']['cap_min'] .
                 ': '.$this->_trad['erreur']['capaciteMinSuperieur'];
-            $_formulaire['cap_min']['valide'] = intval($_formulaire['capacite']['valide']*.9);
+            $this->form->_formulaire['cap_min']['valide'] = intval($this->form->_formulaire['capacite']['valide']*.9);
         }
     
-        if($this->controlTranche($_formulaire)){
+        if($this->controlTranche()){
             $erreur = true;
-            $_formulaire['tranche']['message'] = $this->_trad['erreur']['surLe'] . $this->_trad['champ']['tranche'] .
+            $this->form->_formulaire['tranche']['message'] = $this->_trad['erreur']['surLe'] . $this->_trad['champ']['tranche'] .
                 ': '.$this->_trad['erreur']['repartitionTranche'];
         }
     
         // si une erreur c'est produite
         if($erreur)
         {
-            $msg = '<div class="alert">'.$this->_trad['ERRORSaisie']. $msg . '</div>';
+            $this->form->msg = '<div class="alert">'.$this->_trad['ERRORSaisie']. $this->form->msg . '</div>';
     
         }elseif(!empty($_FILES['photo']) && $_FILES['photo']['error'] != 4){
     
-            $erreur = controlImageUpload('photo', $_formulaire['photo'], $this->nomImage($_formulaire))? true : $erreur;
-            $valeur = $_formulaire['photo']['valide'];
+            $erreur = controlImageUpload('photo', $this->form->_formulaire['photo'], $this->nomImage())? true : $erreur;
+            $valeur = $this->form->_formulaire['photo']['valide'];
     
             if(!$erreur){
                 $sql_set .= ((!empty($sql_set))? ", " : "")."photo = '$valeur'";
             }
     
         }elseif(!empty($_FILES['photo']) && $_FILES['photo']['error'] == 4){
-            $_formulaire['photo']['valide'] = $_formulaire['photo']['sql'];
+            $this->form->_formulaire['photo']['valide'] = $this->form->_formulaire['photo']['sql'];
         }
     
         if(!$erreur) {
@@ -309,41 +310,41 @@ class articles extends \Model\articles
                 header('Location:' . LINK . '?nav=articles&pos=P-0');
             }
             // ouverture d'une session
-            $msg = "OK";
+            $this->form->msg = "OK";
     
         }
     
-        return $msg;
+        //return $msg;
     }
     
-    protected function controlTranche(&$_formulaire)
+    protected function controlTranche()
     {
-        $max = $_formulaire['capacite']['valide'];
-        $min = $_formulaire['cap_min']['valide'];
-        $tranche = $_formulaire['tranche']['valide'];
+        $max = $this->form->_formulaire['capacite']['valide'];
+        $min = $this->form->_formulaire['cap_min']['valide'];
+        $tranche = $this->form->_formulaire['tranche']['valide'];
     
         if($max == $min AND $tranche != 1) {
-            $_formulaire['tranche']['valide'] = 1;
+            $this->form->_formulaire['tranche']['valide'] = 1;
             return true;
         }
     
         if( ($max - $min) < ($max*0.1) AND $tranche != 1) {
-            $_formulaire['tranche']['valide'] = 1;
+            $this->form->_formulaire['tranche']['valide'] = 1;
             return true;
         }
     
         if( ($max - $min) < ($max*0.2) AND $tranche > 2) {
-            $_formulaire['tranche']['valide'] = 2;
+            $this->form->_formulaire['tranche']['valide'] = 2;
             return true;
         }
     
         if( ($max - $min) < ($max*0.35) AND $tranche > 3) {
-            $_formulaire['tranche']['valide'] = 3;
+            $this->form->_formulaire['tranche']['valide'] = 3;
             return true;
         }
     
         if($tranche > 4) {
-            $_formulaire['tranche']['valide'] = 4;
+            $this->form->_formulaire['tranche']['valide'] = 4;
             return true;
         }
     
@@ -355,36 +356,37 @@ class articles extends \Model\articles
     # Verifications des informations en provenance du formulaire
     # @_formulaire => tableau des items
     # RETURN string msg
-    protected function editerArticlesValider(&$_formulaire)
+    protected function editerArticlesValider()
     {
     
         global $minLen;
         //$this->_trad
     
     
-        $msg = 	$erreur = false;
+        //$msg =
+        $erreur = false;
         $sql_champs = $sql_Value = '';
         // active le controle pour les champs telephone et gsm
         $controlTelephone = true;
     
-        foreach ($_formulaire as $key => $info){
+        foreach ($this->form->_formulaire as $key => $info){
             _debug($info, $key);
             $label = $this->_trad['champ'][$key];
             $valeur = (isset($info['valide']))? $info['valide'] : NULL;
     
             if('valide' != $key && 'photo' != $key)
-                if (isset($info['maxlength']) && !testLongeurChaine($valeur, $info['maxlength'])  && !empty($valeur))
+                if (isset($info['maxlength']) && !$this->form->testLongeurChaine($valeur, $info['maxlength'])  && !empty($valeur))
                 {
     
                     $erreur = true;
-                    $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label.
+                    $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label.
                         ': ' . $this->_trad['erreur']['doitContenirEntre'] . $minLen .
                         ' et ' . $info['maxlength'] . $this->_trad['erreur']['caracteres'];
     
-                } elseif (testObligatoire($info) && empty($valeur)){
+                } elseif ($this->form->testObligatoire($info) && empty($valeur)){
     
                     $erreur = true;
-                    $_formulaire[$key]['message'] = $label . $this->_trad['erreur']['obligatoire'];
+                    $this->form->_formulaire[$key]['message'] = $label . $this->_trad['erreur']['obligatoire'];
     
                 } else {
     
@@ -396,22 +398,22 @@ class articles extends \Model\articles
                             if(empty($valeur = intval($valeur)))
                             {
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
                                     ': '.$this->_trad['erreur']['minimumNumerique'];
                             }
     
-                            $_formulaire[$key]['valide'] = $valeur;
+                            $this->form->_formulaire[$key]['valide'] = $valeur;
                             break;
     
                         case 'prix_personne':
                             if(($valeur = doubleval(str_replace(',', '.', $valeur))) < PRIX)
                             {
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
                                     ': '.$this->_trad['erreur']['prixPersonne'];
                                 $valeur = PRIX;
                             }
-                            $_formulaire[$key]['valide'] = $valeur;
+                            $this->form->_formulaire[$key]['valide'] = $valeur;
                             break;
     
                         /*
@@ -424,7 +426,7 @@ class articles extends \Model\articles
                             if(empty($valeur))
                             {
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
                                     ': '.$this->_trad['erreur']['vousDevezChoisireUneOption'];
                             }
     
@@ -432,10 +434,10 @@ class articles extends \Model\articles
     
                         default:
                             $long = (isset($info['maxlength']))? $info['maxlength'] : 250;
-                            if(!empty($valeur) && !testLongeurChaine($valeur, $long))
+                            if(!empty($valeur) && !$this->form->testLongeurChaine($valeur, $long))
                             {
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
                                     ': '.$this->_trad['erreur']['minimumAphaNumerique'].' ' . $minLen . ' '.$this->_trad['erreur']['caracteres'];
     
                             }
@@ -454,17 +456,17 @@ class articles extends \Model\articles
         // si une erreur c'est produite
         if($erreur)
         {
-            $msg = '<div class="alert">'.$this->_trad['ERRORSaisie']. $msg . '</div>';
+            $this->form->msg = '<div class="alert">'.$this->_trad['ERRORSaisie']. $this->form->msg . '</div>';
     
         }else{
     
-            $nomImage  = trim($_formulaire['pays']['valide']);
-            $nomImage .= '_' . trim($_formulaire['ville']['valide']);
-            $nomImage .= '_' . trim($_formulaire['titre']['valide']);
+            $nomImage  = trim($this->form->_formulaire['pays']['valide']);
+            $nomImage .= '_' . trim($this->form->_formulaire['ville']['valide']);
+            $nomImage .= '_' . trim($this->form->_formulaire['titre']['valide']);
             $nomImage .= str_replace(' ', '_', $nomImage);
     
-            $erreur = controlImageUpload('photo', $_formulaire['photo'], $nomImage)? true : $erreur;
-            $valeur = $_formulaire['photo']['valide'];
+            $erreur = controlImageUpload('photo', $this->form->_formulaire['photo'], $nomImage)? true : $erreur;
+            $valeur = $this->form->_formulaire['photo']['valide'];
     
             if(!$erreur){
                 $sql_champs .= ", photo";
@@ -475,11 +477,11 @@ class articles extends \Model\articles
     
         if(!$erreur) {
     
-            $msg = $this->setArticle($sql_champs, $sql_Value);//"OK";
+            $this->form->msg = $this->setArticle($sql_champs, $sql_Value);//"OK";
     
         }
     
-        return $msg;
+        //return $msg;
     }
     
     protected function orderArticlesValide()
@@ -822,7 +824,7 @@ class articles extends \Model\articles
     }
     
     
-    protected function treeProduitsArticle($_formulaire, $_id)
+    protected function treeProduitsArticle($_id)
     {
     
         $existProduits = $this->selectProduitsArticle($_id);
@@ -832,11 +834,11 @@ class articles extends \Model\articles
             if(!isset($_POST['plagehoraire'][$exist['id_plagehoraire']])){
                 $this->deleteProduit($exist['id']);
             } else {
-                unset($_formulaire['plagehoraire']['valide'][$exist['id_plagehoraire']]);
+                unset($this->form->_formulaire['plagehoraire']['valide'][$exist['id_plagehoraire']]);
             }
         }
     
-        foreach($_formulaire['plagehoraire']['valide'] as $plage_horaire => $info){
+        foreach($this->form->_formulaire['plagehoraire']['valide'] as $plage_horaire => $info){
             $this->setProduit($_id, $plage_horaire);
         }
     

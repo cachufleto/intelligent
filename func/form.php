@@ -189,15 +189,15 @@
 # [@$nom_form] tableau des items validées du formulaire
 # $mod => condition pour une action de mise à jour en BDD
 # RETURN string message d'alerte
-function postValide(&$_formulaire, $mod=FALSE)
+function postValide($mod=FALSE)
 {
 	global $msg;
-	$_trad = setTrad();
+	//$_trad = setTrad();
 
 	$ok = true;
 
 	// on boucle sur les valeurs des champs
-	$_form = $_formulaire;
+	$_form = $this->form->_formulaire;
 	foreach($_form as $key => $info){
 		
 		// on le verifie pas les actions en modification pour ce qui sont obligatoires
@@ -217,7 +217,7 @@ function postValide(&$_formulaire, $mod=FALSE)
 					if (empty($valeur1)){
 
 						$ok = false;
-						$_formulaire[$key]['message'] = inputMessage($_formulaire[$key], $_trad['champ'][$key] . $_trad['erreur']['obligatoire']);
+						$this->form->_formulaire[$key]['message'] = inputMessage($this->form->_formulaire[$key], $_trad['champ'][$key] . $_trad['erreur']['obligatoire']);
 						$valide = '';
 
 					}
@@ -226,8 +226,8 @@ function postValide(&$_formulaire, $mod=FALSE)
 
 						// l'un des deux champs est remplie
 						$ok = false;
-						$_formulaire[$key]['message'] = inputMessage( $_formulaire[$key], $_trad['erreur']['veuillezDeRectifier'] . $_trad['champ'][$key]);
-						$msg .= $_trad['erreur']['vousAvezOublieDeRectifier'] . $_trad['champ'][$key];
+						$this->form->_formulaire[$key]['message'] = inputMessage($this->form->_formulaire[$key], $_trad['erreur']['veuillezDeRectifier'] . $_trad['champ'][$key]);
+						$this->form->msg .= $_trad['erreur']['vousAvezOublieDeRectifier'] . $_trad['champ'][$key];
 						$valide = '';
 
 					}
@@ -236,8 +236,8 @@ function postValide(&$_formulaire, $mod=FALSE)
 
 						// les deux valeurs sont differents
 						$ok = false;
-						$_formulaire[$key]['message'] = inputMessage( $_formulaire[$key], $_trad['erreur']['deuxValeursDifferents'] . $_trad['champ'][$key]);
-						$msg .= $_trad['erreur']['vousAvezUneErreurDans'] . $_trad['champ'][$key];
+						$this->form->_formulaire[$key]['message'] = inputMessage( $this->form->_formulaire[$key], $_trad['erreur']['deuxValeursDifferents'] . $_trad['champ'][$key]);
+						$this->form->msg .= $_trad['erreur']['vousAvezUneErreurDans'] . $_trad['champ'][$key];
 						$valide = '';
 
 					}
@@ -246,27 +246,27 @@ function postValide(&$_formulaire, $mod=FALSE)
 
 			}
 
-				$_formulaire[$key]['valide'] = (
+				$this->form->_formulaire[$key]['valide'] = (
 					($info['type'] != 'radio' && $info['type'] != 'checkbox')
 					&& $valide == $info['defaut'])? '' : $valide;
 
 
 		} else if ($info['type'] == 'file'){
 			if (isset($_FILES[$key])){
-				$_formulaire[$key]['valide'] = $_FILES[$key]['name'];
+				$this->form->_formulaire[$key]['valide'] = $_FILES[$key]['name'];
 			}
 		} else if ($info['type'] == 'checkbox'){
 			
-			$ok = (testObligatoire($info) && empty($valeur))? false : $ok;
+			$ok = ($this->form->testObligatoire($info) && empty($valeur))? false : $ok;
 
 
 		} else if (!$mod && $key != 'valide'){
 
 			// si le champs n'est pas présent dans POST
 			$ok = false;
-			$_formulaire[$key]['valide'] = '';
-			$_formulaire[$key]['message'] = $_trad['erreur']['ATTENTIONfaitQuoiAvec']. $_trad['champ'][$key] . '?';
-			$msg .= $_trad['erreur']['corrigerErreurDans'];
+			$this->form->_formulaire[$key]['valide'] = '';
+			$this->form->_formulaire[$key]['message'] = $_trad['erreur']['ATTENTIONfaitQuoiAvec']. $_trad['champ'][$key] . '?';
+			$this->form->msg .= $_trad['erreur']['corrigerErreurDans'];
 		
 		}
 	}
@@ -303,22 +303,22 @@ function postValide(&$_formulaire, $mod=FALSE)
 # $info => array(...'valide'), valeurs du champs
 # $value => valeur à comparer
 # RETURN string
-function selectCheck($info, $value)
+/*function selectCheck($info, $value)
 {
 	// info['valide'] => valeur du formulaire
 	return (!empty($info['valide']) && $info['valide'] == $value)? 'selected="selected"' : '';
 
-}
+}*/
 
 # Fonction testNumerique()
 # Vérifie la valeur alphanumerique d'une chaine de caracteres 
 # $value => valeur à tester
 # RETURN Boolean
-function testNumerique($valeur)
+/*function testNumerique($valeur)
 {
 	return preg_match('#[a-zA-Z.\s.-]#', $valeur);
 
-}
+}*/
 
 # Fonction testAlphaNumerique()
 # Vérifie la valeur alphanumerique d'une chaine de caracteres 
@@ -334,11 +334,11 @@ function testNumerique($valeur)
 # Vérifie la valeur alphanumerique d'une chaine de caracteres 
 # $value => valeur à tester
 # RETURN Boolean
-function testFormatMail($valeur)
+/*function testFormatMail($valeur)
 {
 	return filter_var($valeur, FILTER_VALIDATE_EMAIL);
 
-}
+}*/
 
 # Fonction testObligatoire()
 # Vérifie la valeur alphanumerique d'une chaine de caracteres 
@@ -373,7 +373,7 @@ function testFormatMail($valeur)
 # RETURN string du formulaire
 function AfficherInfo($_form)
 {
-	$_trad = setTrad();
+	//$_trad = setTrad();
 	//global $_formIncription;
 	$formulaire = array();
 	foreach($_form as $champ => $info){
@@ -402,7 +402,12 @@ function AfficherInfo($_form)
 
 	return $formulaire; // texte
 }
-function formulaireAfficherInfo($_form)
+
+# Fonction formulaireAfficherInfo()
+# Mise en forme des differents items du formulaire
+#$_form => tableau des items
+# RETURN string du formulaire
+/*function formulaireAfficherInfo($_form)
 {
 	$_trad = setTrad();
 	//global $_formIncription;
@@ -444,24 +449,25 @@ function formulaireAfficherInfo($_form)
 	}
 	
 	return $formulaire; // texte
-}
+}*/
 
 # Fonction formulaireAfficherMod()
 # Mise en forme des differents items du formulaire
 #$_form => tableau des items
 # RETURN string du formulaire
-function formulaireAfficherMod($_form)
+/*function formulaireAfficherMod()
 {
-	$_trad = setTrad();
+	//$_trad = setTrad();
 	//global $_formIncription;
+	exit();
 	$formulaire = '';
 
-	foreach($_form as $champ => $info){
+	foreach($this->form->_formulaire as $champ => $info){
 		$ligneForm = ($info['type'] == 'file' OR $info['type'] == 'textarea' )? 'ligneFile' : 'ligneForm';
 		$value = isset($info['valide'])? html_entity_decode($info['valide']) : '';
 		if($champ == 'sexe') {
-			if(isset($_trad['value'][$value]))
-				$value = $_trad['value'][$value];
+			if(isset($this->_trad['value'][$value]))
+				$value = $this->_trad['value'][$value];
 			else{
 				$info['type'] = 'select';
 			}
@@ -470,11 +476,11 @@ function formulaireAfficherMod($_form)
 		if($info['type'] != 'hidden'){
 
 			if(!isset($info['obligatoire']) || utilisateurAdmin()){
-				$label = key_exists($champ, $_trad['champ'])? $_trad['champ'][$champ] : $champ;
+				$label = key_exists($champ, $this->_trad['champ'])? $this->_trad['champ'][$champ] : $champ;
 				$formulaire .=  '
 				<div class="' . $ligneForm . '" >
 					<label class="label" >' . (($champ != 'valide')? $label : '&nbsp;') . '</label>
-					<div class="champs">' . typeForm($champ, $info);
+					<div class="champs">' . $this->typeForm($champ, $info);
 
 				$formulaire .= '</div>
 				</div>';
@@ -484,7 +490,7 @@ function formulaireAfficherMod($_form)
 				$formulaire .=  '
 				<div class="' . $ligneForm . '" >
 					<label class="label rectifier" style="color:red">Rectifier</label>
-					<div class="champs">' . typeForm($champ.'2', $info) . '</div>
+					<div class="champs">' . $this->typeForm($champ.'2', $info) . '</div>
 				</div>';
 				}
 				
@@ -499,11 +505,11 @@ function formulaireAfficherMod($_form)
 				</div>';
 			}
 		
-		} else $formulaire .= typeForm($champ, $info);		
+		} else $formulaire .= $this->typeForm($champ, $info);
 	}
 	
 	return $formulaire; // texte
-}
+}*/
 
 # Fonction controlImageUpload()
 # Upload des images dans le repertoire photo
@@ -512,7 +518,7 @@ function formulaireAfficherMod($_form)
 # RETURN boolean
 function controlImageUpload($key, &$info, $nomImage = 'image')
 {
-	$_trad = setTrad();
+	//$_trad = setTrad();
 	// Tableaux de donnees
 	$tabExt = array("jpg","gif","png","jpeg");    // Extensions autorisees
 	$infosImg = array();

@@ -1,16 +1,25 @@
 <?php
 
 namespace salles;
+use App\formulaire;
 
 include_once MODEL . 'salles.php';
 include_once LIB . 'salles.php';
 
 class salles extends \App\salles
 {
+    var $form = false;
+
+    public function __construct()
+    {
+        $this->form = new formulaire();
+        parent::__construct();
+    }
+
     public function salles()
     {
         $nav = 'salles';
-        $msg = '';
+        //$msg = '';
         //$this->_trad
         $this->reservationSalles();
         $alert = $this->urlReservation();
@@ -23,7 +32,7 @@ class salles extends \App\salles
     {
         $nav = 'ficheSalles';
         //$this->_trad
-        $msg = '';
+        //$msg = '';
 
         $_id = data_methodes('id');
         $position = data_methodes('position', 1);
@@ -36,7 +45,8 @@ class salles extends \App\salles
         include PARAM . 'ficheSalles.param.php';
         // on cherche la fiche dans la BDD
         // extraction des données SQL
-        include FUNC . 'form.func.php';
+        //include FUNC . 'form.func.php';
+        $this->form->_formulaire = $_formulaire;
 
         if ($salle = $this->getSalles($_id)) {
             // traitement POST du formulaire
@@ -51,7 +61,8 @@ class salles extends \App\salles
     public function backOff_salles()
     {
         $nav = 'gestionSalles';
-        $alert = $msg = '';
+        $alert = '';
+        //$msg = '';
         //$this->_trad
 
         if(!$this->activeSalles()){
@@ -67,8 +78,8 @@ class salles extends \App\salles
     {
         //$this->_trad
         include PARAM . 'backOff_produits_salles.param.php';
-        $this->modCheckProduits($_formulaire, $_id);
-        $form = formulaireAfficher($_formulaire);
+        $this->modCheckProduits($_id);
+        $form = $this->form->formulaireAfficher();
 
         $form .= $this->listeProduits($this->getSalles($_id));
         /*foreach($listePrix as $date=>$info){
@@ -105,17 +116,17 @@ class salles extends \App\salles
 
     public function backOff_gestionProduits()
     {
-     echo 'je suis la';
         //$this->_trad
-        include FUNC . 'form.func.php';
+        //include FUNC . 'form.func.php';
         include PARAM . 'backOff_produits_salles.param.php';
+        $this->form->_formulaire = $_formulaire;
 
-        $msg = '';
-        if (isset($_POST['valide']) && postCheck($_formulaire, true)) {
+        //$msg = '';
+        if (isset($_POST['valide']) && $this->form->postCheck(true)) {
 
-            if(!($msg = $this->produitsValider($_formulaire))) {
+            if(!($this->form->msg = $this->produitsValider())) {
 
-                $this->treeProduitsSalle($_formulaire, $_id);
+                $this->treeProduitsSalle($_id);
             }
         }
 
@@ -126,36 +137,38 @@ class salles extends \App\salles
     public function backOff_ficheSalles()
     {
         $nav = 'ficheSalles';
-        $msg = '';
+        //$msg = '';
         //$this->_trad
 
         include PARAM . 'backOff_ficheSalles.param.php';
-        include FUNC . 'form.func.php';
+        //include FUNC . 'form.func.php';
+        $this->form->_formulaire = $_formulaire;
 
         // extraction des données SQL
-        $form = $msg = '';
-        if ($this->modCheckSalles($_formulaire, $_id)) {
+        $form = '';
+        //$msg = '';
+        if ($this->modCheckSalles($_id)) {
             // traitement POST du formulaire dans les parametres
             if ($_valider){
 
-                $msg = $this->_trad['erreur']['inconueConnexion'];
-                if(postCheck($_formulaire, TRUE)) {
-                    $msg = $this->ficheSallesValider($_formulaire);
+                $this->form->msg = $this->_trad['erreur']['inconueConnexion'];
+                if($this->form->postCheck(TRUE)) {
+                    $this->form->msg = $this->ficheSallesValider();
                 }
             }
 
-            if ('OK' == $msg) {
+            if ('OK' == $this->form->msg) {
                 // on renvoi ver connection
-                $msg = $this->_trad['lesModificationOntEteEffectues'];
+                $this->form->msg = $this->_trad['lesModificationOntEteEffectues'];
                 // on évite d'afficher les info du mot de passe
-                $form = formulaireAfficherInfo($_formulaire);
+                $form = $this->form->formulaireAfficherInfo();
             } else {
 
-                if (!empty($msg) || $_modifier) {
+                if (!empty($this->form->msg) || $_modifier) {
 
-                    $_formulaire['valide']['defaut'] = $this->_trad['defaut']['MiseAJ'];
+                    $this->form->_formulaire['valide']['defaut'] = $this->_trad['defaut']['MiseAJ'];
 
-                    $form = formulaireAfficherMod($_formulaire);
+                    $form = $this->form->formulaireAfficherMod();
 
                 } elseif (
                     !empty($_POST['valide']) &&
@@ -167,8 +180,8 @@ class salles extends \App\salles
 
                 } else {
 
-                    unset($_formulaire['mdp']);
-                    $form = formulaireAfficherInfo($_formulaire);
+                    unset($this->form->_formulaire['mdp']);
+                    $form = $this->form->formulaireAfficherInfo();
 
                 }
 
@@ -181,7 +194,7 @@ class salles extends \App\salles
         }
 
         include VUE . 'salles/backOff_ficheSalles.tpl.php';
-        $this->backOff_editProduits($_formulaire['id_salle']['valide']);
+        $this->backOff_editProduits($this->form->_formulaire['id_salle']['valide']);
     }
 
     public function backOff_editerSalles()
@@ -196,24 +209,23 @@ class salles extends \App\salles
 
         // traitement du formulaire
         include PARAM . 'backOff_editerSalles.param.php';
-        include FUNC . 'form.func.php';
+        //include FUNC . 'form.func.php';
+        $this->form->_formulaire = $_formulaire;
 
-        $msg = '';
-
-        if (postCheck($_formulaire)) {
+        if ($this->form->postCheck()) {
             if(isset($_POST['valide'])){
-                $msg = ($_POST['valide'] == 'cookie') ? 'cookie' : $this->editerSallesValider($_formulaire);
+                $this->form->msg = ($_POST['valide'] == 'cookie') ? 'cookie' : $this->editerSallesValider();
             }
         }
 
     // affichage des messages d'erreur
-        if ('OK' == $msg) {
+        if ('OK' == $this->form->msg) {
             // on renvoi ver la liste des salles
-            header('Location:index.php?nav=salles&pos='.$_formulaire['position']['value']);
+            header('Location:index.php?nav=salles&pos='.$this->form->_formulaire['position']['value']);
             exit();
         } else {
             // RECUPERATION du formulaire
-            $form = formulaireAfficher($_formulaire);
+            $form = $this->form->formulaireAfficher();
             include VUE . 'salles/editerSalles.tpl.php';
         }
     }
@@ -226,7 +238,7 @@ class salles extends \App\salles
 
         $nav = 'reservation';
         $table = $this->selectSallesReservations();
-        $msg = (!empty($table))? $this->_trad['reservationOk'] : $this->_trad['erreur']['reservationVide'];
+        $this->form->msg = (!empty($table))? $this->_trad['reservationOk'] : $this->_trad['erreur']['reservationVide'];
         $alert = $this->urlReservation();
 
         include VUE . "salles/sallesReservation.tpl.php";

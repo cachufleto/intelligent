@@ -4,7 +4,7 @@
 </div>
 <div class="ligne">
     <div id="formulaire">
-        <?php echo $msg; ?>
+        <?php echo $this->form->msg; ?>
         <form action="#" method="POST" enctype="multipart/form-data">
         <?php echo $form; ?>
         </form>

@@ -1,5 +1,7 @@
 <?php
 namespace commande;
+use App\formulaire;
+
 include_once MODEL . 'commande.php';
 include_once LIB . 'commande.php';
 
@@ -12,6 +14,14 @@ include_once LIB . 'commande.php';
 
 class commande extends \App\commande
 {
+    var $form = false;
+
+    public function __construct()
+    {
+        $this->form = new formulaire();
+        parent::__construct();
+    }
+
     public function validerCommande()
     {
         $nav = 'commande';

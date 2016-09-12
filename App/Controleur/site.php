@@ -1,10 +1,20 @@
 <?php
 namespace site;
+use App\formulaire;
+
 include_once MODEL . 'site.php';
 //include_once FUNC . 'site.func.php';
 
 class site extends \Model\site
 {
+    var $form = false;
+
+    public function __construct()
+    {
+        $this->form = new formulaire();
+        parent::__construct();
+    }
+
     public function home()
     {
         $nav = 'home';
@@ -84,7 +94,7 @@ class site extends \Model\site
     {
         //$this->_trad
 
-        $msg = ($nav=='erreur404')?
+        $this->form->msg = ($nav=='erreur404')?
             $this->_trad['erreur']['erreur404'] :
             $this->_trad['enConstruccion'];
 

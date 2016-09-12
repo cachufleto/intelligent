@@ -9,7 +9,7 @@
 namespace App;
 
 
-class formuliare
+class formulaire
 {
     var $_trad = '';
     var $_formulaire = '';
@@ -170,6 +170,113 @@ class formuliare
         return $formulaire; // texte
     }
 
+    # Fonction formulaireAfficherMod()
+    # Mise en forme des differents items du formulaire
+    #$_form => tableau des items
+    # RETURN string du formulaire
+    public function formulaireAfficherMod()
+    {
+        //$_trad = setTrad();
+        //global $_formIncription;
+        $formulaire = '';
+
+        foreach($this->_formulaire as $champ => $info){
+            $ligneForm = ($info['type'] == 'file' OR $info['type'] == 'textarea' )? 'ligneFile' : 'ligneForm';
+            $value = isset($info['valide'])? html_entity_decode($info['valide']) : '';
+            if($champ == 'sexe') {
+                if(isset($this->_trad['value'][$value]))
+                    $value = $this->_trad['value'][$value];
+                else{
+                    $info['type'] = 'select';
+                }
+            }
+
+            if($info['type'] != 'hidden'){
+
+                if(!isset($info['obligatoire']) || utilisateurAdmin()){
+                    $label = key_exists($champ, $this->_trad['champ'])? $this->_trad['champ'][$champ] : $champ;
+                    $formulaire .=  '
+				<div class="' . $ligneForm . '" >
+					<label class="label" >' . (($champ != 'valide')? $label : '&nbsp;') . '</label>
+					<div class="champs">' . $this->typeForm($champ, $info);
+
+                    $formulaire .= '</div>
+				</div>';
+
+                    if(!empty($info['rectification']))
+                    {
+                        $formulaire .=  '
+				<div class="' . $ligneForm . '" >
+					<label class="label rectifier" style="color:red">Rectifier</label>
+					<div class="champs">' . $this->typeForm($champ.'2', $info) . '</div>
+				</div>';
+                    }
+
+                    $formulaire .= ((isset($info['message']))? '<div class="erreur">' .$info['message']. '</div>': '');
+
+                } elseif($champ != 'statut'){
+                    $formulaire .=  '
+				<div class="' . $ligneForm . '" >
+					<label class="label" >' . $this->_trad['champ'][$champ] ;
+                    $formulaire .= '</label>
+					<div class="champs">' . $value . '</div>
+				</div>';
+                }
+
+            } else $formulaire .= $this->typeForm($champ, $info);
+        }
+
+        return $formulaire; // texte
+    }
+
+    # Fonction formulaireAfficherInfo()
+    # Mise en forme des differents items du formulaire
+    #$_form => tableau des items
+    # RETURN string du formulaire
+    public function formulaireAfficherInfo()
+    {
+        //$_trad = setTrad();
+        //global $_formIncription;
+        $formulaire = '';
+        foreach($this->_formulaire as $champ => $info){
+            $ligneForm = ($info['type'] == 'file' OR $info['type'] == 'textarea' )? "ligneFile" : "ligneForm";
+            $value = isset($info['valide'])? html_entity_decode($info['valide']) : '';
+            if($info['type'] != 'hidden')
+            {
+                if($champ == 'valide'){
+                    $formulaire .=  '
+				<div class="ligneForm" >
+					<label class="label" >&nbsp;</label>
+					<div class="champs">' . $this->typeForm($champ, $info) . '</div>
+				</div>';
+
+                } else{
+                    $formulaire .=  '
+				<div class="' . $ligneForm . '" >
+					<label class="label" >' . $this->_trad['champ'][$champ] ;
+                    if($info['type'] == 'file') {
+                        $formulaire .= '</label>
+						<div class="champs"><img src="' . imageExiste($value) . '">	</div>
+					</div>';
+                    }
+                    else {
+                        $formulaire .= '</label>
+						<div class="champs">' .
+                            (isset($info['option'])
+                                ? ((array_key_exists($value, $this->_trad['value']))?
+                                    $this->_trad['value'][$value] : $this->_trad['value']['indefini'])
+                                : $value ) . '</div>
+					</div>';
+                    }
+                }
+            } elseif(isset($info['acces'])) {
+                $formulaire .= $this->typeForm($champ, $info);
+            }
+        }
+
+        return $formulaire; // texte
+    }
+
     # Fonction typeForm() de mise en forme des differents balises html
     # $champ => nom de l'item
     # $info => tableau des informations relatives a l'item
@@ -215,7 +322,7 @@ class formuliare
                 $balise = '
 			<select class=" " id="' . $champ . '" name="' . $champ . '">';
                 foreach($info['option'] as $value){
-                    $check = selectCheck($info, $value);
+                    $check = $this->selectCheck($info, $value);
                     $balise .= '
 				<option value="' .  $value . '" ' . $check . ' >'.$this->_trad['value'][$value].'</option>';
                 }
@@ -230,7 +337,7 @@ class formuliare
 
                 $balise = '<select class=" " id="' . $champ . '" name="' . $champ . '">';
                 foreach($info['option'] as $key=>$value){
-                    $check = selectCheck($info, $key);
+                    $check = $this->selectCheck($info, $key);
                     $balise .= '<option value="' .  $key . '" ' . $check . ' >'.$this->_trad['value'][$value].'</option>';
                 }
                 // Balise par defaut
@@ -250,6 +357,7 @@ class formuliare
                 break;
 
             case 'textarea':
+                $valeur = ($valeur == $info['defaut'])? '' : $valeur;
                 $balise = '
 					<textarea id="' . $champ . '"  name="' . $champ . '" class="' . $class . '"   placeholder="' . $info['defaut'] . '">' . $valeur . '</textarea>';
                 return $balise;
@@ -350,5 +458,36 @@ class formuliare
 
     }
 
+    # Fonction testNumerique()
+    # Vérifie la valeur alphanumerique d'une chaine de caracteres
+    # $value => valeur à tester
+    # RETURN Boolean
+    public function testNumerique($valeur)
+    {
+        return preg_match('#[a-zA-Z.\s.-]#', $valeur);
+
+    }
+
+    # Fonction testFormatMail()
+    # Vérifie la valeur alphanumerique d'une chaine de caracteres
+    # $value => valeur à tester
+    # RETURN Boolean
+    public function testFormatMail($valeur)
+    {
+        return filter_var($valeur, FILTER_VALIDATE_EMAIL);
+
+    }
+
+    # Fonction selectCheck()
+    # Vérifie la valeur du check
+    # $info => array(...'valide'), valeurs du champs
+    # $value => valeur à comparer
+    # RETURN string
+    public function selectCheck($info, $value)
+    {
+        // info['valide'] => valeur du formulaire
+        return (!empty($info['valide']) && $info['valide'] == $value)? 'selected="selected"' : '';
+
+    }
 
 }

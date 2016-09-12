@@ -1,7 +1,6 @@
 <?php
 namespace users;
-
-use App\formuliare;
+use App\formulaire;
 
 include_once MODEL . 'users.php';
 include_once LIB . 'users.php';
@@ -12,7 +11,7 @@ class users extends \App\users
 
     public function __construct()
     {
-        $this->form = new formuliare();
+        $this->form = new formulaire();
         parent::__construct();
     }
 
@@ -22,10 +21,9 @@ class users extends \App\users
         // traitement POST du formulaire
         $this->form->_formulaire = $_formulaire;
 
-        $this->form->msg = '';
         if (isset($_POST['valide']) && $this->form->postCheck(true)) {
             //$msg = ($_POST['valide'] == 'cookie') ? 'cookie' : inscriptionValider($_formulaire);
-            $msg = $this->inscriptionValider();
+            $this->form->msg = $this->inscriptionValider();
         }
 
         $form = ('OK' != $this->form->msg) ? $this->form->formulaireAfficher() : '';
@@ -35,7 +33,6 @@ class users extends \App\users
 
     public function backOff_users()
     {
-        $msg = '';
         $nav = 'users';
         //$this->_trad
         //include PARAM . 'profil.param.php';
@@ -51,7 +48,7 @@ class users extends \App\users
                 if ($_GET['delete'] != $_SESSION['user']['id']) {
                     $this->setUserActive($_GET['delete'], 0);
                 } else {
-                    $msg = $this->_trad['vousNePouvezPasVousSupprimerVousMeme'];
+                    $this->form->msg = $this->_trad['vousNePouvezPasVousSupprimerVousMeme'];
                 }
 
             } elseif (!empty($_GET['active'])) {
@@ -60,7 +57,7 @@ class users extends \App\users
 
             } else if (!empty($_GET['delete']) && $_GET['delete'] == 1) {
 
-                $msg = $this->_trad['numAdmInsufisant'];
+                $this->form->msg = $this->_trad['numAdmInsufisant'];
 
             }
 
@@ -126,31 +123,32 @@ class users extends \App\users
         if (utilisateurAdmin()) {
             include PARAM . 'backOff_profil.param.php';
         }
-        include FUNC . 'form.func.php';
+        //include FUNC . 'form.func.php';
+        $this->form->_formulaire = $_formulaire;
+
         if (!isset($_SESSION['user'])) {
             header('Location:index.php');
             exit();
         }
         // extraction des données SQL
-        $msg = '';
-        if ($this->modCheckMembres($_formulaire, $_id, 'membres')) {
+        if ($this->modCheckMembres($_id, 'membres')) {
             // traitement POST du formulaire
             if ($_valider) {
-                $msg = $this->_trad['erreur']['inconueConnexion'];
-                if (postCheck($_formulaire, TRUE)) {
-                    $msg = ($_POST['valide'] == 'cookie') ? 'cookie' : $this->profilValider($_formulaire);
+                $this->form->msg = $this->_trad['erreur']['inconueConnexion'];
+                if ($this->form->postCheck($this->form->_formulaire, TRUE)) {
+                    $this->form->msg = ($_POST['valide'] == 'cookie') ? 'cookie' : $this->profilValider();
                 }
             }
-            if ('OK' == $msg) {
+            if ('OK' == $this->form->msg) {
                 // on renvoi ver connection
-                $msg = $this->_trad['lesModificationOntEteEffectues'];
+                $this->form->msg = $this->_trad['lesModificationOntEteEffectues'];
                 // on évite d'afficher les info du mot de passe
-                unset($_formulaire['mdp']);
-                $form = formulaireAfficherInfo($_formulaire);
+                unset($this->form->_formulaire['mdp']);
+                $form = $this->form->formulaireAfficherInfo();
             } else {
-                if (!empty($msg) || $_modifier) {
-                    $_formulaire['valide']['defaut'] = $this->_trad['defaut']['MiseAJ'];
-                    $form = formulaireAfficherMod($_formulaire);
+                if (!empty($this->form->msg) || $_modifier) {
+                    $this->form->_formulaire['valide']['defaut'] = $this->_trad['defaut']['MiseAJ'];
+                    $form = $this->form->formulaireAfficherMod();
                 } elseif (
                     !empty($_POST['valide']) &&
                     $_POST['valide'] == $this->_trad['Out'] &&
@@ -159,8 +157,8 @@ class users extends \App\users
                     header('Location:' . LINK . '?nav=users');
                     exit();
                 } else {
-                    unset($_formulaire['mdp']);
-                    $form = formulaireAfficherInfo($_formulaire);
+                    unset($this->form->_formulaire['mdp']);
+                    $form = $this->form->formulaireAfficherInfo();
                 }
             }
         } else {
@@ -169,48 +167,48 @@ class users extends \App\users
         include VUE . 'users/profil.tpl.php';
     }
 
-# Fonction profilValider()
-# Verifications des informations en provenance du formulaire
-# @_formulaire => tableau des items
-# RETURN string msg
-    public function profilValider(&$_formulaire)
+    # Fonction profilValider()
+    # Verifications des informations en provenance du formulaire
+    # @_formulaire => tableau des items
+    # RETURN string msg
+    public function profilValider()
     {
         global $minLen;
 
         //$this->_trad
 
         // control d'intrusion du membre
-        if ($_formulaire['id']['sql'] != $_formulaire['id']['defaut']) {
+        if ($this->form->_formulaire['id']['sql'] != $this->form->_formulaire['id']['defaut']) {
             //_debug($_formulaire, 'SQL');
             return '<div class="alert">' . $this->_trad['erreur']['NULL'] . '!!!!!</div>';
         }
-        $msg = $erreur = false;
+        $this->form->msg = $erreur = false;
         $sql_set = '';
         // active le controle pour les champs telephone et gsm
         $controlTelephone = true;
 
-        $id_membre = $_formulaire['id']['sql'];
+        $id_membre = $this->form->_formulaire['id']['sql'];
 
-        foreach ($_formulaire as $key => $info) {
+        foreach ($this->form->_formulaire as $key => $info) {
 
             $label = $this->_trad['champ'][$key];
             $valeur = (isset($info['valide'])) ? $info['valide'] : NULL;
 
             if ('valide' != $key && 'id' != $key) {
 
-                if (isset($info['maxlength']) && !testLongeurChaine($valeur, $info['maxlength']) && !empty($valeur)) {
+                if (isset($info['maxlength']) && !$this->form->testLongeurChaine($valeur, $info['maxlength']) && !empty($valeur)) {
 
                     $erreur = true;
-                    $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                    $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
                         ': ' . $this->_trad['erreur']['doitContenirEntre'] . $minLen .
                         ' et ' . $info['maxlength'] . $this->_trad['erreur']['caracteres'];
 
                 }
 
-                if ('vide' != testObligatoire($info) && !testObligatoire($info) && empty($valeur)) {
+                if ('vide' != $this->form->testObligatoire($info) && !$this->form->testObligatoire($info) && empty($valeur)) {
 
                     $erreur = true;
-                    $_formulaire[$key]['message'] = $label . $this->_trad['erreur']['obligatoire'];
+                    $this->form->_formulaire[$key]['message'] = $label . $this->_trad['erreur']['obligatoire'];
 
                 } else {
 
@@ -227,20 +225,20 @@ class users extends \App\users
 
                         case 'email': // il est obligatoire
 
-                            if (testFormatMail($valeur)) {
+                            if ($this->form->testFormatMail($valeur)) {
 
-                                $membre = $this->selectMailUser($_formulaire['id']['sql'], $valeur);
+                                $membre = $this->selectMailUser($this->form->_formulaire['id']['sql'], $valeur);
 
                                 // si la requete retourne un enregisterme, c'est que 'email' est deja utilisé en BD.
                                 if ($membre->num_rows > 0) {
                                     $erreur = true;
-                                    $msg .= '<br/>' . $this->_trad['erreur']['emailexistant'];
+                                    $this->form->msg .= '<br/>' . $this->_trad['erreur']['emailexistant'];
                                 }
 
                             } else {
 
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label . ' "' . $valeur .
+                                $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label . ' "' . $valeur .
                                     '", ' . $this->_trad['erreur']['aphanumeriqueSansSpace'];
 
                             }
@@ -251,7 +249,7 @@ class users extends \App\users
 
                             if (empty($valeur)) {
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
                                     ': ' . $this->_trad['erreur']['vousDevezChoisireUneOption'];
                             }
 
@@ -259,15 +257,15 @@ class users extends \App\users
 
                         case 'nom': // est obligatoire
                         case 'prenom': // il est obligatoire
-                            if (!testLongeurChaine($valeur)) {
+                            if (!$this->form->testLongeurChaine($valeur)) {
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
                                     ': ' . $this->_trad['erreur']['nonVide'];
 
-                            } elseif (!testAlphaNumerique($valeur)) {
+                            } elseif (!$this->form->testAlphaNumerique($valeur)) {
 
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label . ' "' . $valeur .
+                                $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label . ' "' . $valeur .
                                     '", ' . $this->_trad['erreur']['aphanumeriqueSansSpace'];
 
                             }
@@ -287,13 +285,13 @@ class users extends \App\users
                                 if (isset($info['length']) && (strlen($valeur) < $info['length'] || strlen($valeur) > $info['length'] + 4)) {
 
                                     $erreur = true;
-                                    $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                    $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
                                         ': ' . $this->_trad['erreur']['doitContenir'] . $info['length'] . $this->_trad['erreur']['caracteres'];
                                 }
 
-                                if (testNumerique($valeur)) {
+                                if ($this->form->testNumerique($valeur)) {
                                     $erreur = true;
-                                    $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                    $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
                                         ': ' . $this->_trad['erreur']['queDesChiffres'];
                                 }
 
@@ -301,21 +299,29 @@ class users extends \App\users
 
                             break;
 
+                        case 'cp':
+                            if ($this->form->testNumerique($valeur)) {
+                                $erreur = true;
+                                $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                    ': ' . $this->_trad['erreur']['queDesChiffres'];
+                            }
+                        break;
+
                         case 'statut':
 
                             if ($this->testADMunique($valeur, $id_membre)) {
                                 $erreur = true;
-                                $msg .= '<br/>' . $this->_trad['numAdmInsufisant'];
-                                $_formulaire['statut']['valide'] = 'ADM';
+                                $this->form->msg .= '<br/>' . $this->_trad['numAdmInsufisant'];
+                                $this->form->_formulaire['statut']['valide'] = 'ADM';
                             }
 
                             break;
 
                         default:
                             $long = (isset($info['maxlength'])) ? $info['maxlength'] : 250;
-                            if (!empty($valeur) && !testLongeurChaine($valeur, $long)) {
+                            if (!empty($valeur) && !$this->form->testLongeurChaine($valeur, $long)) {
                                 $erreur = true;
-                                $_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
+                                $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
                                     ': ' . $this->_trad['erreur']['minimumAphaNumerique'] . ' ' . $minLen . ' ' . $this->_trad['erreur']['caracteres'];
                             }
                     }
@@ -332,25 +338,25 @@ class users extends \App\users
         // au moins un doit être sonseigné
         if ($controlTelephone) {
             $erreur = true;
-            $_formulaire['telephone']['message'] = $this->_trad['erreur']['controlTelephone'];
+            $this->form->_formulaire['telephone']['message'] = $this->_trad['erreur']['controlTelephone'];
         }
 
         // si une erreur c'est produite
         if ($erreur) {
-            $msg = '<div class="alert">' . $this->_trad['ERRORSaisie'] . $msg . '</div>';
+            $this->form->msg = '<div class="alert">' . $this->_trad['ERRORSaisie'] . $this->form->msg . '</div>';
 
         } else {
 
             if (!empty($sql_set)) {
-                $this->userUpdate($sql_set, $_formulaire['id']['sql']);
+                $this->userUpdate($sql_set, $this->form->_formulaire['id']['sql']);
             } else {
-                $msg = $this->_trad['erreur']['inconueConnexion'];
+                $this->form->msg = $this->_trad['erreur']['inconueConnexion'];
             }
             // ouverture d'une session
-            $msg = "OK";
+            $this->form->msg = "OK";
         }
 
-        return $msg;
+        //return $msg;
     }
 
     public function identifians()
@@ -358,11 +364,12 @@ class users extends \App\users
         //$this->_trad
         include PARAM . 'identifians.param.php';
 
-        include FUNC . 'form.func.php';
+        //include FUNC . 'form.func.php';
+        $this->form->_formulaire = $_formulaire;
 
-        $msg = $this->usersIdentifians();
+        $this->form->msg = $this->usersIdentifians();
 
-        $form = formulaireAfficher($_formulaire);
+        $form = $this->form->formulaireAfficher();
 
         include VUE . 'users/identifians.tpl.php';
     }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<?php $_trad = setTrad(); ?>
+<?php //$_trad = setTrad(); ?>
 <html lang="<?php echo $_SESSION['lang']; ?>">
 <head>
 	<title><?php echo (isset($_trad['titre'][$nav])? $_trad['titre'][$nav] : "INTELLIGENT"); ?></title>

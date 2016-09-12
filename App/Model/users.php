@@ -92,9 +92,9 @@ class users extends Bdd
         $this->executeRequete($sql);
     }
 
-    protected function getUserMail($info)
+    protected function getUserMail($email)
     {
-        $sql = "SELECT id, nom, prenom, email FROM membres WHERE email = '" . $info['email']['valide'] . "'";
+        $sql = "SELECT id, nom, prenom, email FROM membres WHERE email = '$email'";
         $membre = $this->executeRequete($sql);
         if ($membre->num_rows > 0) {
             $num = $membre->fetch_assoc();
@@ -114,10 +114,10 @@ class users extends Bdd
         return false;
     }
 
-    protected function userChangerMDPInsert($checkinscription, $info)
+    protected function userChangerMDPInsert($checkinscription, $email)
     {
         $sql = "INSERT INTO checkinscription (id_membre, checkinscription)
-        VALUES ( (SELECT id FROM membres WHERE email = '" . $info['email']['valide'] . "'), '$checkinscription');";
+        VALUES ( (SELECT id FROM membres WHERE email = '$email'), '$checkinscription');";
 
         return $this->executeRequete($sql);
     }

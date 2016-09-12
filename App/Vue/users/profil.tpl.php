@@ -6,7 +6,7 @@
     <div id="formulaire">
         <?php
         // affichage
-        echo $msg;
+        echo $this->form->msg;
         ?>
         <form action="#" method="POST">
             <?php

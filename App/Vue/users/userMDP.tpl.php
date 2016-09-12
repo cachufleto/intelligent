@@ -9,7 +9,7 @@
         if ($_jeton) {
             echo $this->_trad['redirigeVerConnection'];
         } else {
-            echo $msg, '
+            echo $this->form->msg, '
                     <form action="#" method="POST">
                     ' . $form . '
                     </form>';

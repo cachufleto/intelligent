@@ -8,14 +8,14 @@ include_once MODEL . 'users.tpl.php';
 function valideForm()
 {
 
-    global $_formulaire, $minLen;
+    global $minLen;
 
     $_trad = setTrad();
 
     $message = '';
     $sql_Where = '';
 
-    foreach ($_formulaire as $key => $info){
+    foreach ($this->form->_formulaire as $key => $info){
 
         $label = $_trad[$key];
         $valeur = (isset($info['valide']))? $info['valide'] : NULL;
@@ -61,9 +61,9 @@ function valideForm()
         if($membre->num_rows == 1) // si la requete tourne un enregisterme,cest cest que le pseudo est deja utilisé en BD.
         {
             $session = $membre->fetch_assoc();
-            if(isset($crypte) && hashDeCrypt($_formulaire[$crypte])){
-                $_formulaire[$crypte]['sql'] = $session[$crypte];
-                if(hashDeCrypt($_formulaire[$crypte])){
+            if(isset($crypte) && hashDeCrypt($this->form->_formulaire[$crypte])){
+                $this->form->_formulaire[$crypte]['sql'] = $session[$crypte];
+                if(hashDeCrypt($this->form->_formulaire[$crypte])){
                     // overture d'une session Membre
                     ouvrirSession($session);
                     $message = 'OK';
