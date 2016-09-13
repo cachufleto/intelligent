@@ -8,16 +8,19 @@ include_once MODEL . 'site.php';
 class site extends \Model\site
 {
     var $form = false;
+    var $nav = 'home';
+    var $_trad = [];
 
     public function __construct()
     {
+        $this->_trad = setTrad();
         $this->form = new formulaire();
         parent::__construct();
     }
 
     public function home()
     {
-        $nav = 'home';
+        //$nav = 'home';
         //$this->_trad
 
         $salles = $this->selectSallesActive();
@@ -35,12 +38,12 @@ class site extends \Model\site
     {
         if($arg = basename(str_replace('?', '', $_SERVER['HTTP_REFERER']))){
             if(preg_match('#&#', $_SERVER['HTTP_REFERER'])){
-                $_arg = $nav = explode('&', $arg);
-                $nav = explode('=', $_arg[0]);
+                $_arg = $_nav = explode('&', $arg);
+                $_nav = explode('=', $_arg[0]);
                 return $nav[1];
             } else {
-                $nav = explode('=', $arg);
-                return $nav[1];
+                $_nav = explode('=', $arg);
+                return $_nav[1];
             }
         }
         return false;
@@ -48,9 +51,9 @@ class site extends \Model\site
 
     public function backoffice()
     {
-        $nav = 'backoffice';
+        $this->nav = 'backoffice';
         //$this->_trad
-        if($nav=$this->recupNav()){
+        if($this->nav=$this->recupNav()){
             header('location:' . basename($_SERVER['HTTP_REFERER']));
         }
         // phpinfo();
@@ -80,13 +83,13 @@ class site extends \Model\site
 
     public function mentions()
     {
-        $nav = 'mentions';
+        $this->nav = 'mentions';
         include VUE . 'site/static.tpl.php';
     }
 
     public function cgv()
     {
-        $nav = 'cgv';
+        $this->nav = 'cgv';
         include VUE . 'site/static.tpl.php';
     }
 
@@ -94,7 +97,7 @@ class site extends \Model\site
     {
         //$this->_trad
 
-        $this->form->msg = ($nav=='erreur404')?
+        $this->form->msg = ($this->nav=='erreur404')?
             $this->_trad['erreur']['erreur404'] :
             $this->_trad['enConstruccion'];
 

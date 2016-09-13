@@ -521,7 +521,7 @@ class articles extends \Model\articles
     
         $table = array();
         $position = 1;
-        $nav = ($reservation)? 'reservation' : 'articles';
+        $this->nav = ($reservation)? 'reservation' : $this->nav;
         $articles = $this->selectArticlesOrder($this->orderArticles(), $reservation);
         $panier = isset($_SESSION['panier'][$_SESSION['date']])?
                     $_SESSION['panier'][$_SESSION['date']] : [];
@@ -536,8 +536,8 @@ class articles extends \Model\articles
                 'photo'=>'<a href="' . LINK . '?nav=ficheArticles&id=' . $data['id_article'] . '&pos=' . $position . '" " >
                     <img class="trombi" src="' . imageExiste($data['photo']) . '" ></a>',
                 'reservation'=>(isset($panier[$data['id_article']])) ?
-                    '<a href="' . LINK . '?nav=' . $nav . '&enlever=' . $data['id_article'] . '&pos=' . $position . '" >' . $this->_trad['enlever'] . '</a>' :
-                    ' <a href="' . LINK . '?nav=' . $nav . '&reserver=' . $data['id_article'] . '&pos=' . $position . '">' . $this->_trad['reserver'] . '</a>',
+                    '<a href="' . LINK . '?nav=' . $this->nav . '&enlever=' . $data['id_article'] . '&pos=' . $position . '" >' . $this->_trad['enlever'] . '</a>' :
+                    ' <a href="' . LINK . '?nav=' . $this->nav . '&reserver=' . $data['id_article'] . '&pos=' . $position . '">' . $this->_trad['reserver'] . '</a>',
                 /*'total' => (isset($panier[$data['id_article']]['total'])?
                             "[ Total:" . number_format($panier[$data['id_article']]['total'], 2) . "€ ]" :
                             ""), */

@@ -9,7 +9,7 @@ $disponibilite = disponibilite();
 
 echo <<<EOL
 <div class="ligne">
-    <h1>{$this->_trad['nav'][$nav]}</h1>
+    <h1>{$this->_trad['nav'][$this->nav]}</h1>
 </div>
 <div class="ligne">
     <p>{$this->form->msg}</p>

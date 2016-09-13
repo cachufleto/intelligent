@@ -9,10 +9,10 @@
 /*
  * RETURN array route
  */
-function file_contents_route(){
+/*function file_contents_route(){
     include ( CONF . 'route.php');
     return $route;
-}
+}*/
 
 
 

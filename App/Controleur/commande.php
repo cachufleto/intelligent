@@ -15,6 +15,7 @@ include_once LIB . 'commande.php';
 class commande extends \App\commande
 {
     var $form = false;
+    var $nav = 'commandes';
 
     public function __construct()
     {
@@ -24,7 +25,7 @@ class commande extends \App\commande
 
     public function validerCommande()
     {
-        $nav = 'commande';
+        //$nav = 'commande';
         //$this->_trad
         $listePrix = $this->listeProduitsFacture();
 
@@ -51,7 +52,7 @@ class commande extends \App\commande
 
     public function commandes()
     {
-        $nav = 'commande';
+        //$nav = 'commande';
         //$this->_trad
         $listePrix = $this->listeProduitsCommandes();
 
@@ -60,7 +61,7 @@ class commande extends \App\commande
 
     public function backOff_gestionCommandes()
     {
-        $nav = 'commande';
+        //$nav = 'commande';
         //$this->_trad
         $listePrix = $this->listeProduitsGestionCommandes();
 

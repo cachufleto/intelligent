@@ -13,13 +13,26 @@ class Bdd
 {
     var $BDD = '';
     var $connexion = FALSE;
-    var $_trad = '';
-    
+
     public function __construct()
     {
-        $this->BDD = setBDD();
-        $this->_trad = setTrad();
+        $this->iniApp();
         $this->connectMysqli();
+    }
+
+    protected function iniApp()
+    {
+        // inclusion des paramettres de connexion
+        if(file_exists(CONF . 'connection.php')){
+            $this->setBDD();
+            // installation de la BDD
+            if (isset($_GET['install']) && $_GET['install'] == 'BDD') {
+                include LIB . 'install.php';
+            }
+        }else{
+            exit("<h2>L'Outil n'est pas instalé!<h2><p>Vous n'avez pas les parametres de connection à la base des donnes</p>");
+        }
+
     }
 
     protected function executeRequeteInsert($req)
@@ -78,9 +91,17 @@ class Bdd
         $this->connexion->set_charset("utf-8"); // en cas de souci d'encodage avec l'utf-8
     }
 
+    public function setBDD()
+    {
+        require CONF . 'connection.php';
+        $this->BDD = $BDD;
+    }
+
     public function __destruct()
     {
         // TODO: Implement __destruct() method.
-        //$this->connexion->close() or die ($this->_trad['erreur']['ATTENTIONImpossibleFermerConnexionBDD'] . ${$this->connexion}->error . '<br />');
+        if($this->connexion) {
+            $this->connexion->close() or die ($this->_trad['erreur']['ATTENTIONImpossibleFermerConnexionBDD'] . ${$this->connexion}->error . '<br />');
+        }
     }
 }

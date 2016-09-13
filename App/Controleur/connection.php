@@ -15,6 +15,7 @@ include_once LIB . 'users.php';
 class connection extends \App\users
 {
     var $form = false;
+    var $nav = 'connection';
 
     public function __construct()
     {
@@ -24,7 +25,7 @@ class connection extends \App\users
 
     public function connection()
     {
-        $nav = 'connection';
+        //$nav = 'connection';
         //$this->_trad
 
         include PARAM . 'connection.param.php';

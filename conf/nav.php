@@ -9,64 +9,64 @@ if(!defined('RACINE_SITE')) {
 ////////////////////////////
 
 $_pages['home'] = array(
-		'link' => LINK,
-		'affiche' => true);
+	'link' => LINK,
+	'affiche' => true);
 
 $_pages['detail'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 $_pages['reservation'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 $_pages['reservationArticle'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 $_pages['recherche'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 $_pages['rechercheArticle'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 $_pages['mdpperdu'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 $_pages['inscription'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 $_pages['mentions'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 $_pages['cgv'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 $_pages['plan'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 $_pages['newsletter'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 $_pages['contact'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 $_pages['salles'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 $_pages['articles'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 $_pages['ficheSalles'] = array(
 	'link' => LINK,
@@ -87,55 +87,55 @@ $_pages['identifians'] = array(
 /************   MEMBRE    **************/
 
 $_pages['actif'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 $_pages['out'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 $_pages['panier'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 $_pages['mjprofil'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 $_pages['profil'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 $_pages['ficheMembre'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 /************   ADMIN    **************/
 
 $_pages['backoffice'] = array(
-		'link' => LINK,
-		'class' => 'admin',
-		'affiche' => false);
+	'link' => LINK,
+	'class' => 'admin',
+	'affiche' => false);
 
 $_pages['boutique'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 $_pages['users'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 $_pages['commandes'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 $_pages['gestionSalles'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 $_pages['gestionArtcles'] = array(
-		'link' => LINK,
-		'affiche' => false);
+	'link' => LINK,
+	'affiche' => false);
 
 $_pages['editerSalles'] = array(
 	'link' => LINK,
@@ -163,5 +163,5 @@ $navAdmin = array('home', 'salles', 'articles', 'users', 'commandes', 'out' );
 
 //$navFooter = array('mentions', 'cgv', 'plan', 'newsletter', 'contact' );
 $navFooter = array('mentions', 'cgv', 'contact' );
-
-
+// page par defaut
+$navDefaut = 'home';

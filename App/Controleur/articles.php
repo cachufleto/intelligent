@@ -9,6 +9,7 @@ include_once LIB . 'articles.php';
 class articles extends \App\articles
 {
     var $form = false;
+    var $nav = 'articles';
 
     public function __construct()
     {
@@ -18,7 +19,7 @@ class articles extends \App\articles
 
     public function articles()
     {
-        $nav = 'articles';
+        //$nav = 'articles';
         //$msg = '';
         //$this->_trad
         $this->reservationArticles();
@@ -30,7 +31,7 @@ class articles extends \App\articles
 
     public function ficheArticles()
     {
-        $nav = 'ficheArticles';
+        $this->nav = 'ficheArticles';
         //$this->_trad
         //$msg = '';
 
@@ -60,7 +61,7 @@ class articles extends \App\articles
 
     public function backOff_articles()
     {
-        $nav = 'gestionArticles';
+        $this->nav = 'gestionArticles';
         $alert = '';
         //$msg = '';
         //$this->_trad
@@ -136,7 +137,7 @@ class articles extends \App\articles
 
     public function backOff_ficheArticles()
     {
-        $nav = 'ficheArticles';
+        $this->nav = 'ficheArticles';
         //$msg = '';
         //$this->_trad
 
@@ -204,7 +205,7 @@ class articles extends \App\articles
         $message = '';
         $nomImage = '';
 
-        $nav = 'editerArticles';
+        $this->nav = 'editerArticles';
         //$this->_trad
 
         // traitement du formulaire
@@ -235,8 +236,8 @@ class articles extends \App\articles
     {
         //$this->_trad
         $this->reservationArticles();
+        $this->nav = 'reservation';
 
-        $nav = 'reservation';
         $table = $this->selectArticlesReservations();
         $this->form->msg = (!empty($table))? $this->_trad['reservationOk'] : $this->_trad['erreur']['reservationVide'];
         $alert = $this->urlReservation();

@@ -9,6 +9,7 @@ include_once LIB . 'salles.php';
 class salles extends \App\salles
 {
     var $form = false;
+    var $nav = 'salles';
 
     public function __construct()
     {
@@ -18,7 +19,6 @@ class salles extends \App\salles
 
     public function salles()
     {
-        $nav = 'salles';
         //$msg = '';
         //$this->_trad
         $this->reservationSalles();
@@ -30,7 +30,7 @@ class salles extends \App\salles
 
     public function ficheSalles()
     {
-        $nav = 'ficheSalles';
+        $this->nav = 'ficheSalles';
         //$this->_trad
         //$msg = '';
 
@@ -60,7 +60,7 @@ class salles extends \App\salles
 
     public function backOff_salles()
     {
-        $nav = 'gestionSalles';
+        $this->nav = 'gestionSalles';
         $alert = '';
         //$msg = '';
         //$this->_trad
@@ -136,7 +136,7 @@ class salles extends \App\salles
 
     public function backOff_ficheSalles()
     {
-        $nav = 'ficheSalles';
+        $this->nav = 'ficheSalles';
         //$msg = '';
         //$this->_trad
 
@@ -204,7 +204,7 @@ class salles extends \App\salles
         $message = '';
         $nomImage = '';
 
-        $nav = 'editerSalles';
+        $this->nav = 'editerSalles';
         //$this->_trad
 
         // traitement du formulaire
@@ -236,7 +236,7 @@ class salles extends \App\salles
         //$this->_trad
         $this->reservationSalles();
 
-        $nav = 'reservation';
+        $this->nav = 'reservation';
         $table = $this->selectSallesReservations();
         $this->form->msg = (!empty($table))? $this->_trad['reservationOk'] : $this->_trad['erreur']['reservationVide'];
         $alert = $this->urlReservation();

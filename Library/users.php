@@ -616,8 +616,6 @@ class users extends \Model\users
                 header("refresh:5;url=index.php?nav=expiration");
             }
         }
-    
         include VUE . 'users/userMDP.tpl.php';
-    
     }
 }

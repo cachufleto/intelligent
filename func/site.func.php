@@ -1,5 +1,5 @@
 <?php
-function siteHeader($_linkCss)
+/*function siteHeader($_linkCss)
 {
     $_link = '';
     foreach($_linkCss as $link) {
@@ -7,9 +7,9 @@ function siteHeader($_linkCss)
     <link href="' . $link . '" rel="stylesheet">';
     }
     return $_link;
-}
+}*/
 
-function siteHeaderJS($_linkJS)
+/*function siteHeaderJS($_linkJS)
 {
     $_link = '';
     foreach($_linkJS as $link) {
@@ -17,9 +17,9 @@ function siteHeaderJS($_linkJS)
     <script src="' . $link . '"></script>';
     }
     return $_link;
-}
+}*/
 
-function nav($_menu = '')
+/* function nav($_menu = '')
 {
     $_trad = setTrad();
     listeMenu();
@@ -45,14 +45,14 @@ function nav($_menu = '')
             "</li>";
 
     return $li;
-}
+} */
 
 
 # Fonction listeMenu()
 # Valide le menu de navigation
 # [@_pages] => array de navigation
 # RETURN Boolean
-function listeMenu()
+/*function listeMenu()
 {
 
     if(!utilisateurAdmin()) return;
@@ -85,7 +85,7 @@ function listeMenu()
             exit($_trad['laRubrique'] . $key . $_trad['pasDansMenuAdmin']);
 
     return;
-}
+}*/
 
 # Fonction liste_nav()
 # affiche les informations en forme de liste du menu de navigation
@@ -94,7 +94,7 @@ function listeMenu()
 # [@_pages] => array('nav'...)
 # [@titre] => string titre de la page
 # RETURN string liste <li>...</li>
-function liste_nav($liste='')
+/*function liste_nav($liste='')
 {
 
     global $nav, $_pages, $navFooter, $navAdmin, $_reglesAdmin, $_reglesMembre, $_reglesAll;
@@ -130,14 +130,14 @@ function liste_nav($liste='')
     }
 
     return array('menu'=>$menu, 'class'=>$class . ' col-'.$col);
-}
+}*/
 
-function footer()
+/*function footer()
 {
     $info = liste_nav('navFooter');
     $info['version'] = file_get_contents(CONF . 'version.txt');
     return $info;
-}
+}*/
 
 /**
  * Function pour l'option de hashage

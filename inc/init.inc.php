@@ -4,14 +4,14 @@
 //require CONF . 'init.php';
 
 //require FUNC . 'com.func.php';
-require FUNC . 'site.func.php';
+//require FUNC . 'site.func.php';
 
 /************************************************************
  * Creation de la session
  *************************************************************/
 // debug($_SESSION, 'SESSION');
 // chargement de la langue
-
+/*
 // gestion de session
 include LIB . 'install.php';
 
@@ -31,5 +31,5 @@ if (isSuperAdmin()) {
 }
 
 $_linkJs[] = LINK . 'js/script.js';
-
+*/
 

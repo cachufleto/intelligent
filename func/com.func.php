@@ -65,7 +65,7 @@ function envoiMail($message, $to = WEBMAIL)
 function setTrad()
 {
 	// on charge la langue de base
-	require CONF . 'trad' . DIRECTORY_SEPARATOR . 'fr' . DIRECTORY_SEPARATOR . 'traduction.php';
+	// require CONF . 'trad' . DIRECTORY_SEPARATOR . 'fr' . DIRECTORY_SEPARATOR . 'traduction.php';
 	require CONF . 'trad' . DIRECTORY_SEPARATOR . 'fr' . DIRECTORY_SEPARATOR . 'traduction.php';
 	// on surcharge la langue de l'utilisateur si different à celle de base
 	if ($_SESSION['lang'] != 'fr') {
@@ -74,11 +74,6 @@ function setTrad()
 	return $_trad;
 }
 
-function setBDD()
-{
-	require CONF . 'connection.php';
-	return $BDD;
-}
 function setPrixPlage()
 {
 	include CONF . 'parametres.param.php';

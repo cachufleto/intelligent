@@ -8,6 +8,7 @@ include_once LIB . 'users.php';
 class users extends \App\users
 {
     var $form = '';
+    var $nav = 'users';
 
     public function __construct()
     {
@@ -33,7 +34,6 @@ class users extends \App\users
 
     public function backOff_users()
     {
-        $nav = 'users';
         //$this->_trad
         //include PARAM . 'profil.param.php';
 
@@ -117,7 +117,7 @@ class users extends \App\users
 
     public function profil()
     {
-        $nav = 'profil';
+        $this->nav = 'profil';
         //$this->_trad
         include PARAM . 'profil.param.php';
         if (utilisateurAdmin()) {

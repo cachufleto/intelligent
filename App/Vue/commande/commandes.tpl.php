@@ -26,7 +26,7 @@
 }
 </style>
 <?php
-$lien = LINK . '?nav=' . $nav;
+$lien = LINK . '?nav=' . $this->nav;
 include CONF . 'parametres.param.php';
 
 $_liste = '';
@@ -54,7 +54,7 @@ foreach($listePrix as $reservee=>$produit){
 
 echo <<<EOL
 <div class="ligne">
-    <h1>{$this->_trad['nav'][$nav]}</h1>
+    <h1>{$this->_trad['nav'][$this->nav]}</h1>
 </div>
 <div id="commandes" class="ligne commandes">
 <div class='ligne row'>

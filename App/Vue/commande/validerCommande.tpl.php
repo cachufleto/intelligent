@@ -1,8 +1,8 @@
 <?php
-$lien = LINK . '?nav=' . $nav;
+$lien = LINK . '?nav=' . $this->nav;
 echo <<<EOL
 <div class="ligne">
-    <h1>{$this->_trad['nav'][$nav]}</h1>
+    <h1>{$this->_trad['nav'][$this->nav]}</h1>
 </div>
 <div class="ligne">
     <div class="facture">

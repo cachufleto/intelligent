@@ -7,11 +7,19 @@
  */
 
 namespace App;
-
+include_once LIB . 'menu.php';
+use App\menu;
 
 class App extends Bdd
 {
-    var $routeur = [];
+    var $route = [];
+    var $_pages = [];
+    var $navDefaut = '';
+    var $nav = '';
+    var $menu = '';
+    var $_linkJs = [];
+    var $_linkCss = [];
+/**********************************/
     var $page = 'home';
     var $session = 'site';
     var $controleur = 'site\site';
@@ -20,20 +28,63 @@ class App extends Bdd
 
     public function __construct()
     {
-        ## Ouverture des sessions
-        session_start();
+        // initiation de la session
+        $this->destroy();
         $this->SetSession();
         $this->setLang();
         $this->setCookieLang();
         $this->setBackoffice();
-        $this->destroy();
+
+        $this->SetDate();
         $this->controldate();
-        $this->routeur = file_contents_route();
-        $this->setPage();
+
+        $this->file_contents_route();
+        $this->file_contents_nav();
+
+        $this->setLinks();
+        $this->setNav();
+        $this->menu = new menu($this->nav);
+        //$this->setPage();
+        $this->setControleur();
+
         //$this->_trad
         $this->iniTarget();
         //$this->setSessionMoteurRecherche();
         parent::__construct();
+    }
+
+    protected function setLinks()
+    {
+        $this->_linkCss[] = LINK . 'css/style.css';
+        $this->_linkCss[] = LINK . 'css/tablette.css';
+        $this->_linkCss[] = LINK . 'css/smart.css';
+
+        if (isSuperAdmin()) {
+            // ajout du css admin
+            $this->_linkCss[] = LINK . 'css/admin.css';
+        }
+
+        $this->_linkJs[] = LINK . 'js/script.js';
+    }
+
+    public function siteHeader()
+    {
+        $_link = '';
+        foreach($this->_linkCss as $key=>$link) {
+            $_link .= '
+    <link href="' . $link . '" rel="stylesheet">';
+        }
+        return $_link;
+    }
+
+    public function siteHeaderJS()
+    {
+        $_link = '';
+        foreach($this->_linkJS as $key=>$link) {
+            $_link .= '
+    <script src="' . $link . '"></script>';
+        }
+        return $_link;
     }
 
     protected function iniTarget()
@@ -47,18 +98,9 @@ class App extends Bdd
             }
         }
     }
+
     protected function SetSession()
     {
-        // valeur par default
-        $_SESSION['lang'] = (isset($_SESSION['lang']))? $_SESSION['lang'] : 'fr';
-
-        if(!isset($_SESSION['date'])){
-            // la reservation est à partir du jour suivant
-            $time = (time() + 2*(60*60*24));
-            $_SESSION['date'] = date('Y-m-d',$time);
-            $_SESSION['dateTimeOk'] = true;
-        }
-
         if(!isset($_SESSION['numpersonne'])){
             // la reservation est à partir du jour suivant
             $_SESSION['numpersonne'] = '';
@@ -71,8 +113,20 @@ class App extends Bdd
 
     }
 
+    protected function SetDate()
+    {
+        if(!isset($_SESSION['date'])){
+            // la reservation est à partir du jour suivant
+            $time = (time() + 2*(60*60*24));
+            $_SESSION['date'] = date('Y-m-d',$time);
+            $_SESSION['dateTimeOk'] = true;
+        }
+    }
+
     protected function setLang()
     {
+        // valeur par default
+        $_SESSION['lang'] = (isset($_SESSION['lang']))? $_SESSION['lang'] : 'fr';
         // recuperation du cookis lang
         $_SESSION['lang'] = (isset($_COOKIE['Intelligent']))?
             $_COOKIE['Intelligent']['lang'] : $_SESSION['lang'];
@@ -153,32 +207,59 @@ class App extends Bdd
     {
         if(!empty($_GET)){
             // page de navigation
-            $this->page = (isset($_GET['nav']) AND !empty($_GET['nav']))? $_GET['nav'] : 'home';
+            $this->page = (isset($_GET['nav']) AND !empty($_GET['nav']))? $_GET['nav'] : $this->page;
             // cas spécifique
             $this->page = (!utilisateurAdmin() && $this->page=='users')? 'home' : $this->page;
             // REGLE D'orientation des pages actif et out ver connection
             if('actif' == $this->page || 'out' == $this->page) {
                 $this->page = 'connection';
             }
-            $this->setControleur();
+
+        }
+    }
+
+    protected function setNav()
+    {
+        // page de navigation
+        $this->nav = (isset ($_GET['nav']) && !empty($_GET['nav']))? $_GET['nav'] : $this->navDefaut;
+        $this->nav = (array_key_exists($this->nav, $this->_pages))? $this->nav : 'erreur404';
+
+        // REGLE D'orientation des pages actif et out ver connection
+        if('actif' == $this->nav || 'out' == $this->nav) {
+            $this->nav = 'connection';
+        }
+
+        // cas spécifique
+        $this->nav = (!utilisateurAdmin() && $this->nav=='users')? $this->navDefaut : $this->nav;
+        // erreur 404
+        $this->nav = array_key_exists($this->nav, $this->route)? $this->nav : 'erreur404';
+    }
+
+    public function getControleur()
+    {
+        include_once $this->class;
+        $app = new $this->controleur();
+        if (method_exists($app, $this->action)){
+            return $app;
+        } else {
+            $controleur = $this->route['erreur404']['Controleur'];
+            include_once CONTROLEUR . $controleur;
+            $this->action = $this->route['erreur404']['action'];
+            $controleur = $controleur.'\\'.$controleur;
+            return new $controleur();
         }
     }
 
     protected function setControleur()
     {
-        if(array_key_exists($this->page, $this->routeur)){
-            if(file_exists(CONTROLEUR . $this->routeur[$this->page]['Controleur'] . '.php')){
-                $controleur = $this->routeur[$this->page]['Controleur'];
-                $this->class = CONTROLEUR . $controleur . '.php';
-                $this->session = $controleur;
-                $this->controleur = $controleur.'\\'.$controleur;
-                $this->action = $this->routeur[$this->page]['action'];
-            } else {
-                $this->page = 'erreur404';
-                $this->action = 'erreur404';
-            }
+        if(file_exists(CONTROLEUR . $this->route[$this->nav]['Controleur'] . '.php')){
+            $controleur = $this->route[$this->nav]['Controleur'];
+            $this->class = CONTROLEUR . $controleur . '.php';
+            $this->session = $controleur;
+            $this->controleur = $controleur.'\\'.$controleur;
+            $this->action = $this->route[$this->nav]['action'];
         } else {
-            $this->page = 'erreur404';
+            $this->nav = 'erreur404';
             $this->action = 'erreur404';
         }
     }
@@ -233,4 +314,24 @@ class App extends Bdd
             $_SESSION['recherche'][$this->session] = [];
         }
     }*/
+
+    /*
+     * RETURN array route
+     */
+    public function file_contents_route()
+    {
+        include ( CONF . 'route.php');
+        $this->route = $route;
+    }
+
+    /*
+     * RETURN info Nav
+     */
+    public function file_contents_nav()
+    {
+        include ( CONF . 'nav.php');
+        $this->_pages = $_pages;
+        $this->navDefaut = $navDefaut;
+    }
+
 }

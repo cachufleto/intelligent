@@ -1,5 +1,5 @@
 <?php
-$lien = LINK . '?nav=' . $nav;
+$lien = LINK . '?nav=' . $this->nav;
 include VUE . 'salles/moteur.tpl.php';
 
 echo '
