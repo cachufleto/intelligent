@@ -11,6 +11,14 @@ namespace App;
 
 class commande extends \Model\commande
 {
+    var $_trad = [];
+
+    public function __construct()
+    {
+        $this->_trad = setTrad();
+        parent::__construct();
+    }
+
     protected function listeProduitsFacture()
     {
         $listePrix = [];

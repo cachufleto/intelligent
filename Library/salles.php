@@ -10,8 +10,11 @@ namespace App;
 
 class salles extends \Model\salles
 {
+    var $_trad = [];
+
     public function __construct()
     {
+        $this->_trad = setTrad();
         parent::__construct();
         $this->getIndisponibilite();
     }

@@ -1,30 +1,3 @@
-<style>
-.row{
-   background-color: #FF7F0E;
-}
-.row_0{
-   background-color: #FFFFF8;
-}
-.row_1{
-    background-color: #CCCCCC;
-}
-.now_0{
-    background-color: #d3dbb4;
-    color: #CCCCCC;
-}
-.now_1{
-    background-color: #8cb523;
-    color: #CCCCCC;
-}
-.old_0{
-    background-color: #e8c1b0;
-    color: #CCCCCC;
-}
-.old_1{
-    background-color: #b58896;
-    color: #CCCCCC;
-}
-</style>
 <?php
 $lien = LINK . '?nav=' . $this->nav;
 include CONF . 'parametres.param.php';

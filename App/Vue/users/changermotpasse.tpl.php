@@ -1,16 +1,20 @@
-<?php //$this->_trad ?>
+<?php
+if($this->form->msg == 'OK'){
+    $info = $this->_trad['priseEnCompteMDP'];
+} else {
+    $info = $this->form->msg . '
+    <form action="#" method="POST">
+        '.$form.'
+    </form>';
+}
+
+echo <<<EOL
 <div class="ligne">
-    <h1><?php echo $this->_trad['titre']['validerMDP']; ?></h1>
+    <h1>{$this->_trad['titre']['validerMDP']}</h1>
 </div>
 <div class="ligne">
     <div id="formulaire">
-        <?php if($this->form->msg == 'OK'){
-            echo $this->_trad['priseEnCompteMDP'];
-        } else {
-            echo $this->form->msg; ?>
-        <form action="#" method="POST">
-            <?php echo $form; ?>
-        </form>
-        <?php } ?>
+        $info
     </div>
 </div>
+EOL;

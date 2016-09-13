@@ -10,8 +10,12 @@ namespace App;
 
 class articles extends \Model\articles
 {
+    var $_trad = [];
+    var $nav = 'articles';
+
     public function __construct()
     {
+        $this->_trad = setTrad();
         parent::__construct();
         $this->getIndisponibilite();
     }
@@ -517,8 +521,6 @@ class articles extends \Model\articles
     
     protected function listeArticles($reservation = false)
     {
-        //$this->_trad
-    
         $table = array();
         $position = 1;
         $this->nav = ($reservation)? 'reservation' : $this->nav;

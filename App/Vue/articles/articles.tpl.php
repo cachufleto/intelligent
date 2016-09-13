@@ -11,7 +11,7 @@ if(!empty($table['info'])){
         $nom = strtoupper($article['nom']);
         $active = isset($_SESSION['panier'][$_SESSION['date']][$article['ref']])? "active" : "";
 
-        echo <<<EOL
+echo <<<EOL
         <div class="quart">
             {$article['position']}
             <h3>$nom</h3>

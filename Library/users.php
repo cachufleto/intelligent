@@ -8,6 +8,14 @@ namespace App;
 
 class users extends \Model\users
 {
+    var $_trad = [];
+
+    public function __construct()
+    {
+        $this->_trad = setTrad();
+        parent::__construct();
+    }
+
     protected function changerMotPasseValider()
     {
         global $minLen;

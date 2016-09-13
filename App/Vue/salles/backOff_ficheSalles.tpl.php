@@ -1,12 +1,15 @@
-<?php //$this->_trad ?>
+<?php
+$position = $position-1;
+echo <<<EOL
 <div class="ligne">
-    <h1><?php echo $this->_trad['titre']['ficheSalles']; ?></h1>
+    <h1>{$this->_trad['titre']['ficheSalles']}</h1>
 </div>
 <div class="ligne">
     <div id="formulaire" class="fichesalles">
-        <?php echo $this->form->msg; ?>
-        <form action="#<?php echo "P-".($position -1); ?>" enctype="multipart/form-data" method="POST">
-        <?php echo $form; ?>
+        {$this->form->msg}
+        <form action="#P-$position" enctype="multipart/form-data" method="POST">
+        {$form}
         </form>
     </div>
 </div>
+EOL;

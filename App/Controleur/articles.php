@@ -9,7 +9,6 @@ include_once LIB . 'articles.php';
 class articles extends \App\articles
 {
     var $form = false;
-    var $nav = 'articles';
 
     public function __construct()
     {
@@ -19,12 +18,8 @@ class articles extends \App\articles
 
     public function articles()
     {
-        //$nav = 'articles';
-        //$msg = '';
-        //$this->_trad
         $this->reservationArticles();
         $alert = $this->urlReservation();
-
         $table = $this->listeArticles();
         include VUE . 'articles/articles.tpl.php';
     }

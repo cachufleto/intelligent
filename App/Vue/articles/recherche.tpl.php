@@ -1,16 +1,16 @@
-<?php //$this->_trad ?>
+<?php
+echo <<<EOL
 <div class="ligne">
-    <h1><?php echo $this->_trad['titre']['editerArticles']; ?></h1>
+    <h1>{$this->_trad['titre']['editerArticles']}</h1>
 </div>
 <div class="ligne">
     <div id="formulaire">
         <form action="" method="POST">
-            <?php
-            echo $echoville;
-            echo $echocategorie;
-            echo $echocapacite;
-            ?>
+            $echoville
+            $echocategorie
+            $echocapacite
             <input type="submit" value="chercher">
         </form>
     </div>
 </div>
+EOL;

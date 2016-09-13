@@ -25,6 +25,8 @@ require FUNC . 'site.func.php';
 session_start();
 // class de l'application
 require LIB . 'App.php';
+/*************************************************************/
+ob_start();
 
 // application
 $__app = new \App\App();
@@ -36,17 +38,15 @@ if ($__app->nav != 'erreur404'){
 	$app = $__app->getControleur();
 	$app->{$__app->action}('erreur404');
 }
+//$arg = ($__app->nav == 'erreur404')? $__app->nav : '';
 
-/*************************************************************/
-ob_start();
-
-$arg = ($__app->nav == 'erreur404')? $__app->nav : '';
-$app->{$__app->action}($arg);
+//$app->{$__app->action}($arg);
 
 _debug($__app->route[$__app->nav], 'Route pour: ' . $__app->nav);
 
 $contentPage = ob_get_contents();
 ob_end_clean();
+
 ob_start();
 if(DEBUG) {
 	debugPhpInfo();
@@ -54,9 +54,9 @@ if(DEBUG) {
 	debug($_debug);
 }
 debugTestMail();
+
 $debug = ob_get_contents();
 ob_end_clean();
-
 if(file_exists(APP . 'Public/css/' . $__app->route[$__app->nav]['action'] . '.css')){
 	$__app->_linkCss[] = LINK . 'css/' . $__app->route[$__app->nav]['action'] . '.css';
 }
@@ -69,5 +69,7 @@ $navPp = $__app->menu->nav((utilisateurAdmin() && isset($_SESSION['BO']))? 'navA
 //$nav = array_key_exists($__app->nav, $__app->route)? $__app->nav : 'erreur404';
 
 $footer = $__app->menu->footer();
+$link = LINK;
+$titre = $__app->__get('titre');
 
 include VUE . 'template.tpl.php';

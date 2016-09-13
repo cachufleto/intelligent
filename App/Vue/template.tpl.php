@@ -1,8 +1,9 @@
+<?php
+echo <<<EOL
 <!DOCTYPE html>
-<?php //$_trad = setTrad(); ?>
-<html lang="<?php echo $_SESSION['lang']; ?>">
+<html lang="{$_SESSION['lang']}">
 <head>
-	<title><?php echo (isset($_trad['titre'][$nav])? $_trad['titre'][$nav] : "INTELLIGENT"); ?></title>
+	<title>$titre</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,42 +11,38 @@
 	<meta name="author" content="Carlos PAZ DUPRIEZ">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-	<link rel="icon" href="<?php echo LINK;  ?>img/favicon.ico" type="image/x-icon">
-	<?php echo $_link; ?>
+	<link rel="icon" href="{$link}img/favicon.ico" type="image/x-icon">
+	$_link
 	<script src="<?php echo LINK;  ?>js/script.js" type="text/javascript"></script>
 </head>
 
 <body class="body">
 <!-- ENTETE -->
 <header class="mainHeader">
-	<a class="logo" href="?"><img src="<?php echo LINK; ?>img/intelligent.png" alt="intelligent" class="logo"></a>
+	<a class="logo" href="?"><img src="{$link}img/intelligent.png" alt="intelligent" class="logo"></a>
 	<nav>
 		<ul>
-			<?php echo $navPp; ?>
+			$navPp
 		</ul>
 	</nav>
 </header>
 <!-- CORP -->
 <section class="mainContent">
-	<?php
-		echo $contentPage;
-	?>
+	$contentPage
 	<div class="barre">&nbsp;</div>
 </section>
 <!-- DEBUG -->
 <section id="debug">
-	<?php
-	echo $debug;
-	?>
+	$debug
 </section>
 <!-- Pied de Page -->
 <footer class="mainFooter">
 	<div class="ligne">
 		<nav>
 			<ul>
-				<?php echo $footer['menu']; ?>
+				{$footer['menu']}
 				<li>
-					<a class="version" href=""><?php echo $footer['version']; ?></a>
+					<a class="version" href="">{$footer['version']}</a>
 				</li>
 			</ul>
 		</nav>
@@ -53,3 +50,4 @@
 </footer>
 </body>
 </html>
+EOL;

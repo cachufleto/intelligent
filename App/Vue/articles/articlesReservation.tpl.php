@@ -11,7 +11,7 @@ if(!empty($table['info'])){
         $nom = strtoupper($article['nom']);
         $active = isset($_SESSION['panier'][$_SESSION['date']][$article['ref']])? "active" : "";
 
-        echo <<<EOL
+echo <<<EOL
         <div class="quart">
             {$article['position']}
             <h3>$nom</h3>
@@ -78,7 +78,6 @@ foreach($listePrix as $date=>$data){
                         </div>
                     </div>";
 }
-echo "<div class='ligne'>$reservation</div>";
-echo '
+echo "<div class='ligne'>$reservation</div>
     </div>
-</div>';
+</div>";

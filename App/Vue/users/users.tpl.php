@@ -1,27 +1,33 @@
-<?php //$this->_trad ?>
+<?php
+$infoForm = '';
+foreach($table['champs'] as $champ=>$info ){
+    $cols = ($champ == 'active')? ' colspan="2"': '';
+    $infoForm .= "<th$cols>$info</th>";
+}
+
+$infoForm .= '
+</tr>';
+
+foreach($table['info'] as $ligne=>$membre){
+    $class = ($ligne%2 == 1)? 'lng1':'lng2' ;
+    $infoForm .= '
+    <tr class="'.$class.'">';
+        foreach($membre as $champ=>$info ){
+            $infoForm .= "<td>$info</td>";
+        }
+    $infoForm .= '
+    </tr>';
+}
+
+echo <<<EOL
 <div class="ligne">
-    <h1><?php echo $this->_trad['titre']['users']; ?></h1>
+    <h1>{$this->_trad['titre']['users']}</h1>
 </div>
 <div class="ligne">
-    <p><?php echo $this->form->msg; ?></p>
+    <p>{$this->form->msg}</p>
     <table>
         <tr>
-        <?php
-        foreach($table['champs'] as $champ=>$info ){
-            $cols = ($champ == 'active')? 'colspan="2"': '';
-            echo "<th $cols>$info</th>";
-        }
-        ?>
-        </tr>
-        <?php foreach($table['info'] as $ligne=>$membre){
-            $class = ($ligne%2 == 1)? 'lng1':'lng2' ; ?>
-        <tr class="<?php echo $class; ?>">
-        <?php
-        foreach($membre as $champ=>$info ){
-            echo "<td>$info</td>";
-        }
-        ?>
-        </tr>
-        <?php } ?>
+        $infoForm
     </table>
 </div>
+EOL;

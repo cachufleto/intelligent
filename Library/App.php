@@ -12,6 +12,7 @@ use App\menu;
 
 class App extends Bdd
 {
+    var $_trad = [];
     var $route = [];
     var $_pages = [];
     var $navDefaut = '';
@@ -34,6 +35,7 @@ class App extends Bdd
         $this->setLang();
         $this->setCookieLang();
         $this->setBackoffice();
+        $this->_trad = setTrad();
 
         $this->SetDate();
         $this->controldate();
@@ -43,6 +45,7 @@ class App extends Bdd
 
         $this->setLinks();
         $this->setNav();
+        $this->setTitre();
         $this->menu = new menu($this->nav);
         //$this->setPage();
         $this->setControleur();
@@ -51,6 +54,20 @@ class App extends Bdd
         $this->iniTarget();
         //$this->setSessionMoteurRecherche();
         parent::__construct();
+    }
+
+    public function __get($arg)
+    {
+        if(isset($this->$arg)){
+            return $this->$arg;
+        } else {
+            return 'error';
+        }
+    }
+
+    protected function setTitre()
+    {
+       $this->titre = (isset($this->_trad['titre'][$this->nav])? $this->_trad['titre'][$this->nav] : "INTELLIGENT");
     }
 
     protected function setLinks()

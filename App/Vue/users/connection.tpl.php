@@ -1,20 +1,23 @@
-<?php //$this->_trad ?>
+<?php
+$link = LINK;
+echo <<<EOL
 <div class="ligne">
-    <h1><?php echo $this->_trad['titre']['connection']; ?></h1>
+    <h1>{$this->_trad['titre']['connection']}</h1>
 </div>
 <div class="ligne">
     <div id="formulaire">
-        <p><?php echo $this->form->msg; ?></p>
+        <p>{$this->form->msg}</p>
         <form action="#" method="POST">
-        <?php echo $form; ?>
+        $form
         </form>
         <div class="ligneForm">
-            <label class="label"><?php echo $this->_trad['pasEncoreMembre']; ?></label>
-            <div class="champs"><a href="<?php echo LINK; ?>?nav=inscription"><?php echo $this->_trad['inscrivezVous']; ?></a></div>
+            <label class="label">{$this->_trad['pasEncoreMembre']}</label>
+            <div class="champs"><a href="$link?nav=inscription">{$this->_trad['inscrivezVous']}</a></div>
         </div>
         <div class="ligneForm">
-            <label class="label"><?php echo $this->_trad['motPasseOublie']; ?></label>
-            <div class="champs"><a href="<?php echo LINK; ?>?nav=changermotpasse"><?php echo $this->_trad['demandeDeMotPasse']; ?></a></div>
+            <label class="label">{$this->_trad['motPasseOublie']}</label>
+            <div class="champs"><a href="$link?nav=changermotpasse">{$this->_trad['demandeDeMotPasse']}</a></div>
         </div>
     </div>
 </div>
+EOL;

@@ -7,11 +7,12 @@
  */
 
 $pos = isset($_GET['pos'])? '&pos=' . $_GET['pos'] : '';
-?>
+echo <<<EOL
 <div class="ligne">
     <div id="formulaire" class="fichesalle produits">
-    <form action="?nav=location&id=<?php echo $_GET['id'], $pos; ?>" method="POST">
-        <?php echo $form; ?>
+    <form action="?nav=location&id={$_GET['id']}$pos" method="POST">
+        {$form}
     </form>
     </div>
 </div>
+EOL;

@@ -1,12 +1,14 @@
-<?php //$this->_trad ?>
+<?php
+echo <<<EOL
 <div class="ligne">
-    <h1><?php echo $this->_trad['titre']['editerArticles']; ?></h1>
+    <h1>{$this->_trad['titre']['editerArticles']}</h1>
 </div>
 <div class="ligne">
     <div id="formulaire">
-        <?php echo $this->form->msg; ?>
+        {$this->form->msg}
         <form action="#" method="POST" enctype="multipart/form-data">
-        <?php echo $form; ?>
+        $form
         </form>
     </div>
 </div>
+EOL;
