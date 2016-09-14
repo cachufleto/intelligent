@@ -3,64 +3,16 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Mer 14 Septembre 2016 à 22:06
+-- Généré le :  Mar 06 Septembre 2016 à 18:06
 -- Version du serveur :  5.7.9
 -- Version de PHP :  5.6.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
 --
--- Base de données :  `intelligent`
+-- Base de données :  `lokisalle`
 --
-
--- --------------------------------------------------------
-
---
--- Structure de la table `articles`
---
-
-DROP TABLE IF EXISTS `articles`;
-CREATE TABLE IF NOT EXISTS `articles` (
-  `id_article` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `pays` varchar(20) NOT NULL,
-  `ville` varchar(20) NOT NULL,
-  `adresse` text NOT NULL,
-  `cp` varchar(10) NOT NULL,
-  `titre` varchar(50) NOT NULL,
-  `telephone` varchar(10) DEFAULT NULL,
-  `gsm` varchar(10) DEFAULT NULL,
-  `description` text NOT NULL,
-  `photo` varchar(200) NOT NULL,
-  `capacite` int(3) UNSIGNED NOT NULL,
-  `cap_min` int(11) NOT NULL DEFAULT '1',
-  `tranche` enum('T1','T2','T3','T4') NOT NULL DEFAULT 'T1',
-  `categorie` enum('R','C','F','T') NOT NULL DEFAULT 'R',
-  `prix_personne` float(4,1) NOT NULL DEFAULT '5.5',
-  `active` int(1) DEFAULT '0',
-  PRIMARY KEY (`id_article`),
-  KEY `id_salle` (`id_article`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `articles_plagehoraires`
---
-
-DROP TABLE IF EXISTS `articles_plagehoraires`;
-CREATE TABLE IF NOT EXISTS `articles_plagehoraires` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `id_salles` int(10) UNSIGNED NOT NULL,
-  `id_plagehoraire` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='relationelle';
 
 -- --------------------------------------------------------
 
@@ -85,8 +37,7 @@ DROP TABLE IF EXISTS `commandes`;
 CREATE TABLE IF NOT EXISTS `commandes` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `id_reservation` int(10) UNSIGNED NOT NULL,
-  `id_article` int(10) UNSIGNED DEFAULT NULL,
-  `id_salle` int(10) UNSIGNED DEFAULT NULL,
+  `id_salle` int(10) UNSIGNED NOT NULL,
   `date_facturacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_reserve` datetime NOT NULL,
   `tranche` tinyint(1) NOT NULL,
@@ -96,7 +47,11 @@ CREATE TABLE IF NOT EXISTS `commandes` (
   `prix_TTC` float(8,2) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `reservations` (`id_salle`,`date_reserve`,`tranche`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Historique des rÃ©servations';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Historique des réservations';
+
+--
+-- Contenu de la table `commandes`
+--
 
 -- --------------------------------------------------------
 
@@ -168,11 +123,14 @@ INSERT INTO `plagehoraires` (`id`, `libelle`, `description`, `heure_entree`, `he
 DROP TABLE IF EXISTS `produits`;
 CREATE TABLE IF NOT EXISTS `produits` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `id_article` int(10) UNSIGNED DEFAULT NULL,
-  `id_salle` int(10) UNSIGNED DEFAULT NULL,
+  `id_salle` int(10) UNSIGNED NOT NULL,
   `id_plagehoraire` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Prix des salles';
+
+--
+-- Contenu de la table `produits`
+--
 
 -- --------------------------------------------------------
 
@@ -206,6 +164,10 @@ CREATE TABLE IF NOT EXISTS `reservations` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Contenu de la table `reservations`
+--
+
 -- --------------------------------------------------------
 
 --
@@ -234,6 +196,10 @@ CREATE TABLE IF NOT EXISTS `salles` (
   KEY `id_salle` (`id_salle`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Contenu de la table `salles`
+--
+
 -- --------------------------------------------------------
 
 --
@@ -244,11 +210,6 @@ DROP TABLE IF EXISTS `salles_plagehoraires`;
 CREATE TABLE IF NOT EXISTS `salles_plagehoraires` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `id_salles` int(10) UNSIGNED NOT NULL,
-  `id_article` int(10) UNSIGNED NOT NULL,
   `id_plagehoraire` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='relationelle';
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
