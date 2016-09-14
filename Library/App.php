@@ -94,7 +94,7 @@ class App extends Bdd
         return $_link;
     }
 
-    public function siteHeaderJS()
+    protected function siteHeaderJS()
     {
         $_link = '';
         foreach($this->_linkJS as $key=>$link) {
@@ -256,15 +256,16 @@ class App extends Bdd
     {
         include_once $this->class;
         $app = new $this->controleur();
-        if (method_exists($app, $this->action)){
-            return $app;
-        } else {
+        if (!method_exists($app, $this->action)){
             $controleur = $this->route['erreur404']['Controleur'];
             include_once CONTROLEUR . $controleur;
             $this->action = $this->route['erreur404']['action'];
             $controleur = $controleur.'\\'.$controleur;
-            return new $controleur();
+            $app = new $app();
         }
+
+        $app->nav = $this->nav;
+        return $app;
     }
 
     protected function setControleur()
@@ -335,7 +336,7 @@ class App extends Bdd
     /*
      * RETURN array route
      */
-    public function file_contents_route()
+    protected function file_contents_route()
     {
         include ( CONF . 'route.php');
         $this->route = $route;
@@ -344,7 +345,7 @@ class App extends Bdd
     /*
      * RETURN info Nav
      */
-    public function file_contents_nav()
+    protected function file_contents_nav()
     {
         include ( CONF . 'nav.php');
         $this->_pages = $_pages;

@@ -187,6 +187,7 @@ $_trad['titre']['reservation'] = "Todas nuestras ofertas";
 $_trad['titre']['articles'] = "Articulos";
 $_trad['titre']['salles'] = "Salas";
 $_trad['titre']['users'] = "Miembros";
+$_trad['titre']['validerCommande'] = "Validacion del pedido";
 $_trad['titre']['validerInscription'] = "Validacion de inscripcion";
 $_trad['titre']['ventes'] = "pedidos";
 

@@ -217,7 +217,7 @@ function postValide($mod=FALSE)
 					if (empty($valeur1)){
 
 						$ok = false;
-						$this->form->_formulaire[$key]['message'] = inputMessage($this->form->_formulaire[$key], $_trad['champ'][$key] . $_trad['erreur']['obligatoire']);
+						$this->form->_formulaire[$key]['message'] = $this->form->inputMessage($this->form->_formulaire[$key], $_trad['champ'][$key] . $_trad['erreur']['obligatoire']);
 						$valide = '';
 
 					}
@@ -226,7 +226,7 @@ function postValide($mod=FALSE)
 
 						// l'un des deux champs est remplie
 						$ok = false;
-						$this->form->_formulaire[$key]['message'] = inputMessage($this->form->_formulaire[$key], $_trad['erreur']['veuillezDeRectifier'] . $_trad['champ'][$key]);
+						$this->form->_formulaire[$key]['message'] = $this->form->inputMessage($this->form->_formulaire[$key], $_trad['erreur']['veuillezDeRectifier'] . $_trad['champ'][$key]);
 						$this->form->msg .= $_trad['erreur']['vousAvezOublieDeRectifier'] . $_trad['champ'][$key];
 						$valide = '';
 
@@ -236,14 +236,11 @@ function postValide($mod=FALSE)
 
 						// les deux valeurs sont differents
 						$ok = false;
-						$this->form->_formulaire[$key]['message'] = inputMessage( $this->form->_formulaire[$key], $_trad['erreur']['deuxValeursDifferents'] . $_trad['champ'][$key]);
+						$this->form->_formulaire[$key]['message'] = $this->form->inputMessage( $this->form->_formulaire[$key], $_trad['erreur']['deuxValeursDifferents'] . $_trad['champ'][$key]);
 						$this->form->msg .= $_trad['erreur']['vousAvezUneErreurDans'] . $_trad['champ'][$key];
 						$valide = '';
-
 					}
 				}
-
-
 			}
 
 				$this->form->_formulaire[$key]['valide'] = (

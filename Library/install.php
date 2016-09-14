@@ -11,7 +11,7 @@ class install extends Bdd
         $this->install();
     }
 
-    public function install()
+    protected function install()
     {
         // initialisation des tables
         $msg = "<p>chargement du fichier shema.sql.....</p>";

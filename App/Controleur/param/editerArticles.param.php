@@ -89,6 +89,13 @@ $_formulaire['categorie'] = array(
 	'defaut' => 'R',
 	'obligatoire' => true);
 
+$_formulaire['plagehoraire'] = array(
+	'type' => 'checkbox',
+	'content' => 'int',
+	'defaut' => "",
+	'option' => array(1=>'matinee', 2=>'journee', 3=>'soiree', 4=>'nocturne'),
+	'obligatoire' => true);
+
 // ############## SUBMIT ############
 $_formulaire['valide'] = array(
 	'type' => 'submit',

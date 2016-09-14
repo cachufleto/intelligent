@@ -29,7 +29,6 @@ function getDebug()
 
 function debugParam()
 {
-    global $route;
     _debug(get_included_files(), 'FILES INCLUDES');
     _debug($_SESSION, 'SESSION');
     _debug($_POST, 'POST');
@@ -46,6 +45,7 @@ function debugParam()
             'ADM' => ADM,
             'INC' => INC,
             'FUNC' => FUNC,
+            'LIB' => LIB,
             'CONF' => CONF,
             'CONTROLEUR' => CONTROLEUR,
             'PARAM' => PARAM,
@@ -60,7 +60,6 @@ function debugParam()
             'DEBUG' => DEBUG),
         'CONSTANTES');
     _debug($_SERVER, 'SERVEUR');
-    _debug($route, 'Route');
 
 }
 

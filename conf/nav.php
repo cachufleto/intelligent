@@ -80,6 +80,14 @@ $_pages['validerInscription'] = array(
 	'link' => LINK,
 	'affiche' => false);
 
+$_pages['validerCommande'] = array(
+	'link' => LINK,
+	'affiche' => false);
+
+$_pages['validerFacture'] = array(
+	'link' => LINK,
+	'affiche' => false);
+
 $_pages['identifians'] = array(
 	'link' => LINK,
 	'affiche' => false);

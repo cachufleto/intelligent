@@ -42,7 +42,7 @@ class formulaire
     # [@$nom_form] tableau des items validées du formulaire
     # $mod => condition pour une action de mise à jour en BDD
     # RETURN string message d'alerte
-    public function postValide()
+    protected function postValide()
     {
         $ok = true;
 
@@ -127,7 +127,7 @@ class formulaire
 
     # Fonction inputMessage()
     # RETURN string message d'alerte
-    public function inputMessage($form, $message)
+    protected function inputMessage($form, $message)
     {
         if(empty($form['message'])){
             return $message;
@@ -174,7 +174,7 @@ class formulaire
     # Mise en forme des differents items du formulaire
     #$_form => tableau des items
     # RETURN string du formulaire
-    public function formulaireAfficherMod()
+    protected function formulaireAfficherMod()
     {
         //$_trad = setTrad();
         //global $_formIncription;
@@ -281,7 +281,7 @@ class formulaire
     # $champ => nom de l'item
     # $info => tableau des informations relatives a l'item
     # RETURN [balises] texte
-    public function typeForm($champ, $info)
+    protected function typeForm($champ, $info)
     {
         $valeur = (!empty($info['valide']) && !is_array($info['valide']))?
             html_entity_decode((!empty($info['valide']))? $info['valide'] : $info['defaut']) :
@@ -402,7 +402,7 @@ class formulaire
     # $info => array(...'valide'), valeurs du champs
     # $value => valeur à comparer
     # RETURN string
-    public function radioCheck($info, $value)
+    protected function radioCheck($info, $value)
     {
         // info['valide'] => valeur du formulaire
         return (!empty($info['valide']) && $info['valide'] == $value)? true : false;
@@ -440,7 +440,7 @@ class formulaire
     # Vérifie la valeur alphanumerique d'une chaine de caracteres
     # $value => valeur à tester
     # RETURN Boolean
-    public function testAlphaNumerique($valeur)
+    protected function testAlphaNumerique($valeur)
     {
         return preg_match('#^[a-zA-Z0-9._-]+$#', $valeur );
 
@@ -451,7 +451,7 @@ class formulaire
     # $info => array(...'valide'), valeurs du champs
     # $value => valeur à comparer
     # RETURN string
-    public function checkboxCheck($info, $value)
+    protected function checkboxCheck($info, $value)
     {
         // info['valide'] => valeur du formulaire
         return (!empty($info['valide']) && in_array($value, $info['valide']))? true : false;
@@ -472,7 +472,7 @@ class formulaire
     # Vérifie la valeur alphanumerique d'une chaine de caracteres
     # $value => valeur à tester
     # RETURN Boolean
-    public function testFormatMail($valeur)
+    protected function testFormatMail($valeur)
     {
         return filter_var($valeur, FILTER_VALIDATE_EMAIL);
 
@@ -483,7 +483,7 @@ class formulaire
     # $info => array(...'valide'), valeurs du champs
     # $value => valeur à comparer
     # RETURN string
-    public function selectCheck($info, $value)
+    protected function selectCheck($info, $value)
     {
         // info['valide'] => valeur du formulaire
         return (!empty($info['valide']) && $info['valide'] == $value)? 'selected="selected"' : '';

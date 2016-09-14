@@ -64,7 +64,7 @@ class salles extends \Model\salles
     # RETURN string alerte
     protected function modCheckSalles($_id)
     {
-        $form = $_formulaire;
+        $form = $this->form->_formulaire;
     
         $sql = "SELECT * FROM salles WHERE id_salle = ". $_id . ( !isSuperAdmin()? " AND active != 0" : "" );
     
@@ -132,21 +132,17 @@ class salles extends \Model\salles
     protected function produitsValider()
     {
         global $minLen;
-        //$this->_trad
-    
-        //$msg = '';
         $erreur = false;
         $sql_Where = '';
         $control = true;
         $message ='';
     
         foreach ($this->form->_formulaire as $key => $info){
-    
             $label = $this->_trad['champ'][$key];
             $valeur = (isset($info['valide']))? $info['valide'] : NULL;
             if($this->form->testObligatoire($info) && empty($valeur)) {
                 $erreur = true;
-                $this->form->_formulaire[$key]['message'] = inputMessage(
+                $this->form->_formulaire[$key]['message'] = $this->form->inputMessage(
                     $this->form->_formulaire[$key], $label . $this->_trad['erreur']['obligatoire']);
             }
     
@@ -724,9 +720,8 @@ class salles extends \Model\salles
     
     protected function listeProduitsPrixReservation($date, $data)
     {
-       $_listeReservation = [];
+        $_listeReservation = [];
         $i = $_total = 0;
-    
         if($prix = $this->selectProduitsSalle($data['id_salle'])){
             while($info = $prix->fetch_assoc() ){
                 $prixSalle= listeCapacites($data, $info);
@@ -816,8 +811,9 @@ class salles extends \Model\salles
             foreach ($listeOrdenee as $key => $date) {
                 foreach($_SESSION['panier'][$date] as $id=>$reserv){
                     $data = $this->selectSalleId($id);
-                    $salle = $data->fetch_assoc();
-                    $listePrix[$date][] = ['salle'=>$salle, 'reservation'=>$this->listeProduitsPrixReservation($date, $salle)];
+                    if($salle = $data->fetch_assoc()){
+                        $listePrix[$date][] = ['salle'=>$salle, 'reservation'=>$this->listeProduitsPrixReservation($date, $salle)];
+                    }
                 }
             }
         }

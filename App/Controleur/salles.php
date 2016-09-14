@@ -30,7 +30,7 @@ class salles extends \App\salles
 
     public function ficheSalles()
     {
-        $this->nav = 'ficheSalles';
+        //$this->nav = 'ficheSalles';
         //$this->_trad
         //$msg = '';
 

@@ -2,7 +2,7 @@
 $lien = LINK . '?nav=' . $this->nav;
 echo <<<EOL
 <div class="ligne">
-    <h1>{$this->_trad['nav'][$this->nav]}</h1>
+    <h1>{$this->_trad['titre'][$this->nav]}</h1>
 </div>
 <div class="ligne">
     <div class="facture">
@@ -23,9 +23,10 @@ foreach($listePrix as $date=>$data){
         }
     }
 }
-
+$_total = number_format ($_total, 2);
 $TTC = round($_total*(1+TVA),2);
-$TVA = $TTC - $_total;
+$TVA = number_format ($TTC - $_total, 2);
+//number_format ($TTC, 2);
 if(!empty($_total)){
     echo <<<EOL
     $_liste
@@ -34,19 +35,19 @@ if(!empty($_total)){
         <div class='titre'>&nbsp;</div>
         <div class='tronche total'>&nbsp;</div>
         <div class='personne total'>TOTAL</div>
-        <div class='prix total'>" . number_format ($_total, 2) . "€</div>
+        <div class='prix total'>{$_total}€</div>
     </div>
     <div class='ligne'>
         <div class='titre'>&nbsp;</div>
         <div class='tronche total'>&nbsp;</div>
         <div class='personne total'>TVA 20%</div>
-        <div class='prix total'>" . number_format ($TVA, 2) . "€</div>
+        <div class='prix total'>{$TVA}€</div>
     </div>
     <div class='ligne'>
         <div class='titre'>&nbsp;</div>
         <div class='tronche total'>&nbsp;</div>
         <div class='personne total'>TTC</div>
-        <div class='prix total'>" . number_format ($TTC, 2) . "€</div>
+        <div class='prix total'>{$TTC}€</div>
     </div>
     <div class='ligne'>
     <hr>

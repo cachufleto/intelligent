@@ -22,6 +22,7 @@ class commande extends \Model\commande
     protected function listeProduitsFacture()
     {
         $listePrix = [];
+        debug($_SESSION['panier']);
         if (isset($_SESSION['panier']) && !empty($_SESSION['panier'])) {
             $listeOrdenee = sortIndice($_SESSION["panier"]);
             foreach ($listeOrdenee as $key => $date) {

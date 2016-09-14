@@ -33,7 +33,7 @@ class menu
     # Valide le menu de navigation
     # [@_pages] => array de navigation
     # RETURN Boolean
-    public function listeMenu()
+    protected function listeMenu()
     {
 
         if(!utilisateurAdmin()) return;
@@ -66,7 +66,7 @@ class menu
     /*
      * RETURN info Nav
      */
-    public function file_contents_nav()
+    protected function file_contents_nav()
     {
         include ( CONF . 'nav.php');
         $this->_pages = $_pages;
@@ -111,7 +111,7 @@ class menu
     # [@_pages] => array('nav'...)
     # [@titre] => string titre de la page
     # RETURN string liste <li>...</li>
-    public function liste_nav($liste='')
+    protected function liste_nav($liste='')
     {
         if(empty($liste)){
             $_liste = (utilisateurAdmin())?

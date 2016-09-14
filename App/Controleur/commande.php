@@ -36,7 +36,6 @@ class commande extends \App\commande
     {
         //$this->_trad
         $facture = $this->generationProduitsFacture();
-
         $id = $this->setReservations();
         $date_facturation = date('Y-m-d H:i:s');
         foreach($facture as $key=>$commande){

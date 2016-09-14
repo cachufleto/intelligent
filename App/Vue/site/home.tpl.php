@@ -1,5 +1,5 @@
 <?php
-$cgv = $this->cgv();
+$cgv = '**';
 echo <<<EOL
 <div class="ligne">
     <h1>{$this->_trad['titre']['home']}</h1>

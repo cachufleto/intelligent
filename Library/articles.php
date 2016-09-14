@@ -147,7 +147,7 @@ class articles extends \Model\articles
             $valeur = (isset($info['valide']))? $info['valide'] : NULL;
             if($this->form->testObligatoire($info) && empty($valeur)) {
                 $erreur = true;
-                $this->form->_formulaire[$key]['message'] = inputMessage(
+                $this->form->_formulaire[$key]['message'] = $this->form->inputMessage(
                     $this->form->_formulaire[$key], $label . $this->_trad['erreur']['obligatoire']);
             }
     
@@ -504,7 +504,7 @@ class articles extends \Model\articles
     protected function selectArticlesReservations()
     {
         $liste = '';
-        if(isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
+        if(isset($_SESSION['panierArticles']) && !empty($_SESSION['panierArticles'])){
             $listeOrdenee = sortIndice($_SESSION["panier"]);
             foreach ($listeOrdenee as $key => $date) {
                 foreach($_SESSION["panier"][$date] as $key => $value) {
@@ -525,8 +525,8 @@ class articles extends \Model\articles
         $position = 1;
         $this->nav = ($reservation)? 'reservation' : $this->nav;
         $articles = $this->selectArticlesOrder($this->orderArticles(), $reservation);
-        $panier = isset($_SESSION['panier'][$_SESSION['date']])?
-                    $_SESSION['panier'][$_SESSION['date']] : [];
+        $panier = isset($_SESSION['panierArticles'][$_SESSION['date']])?
+                    $_SESSION['panierArticles'][$_SESSION['date']] : [];
     
         while ($data = $articles->fetch_assoc()) {
             $min = empty($data['cap_min'])? intval($data['capacite']*0.3) : $data['cap_min'];
@@ -629,24 +629,24 @@ class articles extends \Model\articles
     protected function getIndisponibilite()
     {
         $data = [];
-        if(isset($_SESSION['panier'])){
-            foreach($_SESSION['panier'] as $date => $article){
+        if(isset($_SESSION['panierArticles'])){
+            foreach($_SESSION['panierArticles'] as $date => $article){
                 foreach($article as $id => $item){
                     if($reserves = $this->selectArticleReserves($date, $id)){
                         while ($info = $reserves->fetch_assoc()){
-                            unset($_SESSION['panier'][$date][$id][$info['tranche']]);
-                            //echo($_SESSION['panier'][$date][$id][$info['tranche']]);
+                            unset($_SESSION['panierArticles'][$date][$id][$info['tranche']]);
+                            //echo($_SESSION['panierArticles'][$date][$id][$info['tranche']]);
                         }
                     }
                     // on detruit le set de la sale si vide
-                    if(empty($_SESSION['panier'][$date][$id])){
-                        unset($_SESSION['panier'][$date][$id]);
+                    if(empty($_SESSION['panierArticles'][$date][$id])){
+                        unset($_SESSION['panierArticles'][$date][$id]);
                     }
                 }
     
                 // on detruit la set de la date si vide
-                if(empty($_SESSION['panier'][$date])){
-                    unset($_SESSION['panier'][$date]);
+                if(empty($_SESSION['panierArticles'][$date])){
+                    unset($_SESSION['panierArticles'][$date]);
                 }
     
             }
@@ -672,15 +672,15 @@ class articles extends \Model\articles
                 $ref = '';
                 $i++;
     
-                $reservation = (isset($_SESSION['date']) && isset($_SESSION['panier'][$_SESSION['date']][$data['id_article']]))?
-                                $_SESSION['panier'][$_SESSION['date']][$data['id_article']] : [];
+                $reservation = (isset($_SESSION['date']) && isset($_SESSION['panierArticles'][$_SESSION['date']][$data['id_article']]))?
+                                $_SESSION['panierArticles'][$_SESSION['date']][$data['id_article']] : [];
                 foreach($prixArticle as $key =>$produit){
                     $checked = '';
                     if(isset($reservation[$i]) && $reservation[$i] == $key){
                         // check le boutton
                         $checked = 'checked';
                         if($reservee){
-                            unset($_SESSION['panier'][$_SESSION['date']][$data['id_article']][$key]);
+                            unset($_SESSION['panierArticles'][$_SESSION['date']][$data['id_article']][$key]);
                         } else {
     
                             $_listeReservation[] = $produit;
@@ -730,8 +730,8 @@ class articles extends \Model\articles
             while($info = $prix->fetch_assoc() ){
                 $prixArticle= listeCapacites($data, $info);
                 $i++;
-                $reservation = (isset($_SESSION['panier'][$date][$data['id_article']]))?
-                                $_SESSION['panier'][$date][$data['id_article']] : [];
+                $reservation = (isset($_SESSION['panierArticles'][$date][$data['id_article']]))?
+                                $_SESSION['panierArticles'][$date][$data['id_article']] : [];
     
                 foreach($prixArticle as $key =>$produit){
                     if(isset($reservation[$i]) && $reservation[$i] == $key){
@@ -775,7 +775,7 @@ class articles extends \Model\articles
     protected function listeProduitsReservationPrix($data)
     {
         $listePrix = [];
-        if(isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
+        if(isset($_SESSION['panierArticles']) && !empty($_SESSION['panierArticles'])){
             $listeOrdenee = sortIndice($_SESSION["panier"]);
             foreach ($listeOrdenee as $key => $date) {
                 if(isset($_SESSION["panier"][$date][$data['id_article']])){
@@ -810,10 +810,10 @@ class articles extends \Model\articles
     protected function listeProduitsReservationPrixTotal()
     {
         $listePrix = [];
-        if(isset($_SESSION['panier']) && !empty($_SESSION['panier'])){
+        if(isset($_SESSION['panierArticles']) && !empty($_SESSION['panierArticles'])){
             $listeOrdenee = sortIndice($_SESSION["panier"]);
             foreach ($listeOrdenee as $key => $date) {
-                foreach($_SESSION['panier'][$date] as $id=>$reserv){
+                foreach($_SESSION['panierArticles'][$date] as $id=>$reserv){
                     $data = $this->selectArticleId($id);
                     $article = $data->fetch_assoc();
                     $listePrix[$date][] = ['article'=>$article, 'reservation'=>$this->listeProduitsPrixReservation($date, $article)];
@@ -878,12 +878,12 @@ class articles extends \Model\articles
         if (!empty($_POST)) {
             if (isset($_POST['reserver']) && $_SESSION['dateTimeOk']) {
                 if(isset($_POST['prix'])) {
-                    $_SESSION['panier'][$_SESSION['date']][$_POST['id']] = isset($_POST['prix']) ? $_POST['prix'] : [];
+                    $_SESSION['panierArticles'][$_SESSION['date']][$_POST['id']] = isset($_POST['prix']) ? $_POST['prix'] : [];
                 } else {
                     return false;
                 }
             } else if (isset($_POST['enlever'])) {
-                unset($_SESSION['panier'][$_SESSION['date']][$_POST['id']]);
+                unset($_SESSION['panierArticles'][$_SESSION['date']][$_POST['id']]);
             }
         } else if (!empty($_GET)) {
             if (isset($_GET['reserver']) && $_SESSION['dateTimeOk']) {
@@ -893,7 +893,7 @@ class articles extends \Model\articles
                 header('location:?nav=ficheArticles&id='.$_GET['reserver'].'&pos='.$_GET['pos']);
     
             } else if (isset($_GET['enlever'])) {
-                unset($_SESSION['panier'][$_SESSION['date']][$_GET['enlever']]);
+                unset($_SESSION['panierArticles'][$_SESSION['date']][$_GET['enlever']]);
             }
         }
         return true;

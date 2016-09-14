@@ -91,7 +91,7 @@ class Bdd
         $this->connexion->set_charset("utf-8"); // en cas de souci d'encodage avec l'utf-8
     }
 
-    public function setBDD()
+    protected function setBDD()
     {
         require CONF . 'connection.php';
         $this->BDD = $BDD;

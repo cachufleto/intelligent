@@ -44,7 +44,7 @@ class salles extends Bdd
 
     protected function selectSallesUsers($order)
     {
-// selection de tout les users sauffe le super-ADMIN
+        // selection de tout les users sauffe le super-ADMIN
         $sql = "SELECT id_salle, titre, capacite, cap_min, categorie, photo, active, prix_personne, tranche
             FROM salles " . (!isSuperAdmin() ? " WHERE active != 0 " : "") .
             recherchePernonnes() .
@@ -55,10 +55,8 @@ class salles extends Bdd
 
     protected function selectListeDistinc($champ, $table)
     {
-
         $sql = "SELECT DISTINCT $champ FROM $table ORDER BY $champ ASC";
         return $this->executeRequete($sql);
-
     }
 
     protected function selectProduitsSalle($id)

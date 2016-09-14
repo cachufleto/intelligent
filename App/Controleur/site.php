@@ -20,17 +20,12 @@ class site extends \Model\site
 
     public function home()
     {
-        //$nav = 'home';
-        //$this->_trad
-
         $salles = $this->selectSallesActive();
-
         $dernieresOffres = '<div id="dernieresOffres">';
         while($salle = $salles->fetch_assoc()){
             $dernieresOffres .= dernieresOffres($salle);
         }
         $dernieresOffres .= '</div>';
-
         include VUE . 'site/home.tpl.php';
     }
 
@@ -81,19 +76,12 @@ class site extends \Model\site
         include VUE . 'site/contact.tpl.php';
     }
 
-    public function mentions()
+    public function statics()
     {
-        $this->nav = 'mentions';
         include VUE . 'site/static.tpl.php';
     }
 
-    public function cgv()
-    {
-        $this->nav = 'cgv';
-        include VUE . 'site/static.tpl.php';
-    }
-
-    public function erreur404($nav)
+        public function erreur404($nav)
     {
         //$this->_trad
 

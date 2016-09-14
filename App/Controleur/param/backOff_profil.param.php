@@ -11,9 +11,9 @@ $_formulaire['statut'] = array(
 	'obligatoire' => true,
 	'defaut' => '');
 
-if(isSuperAdmin() && $_id != 1)
+if(isSuperAdmin() && $_id != 1) {
 	$_formulaire['statut']['type'] = 'select';
-
+}
 // id champ cachée
 $_formulaire['id'] = array(
 	'type' => 'hidden',

@@ -39,7 +39,8 @@
 $route = array();
 /****** SITE ******/
 $route['cgv']['Controleur'] = 'site';
-$route['cgv']['action'] = 'cgv';
+//$route['cgv']['action'] = 'cgv';
+$route['cgv']['action'] = 'statics';
 
 $route['contact']['Controleur'] = 'site';
 $route['contact']['action'] = 'contact';
@@ -51,7 +52,8 @@ $route['home']['Controleur'] = 'site';
 $route['home']['action'] = 'home';
 
 $route['mentions']['Controleur'] = 'site';
-$route['mentions']['action'] = 'mentions';
+//$route['mentions']['action'] = 'mentions';
+$route['mentions']['action'] = 'statics';
 
 $route['newsletter']['Controleur'] = 'site';
 $route['newsletter']['action'] = 'newsletter';
