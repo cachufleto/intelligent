@@ -35,7 +35,7 @@ class site extends \Model\site
             if(preg_match('#&#', $_SERVER['HTTP_REFERER'])){
                 $_arg = $_nav = explode('&', $arg);
                 $_nav = explode('=', $_arg[0]);
-                return $nav[1];
+                return $_nav[1];
             } else {
                 $_nav = explode('=', $arg);
                 return $_nav[1];

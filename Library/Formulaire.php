@@ -174,7 +174,7 @@ class formulaire
     # Mise en forme des differents items du formulaire
     #$_form => tableau des items
     # RETURN string du formulaire
-    protected function formulaireAfficherMod()
+    public function formulaireAfficherMod()
     {
         //$_trad = setTrad();
         //global $_formIncription;
@@ -240,9 +240,9 @@ class formulaire
         $formulaire = '';
         foreach($this->_formulaire as $champ => $info){
             $ligneForm = ($info['type'] == 'file' OR $info['type'] == 'textarea' )? "ligneFile" : "ligneForm";
-            $value = isset($info['valide'])? html_entity_decode($info['valide']) : '';
-            if($info['type'] != 'hidden')
+            if($champ != 'plagehoraire' AND $info['type'] != 'hidden')
             {
+                $value = isset($info['valide'])? html_entity_decode($info['valide']) : '';
                 if($champ == 'valide'){
                     $formulaire .=  '
 				<div class="ligneForm" >
@@ -269,8 +269,10 @@ class formulaire
 					</div>';
                     }
                 }
-            } elseif(isset($info['acces'])) {
+            } else if(isset($info['acces'])) {
                 $formulaire .= $this->typeForm($champ, $info);
+            } else if($champ == 'plagehoraire'){
+                echo __FUNCTION__ , 'Traitement $champ == plagehoraire<br>';
             }
         }
 
@@ -297,22 +299,44 @@ class formulaire
         switch($info['type']){
 
             case 'password':
-                return '<input type="password" class="' . $class . '"   id="' . $champ . '" name="' . $champ . '" placeholder="' .  $info['defaut']. '" maxlength ="' . $info['maxlength'] . '">';
+                return '<input
+                type="password"
+                class="' . $class . '"
+                id="' . $champ . '"
+                name="' . $champ . '"
+                placeholder="' .  $info['defaut']. '"
+                maxlength ="' . $info['maxlength'] . '">';
                 break;
 
             case 'email':
-                return '<input type="email" class="' . $class . '"   id="' . $champ . '" name="' . $champ . '" ' . $condition . '="' .  $valeur. '" >';
-
+                return '<input
+                type="email" class="' . $class . '"
+                id="' . $champ . '"
+                name="' . $champ . '"
+                ' . $condition . '="' .  $valeur. '" >';
                 break;
 
             case 'radio':
                 $balise = '';
                 foreach($info['option'] as $value){
                     $check = $this->radioCheck($info, $value)? 'checked' : '';
-                    $balise .= $this->_trad['value'][$value].' <input type="radio" class="radio-inline" id="' . $champ . $value . '" name="' . $champ . '" value="' .  $value. '" ' . $check . ' >';
+                    $balise .= $this->_trad['value'][$value].' <input
+                    type="radio"
+                    class="radio-inline"
+                    id="' . $champ . $value . '"
+                    name="' . $champ . '"
+                    value="' .  $value. '"
+                    ' . $check . ' >';
                 }
                 // Balise par defaut
-                $balise .= '<input type="radio" class="radio-inline" id="' . $champ . '" name="' . $champ . '" value="" ' . (empty($info['valide'])? 'checked' : '') . ' style="visibility:hidden;" >';
+                $balise .= '<input
+                type="radio"
+                class="radio-inline"
+                id="' . $champ . '"
+                name="' . $champ . '"
+                value=""
+                ' . (empty($info['valide'])? 'checked' : '') . '
+                style="visibility:hidden;" >';
 
                 return $balise;
                 break;
@@ -351,7 +375,12 @@ class formulaire
                 foreach($info['option'] as $key => $value){
                     $check = $this->checkboxCheck($info, $key)? 'checked="checked" ': '';
                     $balise .=  $this->_trad['value'][$value] .
-                        '<input type="checkbox" class="radio-inline" id="' . $champ . $key .'" name="' . $champ . '[' . $key . ']" '.  $check .'>';
+                        '<input
+                        type="checkbox"
+                        class="radio-inline"
+                        id="' . $champ . $key .'"
+                        name="' . $champ . '[' . $key . ']"
+                        '.  $check .'>';
                 }
                 return $balise;
                 break;
@@ -359,18 +388,31 @@ class formulaire
             case 'textarea':
                 $valeur = ($valeur == $info['defaut'])? '' : $valeur;
                 $balise = '
-					<textarea id="' . $champ . '"  name="' . $champ . '" class="' . $class . '"   placeholder="' . $info['defaut'] . '">' . $valeur . '</textarea>';
+					<textarea
+					id="' . $champ . '"
+					name="' . $champ . '"
+					class="' . $class . '"
+					placeholder="' . $info['defaut'] . '">' . $valeur . '</textarea>';
                 return $balise;
                 break;
 
             case 'hidden':
                 $value = isset($info['acces'])? $info['defaut'] : $valeur;
-                return '<input type="hidden" class="' . $class . '"   name="' . $champ . '" value="' .  $value. '">';
+                return '<input
+                type="hidden"
+                class="' . $class . '"
+                name="' . $champ . '"
+                value="' .  $value. '">';
                 break;
 
             case 'text':
                 $maxlength = (isset($info['maxlength']) AND !empty($info['maxlength']))? ' maxlength ="' . $info['maxlength'] . '"' : '';
-                return '<input type="text" class="' . $class . '"   name="' . $champ . '" ' . $condition . '="' .  $valeur. '" ' . $maxlength . '>';
+                return '<input
+                type="text"
+                class="' . $class . '"
+                name="' . $champ . '"
+                ' . $condition . '="' .  $valeur. '"
+                ' . $maxlength . '>';
                 break;
 
             case 'file':
@@ -379,15 +421,30 @@ class formulaire
                 if(isset($info['sql'])){
                     $image = '<img class="trombi" src="' . imageExiste($info['sql']) . '" >';
                 }
-                return $image . '<input type="file" class="' . $class . '"   name="' . $champ . '" >';
+                return $image . '<input
+                type="file"
+                class="' . $class . '"
+                name="' . $champ . '" >';
                 break;
 
             case 'submit':
-                $boutton = '<input type="submit" class="' . $class . '"   name="' . $champ . '" value="' . $valeur. '">';
+                $boutton = '<input
+                type="submit"
+                class="' . $class . '"
+                name="' . $champ . '"
+                value="' . $valeur. '">';
                 if(isset($info['annuler']))
-                    $boutton .= '<input type="submit" class="' . $class . '"   name="' . $champ . '" value="' . $info['annuler'] . '">';
+                    $boutton .= '<input
+                    type="submit"
+                    class="' . $class . '"
+                    name="' . $champ . '"
+                    value="' . $info['annuler'] . '">';
                 if(isset($info['origin']))
-                    $boutton .= '<input type="hidden" class="' . $class . '"   name="origin" value="' . $valeur . '">';
+                    $boutton .= '<input
+                    type="hidden"
+                    class="' . $class . '"
+                    name="origin"
+                    value="' . $valeur . '">';
                 return $boutton;
                 break;
 
@@ -428,22 +485,19 @@ class formulaire
     public function testLongeurChaine($valeur, $maxLen=250)
     {
         global $minLen;
-
         $taille = strlen(html_entity_decode($valeur));
         _debug("$taille < $minLen  || $taille > $maxLen", __FUNCTION__);
 
         return ($taille < $minLen  || $taille > $maxLen)? false : true;
-
     }
 
     # Fonction testAlphaNumerique()
     # Vérifie la valeur alphanumerique d'une chaine de caracteres
     # $value => valeur à tester
     # RETURN Boolean
-    protected function testAlphaNumerique($valeur)
+    Public function testAlphaNumerique($valeur)
     {
         return preg_match('#^[a-zA-Z0-9._-]+$#', $valeur );
-
     }
 
     # Fonction radioCheck()
@@ -455,7 +509,6 @@ class formulaire
     {
         // info['valide'] => valeur du formulaire
         return (!empty($info['valide']) && in_array($value, $info['valide']))? true : false;
-
     }
 
     # Fonction testNumerique()
@@ -465,7 +518,6 @@ class formulaire
     public function testNumerique($valeur)
     {
         return preg_match('#[a-zA-Z.\s.-]#', $valeur);
-
     }
 
     # Fonction testFormatMail()
@@ -475,7 +527,6 @@ class formulaire
     protected function testFormatMail($valeur)
     {
         return filter_var($valeur, FILTER_VALIDATE_EMAIL);
-
     }
 
     # Fonction selectCheck()
@@ -487,7 +538,80 @@ class formulaire
     {
         // info['valide'] => valeur du formulaire
         return (!empty($info['valide']) && $info['valide'] == $value)? 'selected="selected"' : '';
+    }
+
+    # Fonction controlImageUpload()
+    # Upload des images dans le repertoire photo
+    #$key => champ
+    #$info => donées relatives au champ
+    # RETURN boolean
+    public function controlImageUpload($key, &$info, $nomImage = 'image')
+    {
+        //$_trad = setTrad();
+        // Tableaux de donnees
+        $tabExt = array("jpg","gif","png","jpeg");    // Extensions autorisees
+        $infosImg = array();
+        $info['valide'] = '';
+
+        if( !empty($_FILES[$key]['name']) )
+        {
+            // Recuperation de l'extension du fichier
+            $extension  = strtolower(pathinfo($_FILES[$key]['name'], PATHINFO_EXTENSION));
+
+            // On verifie l'extension du fichier
+            if(in_array($extension,$tabExt))
+            {
+                // On recupere les dimensions du fichier
+                $infosImg = getimagesize($_FILES[$key]['tmp_name']);
+
+                // On verifie le type de l'image
+                if($infosImg[2] >= 1 && $infosImg[2] <= 14)
+                {
+                    // On verifie les dimensions et taille de l'image;
+                    if(($infosImg[0] <= WIDTH_MAX) && ($infosImg[1] <= HEIGHT_MAX) && (filesize($_FILES[$key]['tmp_name']) <= MAX_SIZE))
+                    {
+                        // Parcours du tableau d'erreurs
+                        if(isset($_FILES[$key]['error']) && UPLOAD_ERR_OK === $_FILES[$key]['error'])
+                        {
+                            // On renomme le fichier
+                            $nomImage .= '_' . uniqid() . '.' . $extension;
+
+                            // Si c'est OK, on teste l'upload
+                            if(move_uploaded_file($_FILES[$key]['tmp_name'], TARGET.$nomImage))
+                            {
+
+                                $info['valide'] = $nomImage;
+                                return false;
+
+                            } else {
+                                // Sinon on affiche une erreur systeme
+
+                                $info['message'] = $this->_trad['erreur']['problemeLorsUpload'];
+                            }
+                        } else {
+                            $info['message'] = $this->_trad['erreur']['erreurInterneEmpecheUplaodImage'];
+                        }
+                    } else {
+                        // Sinon erreur sur les dimensions et taille de l'image
+                        $info['message'] = $this->_trad['erreur']['erreurDansDimensionsImage'];
+                    }
+                } else {
+                    // Sinon erreur sur le type de l'image
+                    $info['message'] = $this->_trad['erreur']['fichierUploaderNestPasUneImage'];
+                }
+            } else {
+                // Sinon on affiche une erreur pour l'extension
+                $info['message'] = $this->_trad['erreur']['extensionFichierEstIncorrecte'];
+            }
+        } else {
+            // Sinon on affiche une erreur pour le champ vide
+            $info['message'] = $this->_trad['erreur']['veuillezRemplirFormulaire'];
+        }
+
+        echo __FUNCTION__ , '   ', $info['message'];
+        return true;
 
     }
+
 
 }

@@ -184,7 +184,7 @@ class salles extends \Model\salles
             $valeur = (isset($info['valide']))? $info['valide'] : NULL;
             if(!in_array($key,$exclure))
             {
-                if($info['valide'] != $info['sql'])
+                if($key!= 'plagehoraire' AND $info['valide'] != $info['sql'])
                 {
                     if (isset($info['maxlength']) && !$this->form->testLongeurChaine($valeur, $info['maxlength']) && !empty($valeur))
                     {
@@ -231,7 +231,7 @@ class salles extends \Model\salles
     
                             case 'photo':
     
-                                $erreur = (controlImageUpload($key, $info))? true : $erreur;
+                                $erreur = ($this->form->controlImageUpload($key, $info))? true : $erreur;
                                 $this->form->_formulaire[$key]['message'] = isset($info['message'])? $info['message'] : '' ;
                                 $valeur = $info['valide'];
     
@@ -262,6 +262,8 @@ class salles extends \Model\salles
                     // Construction de la requettes
                     $sql_set .= ((!empty($sql_set) && !empty($valeur))? ", " : "") . ((!empty($valeur))? "$key = '$valeur'" : '');
     
+                } else if($key == 'plagehoraire') {
+                    echo __FUNCTION__ , 'Traitement $key == plagehoraire<br>';
                 }
             }
         }
@@ -287,7 +289,7 @@ class salles extends \Model\salles
     
         }elseif(!empty($_FILES['photo']) && $_FILES['photo']['error'] != 4){
     
-            $erreur = controlImageUpload('photo', $this->form->_formulaire['photo'], $this->nomImage())? true : $erreur;
+            $erreur = $this->form->controlImageUpload('photo', $this->form->_formulaire['photo'], $this->nomImage())? true : $erreur;
             $valeur = $this->form->_formulaire['photo']['valide'];
     
             if(!$erreur){
@@ -464,7 +466,7 @@ class salles extends \Model\salles
             $nomImage .= '_' . trim($this->form->_formulaire['titre']['valide']);
             $nomImage .= str_replace(' ', '_', $nomImage);
     
-            $erreur = controlImageUpload('photo', $this->form->_formulaire['photo'], $nomImage)? true : $erreur;
+            $erreur = $this->form->controlImageUpload('photo', $this->form->_formulaire['photo'], $nomImage)? true : $erreur;
             $valeur = $this->form->_formulaire['photo']['valide'];
     
             if(!$erreur){

@@ -36,7 +36,7 @@ class articles extends Bdd
 
     protected function selectArticlesOrder($order, $listeId)
     {
-        $sql = "SELECT id_article, titre, capacite, categorie, photo
+        $sql = "SELECT *
             FROM articles WHERE active = 1 " . ((!empty($listeId)) ? " AND $listeId " : "") .
             recherchePernonnes() . " ORDER BY $order";
         return $this->executeRequete($sql);
@@ -45,7 +45,7 @@ class articles extends Bdd
     protected function selectArticlesUsers($order)
     {
 // selection de tout les users sauffe le super-ADMIN
-        $sql = "SELECT id_article, titre, capacite, cap_min, categorie, photo, active, prix_personne, tranche
+        $sql = "SELECT *
             FROM articles " . (!isSuperAdmin() ? " WHERE active != 0 " : "") .
             recherchePernonnes() .
             " ORDER BY $order";

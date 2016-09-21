@@ -513,7 +513,7 @@ function AfficherInfo($_form)
 #$key => champ
 #$info => donées relatives au champ
 # RETURN boolean
-function controlImageUpload($key, &$info, $nomImage = 'image')
+/*function controlImageUpload($key, &$info, $nomImage = 'image')
 {
 	//$_trad = setTrad();
 	// Tableaux de donnees
@@ -580,4 +580,4 @@ function controlImageUpload($key, &$info, $nomImage = 'image')
 	return true;
 
 }
-
+*/

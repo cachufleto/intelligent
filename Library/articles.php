@@ -11,7 +11,6 @@ namespace App;
 class articles extends \Model\articles
 {
     var $_trad = [];
-    var $nav = 'articles';
 
     public function __construct()
     {
@@ -100,10 +99,9 @@ class articles extends \Model\articles
         foreach($article as $key=>$info){
             $fiche[$key] = html_entity_decode($info);
         }
-        $fiche['produits'] = $this->listeProduitsReservation($fiche);
-    
+        //$fiche['produits'] = $this->listeProduitsReservation($fiche);
+
         $fiche['listePrix'] =  $this->listeProduitsReservationPrix($fiche);
-    
         return $fiche;
     }
     
@@ -133,16 +131,12 @@ class articles extends \Model\articles
     protected function produitsValider()
     {
         global $minLen;
-        //$this->_trad
-    
-        //$msg = '';
         $erreur = false;
         $sql_Where = '';
         $control = true;
         $message ='';
     
         foreach ($this->form->_formulaire as $key => $info){
-    
             $label = $this->_trad['champ'][$key];
             $valeur = (isset($info['valide']))? $info['valide'] : NULL;
             if($this->form->testObligatoire($info) && empty($valeur)) {
@@ -236,7 +230,7 @@ class articles extends \Model\articles
     
                             case 'photo':
     
-                                $erreur = (controlImageUpload($key, $info))? true : $erreur;
+                                $erreur = ($this->form->controlImageUpload($key, $info))? true : $erreur;
                                 $this->form->_formulaire[$key]['message'] = isset($info['message'])? $info['message'] : '' ;
                                 $valeur = $info['valide'];
     
@@ -292,7 +286,7 @@ class articles extends \Model\articles
     
         }elseif(!empty($_FILES['photo']) && $_FILES['photo']['error'] != 4){
     
-            $erreur = controlImageUpload('photo', $this->form->_formulaire['photo'], $this->nomImage())? true : $erreur;
+            $erreur = $this->form->controlImageUpload('photo', $this->form->_formulaire['photo'], $this->nomImage())? true : $erreur;
             $valeur = $this->form->_formulaire['photo']['valide'];
     
             if(!$erreur){
@@ -466,10 +460,10 @@ class articles extends \Model\articles
     
             $nomImage  = trim($this->form->_formulaire['pays']['valide']);
             $nomImage .= '_' . trim($this->form->_formulaire['ville']['valide']);
-            $nomImage .= '_' . trim($this->form->_formulaire['titre']['valide']);
+            $nomImage .= '_' . trim($this->form->_formulaire['produit']['valide']);
             $nomImage .= str_replace(' ', '_', $nomImage);
     
-            $erreur = controlImageUpload('photo', $this->form->_formulaire['photo'], $nomImage)? true : $erreur;
+            $erreur = $this->form->controlImageUpload('photo', $this->form->_formulaire['photo'], $nomImage)? true : $erreur;
             $valeur = $this->form->_formulaire['photo']['valide'];
     
             if(!$erreur){
@@ -572,10 +566,10 @@ class articles extends \Model\articles
         while ($data = $articles->fetch_assoc()) {
             $table['info'][] = array(
                 $data['id_article'],
-                html_entity_decode($data['titre']),
-                "MIN. {$data['cap_min']}, MAX. : {$data['capacite']}<br> prix ref: {$data['prix_personne']}",
+                html_entity_decode($data['produit']),
+                "prix ref: {$data['prix_Achat']}",
                 $this->_trad['value'][$data['categorie']],
-                $this->listeProduits($data),
+                //$this->listeProduits($data),
                     '<a href="' . LINK . '?nav=ficheArticles&id=' . $data['id_article'] . '&pos=' . $position . '" id="P-' . $position . '" >
                 <img class="trombi" src="' . imageExiste($data['photo']) . '" ></a>',
                 '<a href="' . LINK . '?nav=ficheArticles&id=' . $data['id_article'] . '&pos=' . ($position - 1) . '" ><img width="25px" src="img/modifier.png"></a>',
@@ -725,7 +719,6 @@ class articles extends \Model\articles
     {
        $_listeReservation = [];
         $i = $_total = 0;
-    
         if($prix = $this->selectProduitsArticle($data['id_article'])){
             while($info = $prix->fetch_assoc() ){
                 $prixArticle= listeCapacites($data, $info);
@@ -776,9 +769,9 @@ class articles extends \Model\articles
     {
         $listePrix = [];
         if(isset($_SESSION['panierArticles']) && !empty($_SESSION['panierArticles'])){
-            $listeOrdenee = sortIndice($_SESSION["panier"]);
+            $listeOrdenee = sortIndice($_SESSION["panierArticles"]);
             foreach ($listeOrdenee as $key => $date) {
-                if(isset($_SESSION["panier"][$date][$data['id_article']])){
+                if(isset($_SESSION["panierArticles"][$date][$data['id_article']])){
                     $listePrix[$date] = $this->listeProduitsPrixReservation($date, $data);
                     /*"<div class='tronche'>{$produit['libelle']} :</div>
                             <div class='personne'>{$produit['num']} pers.</div>

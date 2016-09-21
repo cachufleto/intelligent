@@ -19,21 +19,14 @@ class salles extends \App\salles
 
     public function salles()
     {
-        //$msg = '';
-        //$this->_trad
         $this->reservationSalles();
         $alert = $this->urlReservation();
-
         $table = $this->listeSalles();
         include VUE . 'salles/salles.tpl.php';
     }
 
     public function ficheSalles()
     {
-        //$this->nav = 'ficheSalles';
-        //$this->_trad
-        //$msg = '';
-
         $_id = data_methodes('id');
         $position = data_methodes('position', 1);
 
@@ -61,10 +54,6 @@ class salles extends \App\salles
     public function backOff_salles()
     {
         $this->nav = 'gestionSalles';
-        $alert = '';
-        //$msg = '';
-        //$this->_trad
-
         if(!$this->activeSalles()){
             $alert = "<script>alert('{$this->_trad['erreur']['manqueProduit']}');</script>";
         }
@@ -82,42 +71,12 @@ class salles extends \App\salles
         $form = $this->form->formulaireAfficher();
 
         $form .= $this->listeProduits($this->getSalles($_id));
-        /*foreach($listePrix as $date=>$info){
-            $_liste .= "<div class='ligne date'>" .
-                                reperDate($date)
-                                . "</div>".$info['reserve'];
-            $_total = $_total + $info['couts'];
-            } */
-
-
-        /*
-            $ref = '';
-            foreach($affiche as $col){
-                $ref .=  "<td class='tableauprix'>$col pers.</td>";
-            }
-            $prix_salle = "<tr><td class='tableauprix' width='90'>Max. </td>$ref</tr>" . $prix_salle;
-            $this->_trad['produitNonDispoble'] = "Produits non disponibles";
-
-            $tableau = "<table width='100%' border='1' cellspacing='1' BGCOLOR='#ccc'>$prix_salle</table>";
-            $reserve = ($_total)? $_listeReservation .
-                                    "<div class='tronche total'>TOTAL :</div>
-                                    <div class='personne total'>&nbsp;</div>
-                                    <div class='prix total'>" . number_format ($_total, 2) . "€</div>"
-                                    : "";
-            if(empty($affiche)){
-                return ['tableau'=>$this->_trad['produitNonDispoble'], 'reserve'=>''];
-            }
-        */
-        //return ['tableau'=>$tableau, 'reserve'=>$reserve];
-        //return ['affiche'=>$affiche, 'prix_salle'=>$prix_salle];
         include VUE . 'salles/gestionProduits.tpl.php';
         // liste des prix
     }
 
     public function backOff_gestionProduits()
     {
-        //$this->_trad
-        //include FUNC . 'form.func.php';
         include PARAM . 'backOff_produits_salles.param.php';
         $this->form->_formulaire = $_formulaire;
 
@@ -137,9 +96,6 @@ class salles extends \App\salles
     public function backOff_ficheSalles()
     {
         $this->nav = 'ficheSalles';
-        //$msg = '';
-        //$this->_trad
-
         include PARAM . 'backOff_ficheSalles.param.php';
         //include FUNC . 'form.func.php';
         $this->form->_formulaire = $_formulaire;
@@ -193,8 +149,10 @@ class salles extends \App\salles
 
         }
 
+        $form .= $this->listeProduits($this->getSalles($_id));
         include VUE . 'salles/backOff_ficheSalles.tpl.php';
-        $this->backOff_editProduits($this->form->_formulaire['id_salle']['valide']);
+
+        //$this->backOff_editProduits($this->form->_formulaire['id_salle']['valide']);
     }
 
     public function backOff_editerSalles()
@@ -236,7 +194,6 @@ class salles extends \App\salles
         //$this->_trad
         $this->reservationSalles();
 
-        $this->nav = 'reservation';
         $table = $this->selectSallesReservations();
         $this->form->msg = (!empty($table))? $this->_trad['reservationOk'] : $this->_trad['erreur']['reservationVide'];
         $alert = $this->urlReservation();

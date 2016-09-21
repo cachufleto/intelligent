@@ -9,6 +9,7 @@ include_once LIB . 'articles.php';
 class articles extends \App\articles
 {
     var $form = false;
+    var $nav = 'articles';
 
     public function __construct()
     {
@@ -26,10 +27,6 @@ class articles extends \App\articles
 
     public function ficheArticles()
     {
-        $this->nav = 'ficheArticles';
-        //$this->_trad
-        //$msg = '';
-
         $_id = data_methodes('id');
         $position = data_methodes('position', 1);
 
@@ -42,7 +39,7 @@ class articles extends \App\articles
         // on cherche la fiche dans la BDD
         // extraction des données SQL
         //include FUNC . 'form.func.php';
-        //$this->form->_formulaire = $_formulaire;
+        $this->form->_formulaire = $_formulaire;
 
         if ($article = $this->getArticles($_id)) {
             // traitement POST du formulaire
@@ -57,10 +54,6 @@ class articles extends \App\articles
     public function backOff_articles()
     {
         $this->nav = 'gestionArticles';
-        $alert = '';
-        //$msg = '';
-        //$this->_trad
-
         if(!$this->activeArticles()){
             $alert = "<script>alert('{$this->_trad['erreur']['manqueProduit']}');</script>";
         }
@@ -77,52 +70,22 @@ class articles extends \App\articles
         $this->modCheckProduits($_id);
         $form = $this->form->formulaireAfficher();
 
-        $form .= $this->listeProduits($this->getArticles($_id));
-        /*foreach($listePrix as $date=>$info){
-            $_liste .= "<div class='ligne date'>" .
-                                reperDate($date)
-                                . "</div>".$info['reserve'];
-            $_total = $_total + $info['couts'];
-            } */
-
-
-        /*
-            $ref = '';
-            foreach($affiche as $col){
-                $ref .=  "<td class='tableauprix'>$col pers.</td>";
-            }
-            $prix_article = "<tr><td class='tableauprix' width='90'>Max. </td>$ref</tr>" . $prix_article;
-            $this->_trad['produitNonDispoble'] = "Produits non disponibles";
-
-            $tableau = "<table width='100%' border='1' cellspacing='1' BGCOLOR='#ccc'>$prix_article</table>";
-            $reserve = ($_total)? $_listeReservation .
-                                    "<div class='tronche total'>TOTAL :</div>
-                                    <div class='personne total'>&nbsp;</div>
-                                    <div class='prix total'>" . number_format ($_total, 2) . "€</div>"
-                                    : "";
-            if(empty($affiche)){
-                return ['tableau'=>$this->_trad['produitNonDispoble'], 'reserve'=>''];
-            }
-        */
-        //return ['tableau'=>$tableau, 'reserve'=>$reserve];
-        //return ['affiche'=>$affiche, 'prix_article'=>$prix_article];
+        //$form .= $this->listeProduits($this->getArticles($_id));
         include VUE . 'articles/gestionProduits.tpl.php';
         // liste des prix
     }
 
     public function backOff_gestionProduits()
     {
-        //$this->_trad
-        //include FUNC . 'form.func.php';
         include PARAM . 'backOff_produits_articles.param.php';
         $this->form->_formulaire = $_formulaire;
 
         //$msg = '';
         if (isset($_POST['valide']) && $this->form->postCheck(true)) {
 
-            if(!($this->form->msg = $this->produitsValider($this->form->_formulaire))) {
+            if(!($this->form->msg = $this->produitsValider())) {
 
-                $this->treeProduitsArticle($this->form->_formulaire, $_id);
+                $this->treeProduitsArticle($_id);
             }
         }
 
@@ -133,9 +96,6 @@ class articles extends \App\articles
     public function backOff_ficheArticles()
     {
         $this->nav = 'ficheArticles';
-        //$msg = '';
-        //$this->_trad
-
         include PARAM . 'backOff_ficheArticles.param.php';
         //include FUNC . 'form.func.php';
         $this->form->_formulaire = $_formulaire;
@@ -189,8 +149,8 @@ class articles extends \App\articles
 
         }
 
+        //$form .= $this->backOff_editProduits($_id);
         include VUE . 'articles/backOff_ficheArticles.tpl.php';
-        $this->backOff_editProduits($this->form->_formulaire['id_article']['valide']);
     }
 
     public function backOff_editerArticles()
@@ -231,7 +191,6 @@ class articles extends \App\articles
     {
         //$this->_trad
         $this->reservationArticles();
-        $this->nav = 'reservation';
 
         $table = $this->selectArticlesReservations();
         $this->form->msg = (!empty($table))? $this->_trad['reservationOk'] : $this->_trad['erreur']['reservationVide'];

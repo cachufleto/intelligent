@@ -1,49 +1,50 @@
 <?php
 # FORMULAIRE ARTICLES
-
 // Items du formulaire
 $_formulaire = array();
 
+$_formulaire['produit'] = array(
+	'type' => 'text',
+	'content' => 'text',
+	'maxlength' => 20,
+	'defaut' => $this->_trad['champ']['produit'],
+	'obligatoire' => true);
+
+// origine
+$_formulaire['fabricant'] = array(
+	'type' => 'text',
+	'content' => 'text',
+	'maxlength' => 20,
+	'defaut' => $this->_trad['champ']['fabricant'],
+	'obligatoire' => true);
+	
 $_formulaire['pays'] = array(
 	'type' => 'text',
 	'content' => 'text',
 	'maxlength' => 20,
 	'defaut' => $this->_trad['champ']['pays'],
-	'obligatoire' => true);
-	
+	'obligatoire' => false);
+
 $_formulaire['ville'] = array(
 	'type' => 'text',
 	'content' => 'text',
 	'defaut' => $this->_trad['defaut']['ville'],
-	'obligatoire' => true);
+	'obligatoire' => false);
 
 $_formulaire['adresse'] = array(
 	'type' => 'textarea',
 	'content' => 'text',
-	'defaut' => $this->_trad['defaut']['Ouhabite'],
+	'defaut' => $this->_trad['defaut']['adresse'],
 	'maxlength' => 300,
-	'obligatoire' => true);
+	'obligatoire' => false);
 
 $_formulaire['cp'] = array(
 	'type' => 'text',
 	'content' => 'num',
 	'defaut' => $this->_trad['defaut']['cp'],
-	'obligatoire' => true);
+	'obligatoire' => false);
 
-$_formulaire['titre'] = array(
-	'type' => 'text',
-	'content' => 'text',
-	'maxlength' => 20,
-	'defaut' => $this->_trad['champ']['titre'],
-	'obligatoire' => true);
-
-$_formulaire['telephone'] = array(
-	'type' => 'text',
-	'content' => 'tel',
-	'length' => 10,
-	'defaut' => $this->_trad['defaut']['telephone'],
-	'obligatoire' => true);
-
+// Produit
 $_formulaire['photo'] = array(
 	'type' => 'file',
 	'content' => 'text',
@@ -57,29 +58,16 @@ $_formulaire['description'] = array(
 	'maxlength' => 800,
 	'obligatoire' => true);
 
-$_formulaire['capacite'] = array(
+$_formulaire['ean'] = array(
 	'type' => 'text',
 	'content' => 'int',
-	'defaut' => $this->_trad['defaut']['capacite'],
+	'defaut' => $this->_trad['defaut']['ean'],
 	'obligatoire' => true);
 
-$_formulaire['cap_min'] = array(
-	'type' => 'text',
-	'content' => 'int',
-	'defaut' => $this->_trad['defaut']['cap_min'],
-	'obligatoire' => true);
-
-$_formulaire['tranche'] = array(
-	'type' => 'selectTableau',
-	'content' => 'int',
-	'option' => array(1=>'T1', 2=>'T2', 3=>'T3', 4=>'T4'),
-	'defaut' => $this->_trad['defaut']['tranche'],
-	'obligatoire' => true);
-
-$_formulaire['prix_personne'] = array(
+$_formulaire['prix_Achat'] = array(
 	'type' => 'text',
 	'content' => 'float',
-	'defaut' => $this->_trad['defaut']['prix_personne'],
+	'defaut' => 0,
 	'obligatoire' => true);
 
 $_formulaire['categorie'] = array(
@@ -89,11 +77,10 @@ $_formulaire['categorie'] = array(
 	'defaut' => 'R',
 	'obligatoire' => true);
 
-$_formulaire['plagehoraire'] = array(
-	'type' => 'checkbox',
+$_formulaire['quantite'] = array(
+	'type' => 'text',
 	'content' => 'int',
-	'defaut' => "",
-	'option' => array(1=>'matinee', 2=>'journee', 3=>'soiree', 4=>'nocturne'),
+	'defaut' => 0,
 	'obligatoire' => true);
 
 // ############## SUBMIT ############

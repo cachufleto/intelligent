@@ -8,9 +8,9 @@ $lien = LINK . "?nav=articles&pos=$position";
 $active = "";
 $reserver = 'reserver';
 $modifier = '';
-$formdate = disponibilite();
+//$formdate = disponibilite();
 
-if(isset($_SESSION['panier'][$_SESSION['date']][$article['id_article']])){
+if(isset($_SESSION['panierArticles'][$_SESSION['date']][$article['id_article']])){
     $active = "active";
     $reserver = 'enlever';
     $modifier = '<input type="submit" name="reserver" value="'.$this->_trad['modifier'].'">';
@@ -93,7 +93,7 @@ echo <<<EOL
         <div class="ligne">
             <div class="photo">
                 <div><img src="$href"></div>
-                $formdate
+
                 $tableu
             </div>
             <div class="info">
