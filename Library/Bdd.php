@@ -27,7 +27,7 @@ class Bdd
             $this->setBDD();
             // installation de la BDD
             if (isset($_GET['install']) && $_GET['install'] == 'BDD') {
-                include LIB . 'install.php';
+                require_once LIB . 'install.php';
             }
         }else{
             exit("<h2>L'Outil n'est pas instalé!<h2><p>Vous n'avez pas les parametres de connection à la base des donnes</p>");
