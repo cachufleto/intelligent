@@ -2,8 +2,33 @@
 //$this->_trad
 
 /***************** ficheArticles.tpl ****************************/
+debug($article);
+/*
+Array
+(
+    [id_article] => 2
+    [produit] =>
+    [fabricant] =>
+    [pays] => colombie
+[ville] => cali
+[adresse] => test
+[cp] => 89000
+    [description] => Descrtestiption...
+    [photo] => colombie_cali_testcolombie_cali_test_57cf353ea30e0.jpg
+[ean] => 6
+    [quantite] => 1
+    [categorie] => T
+[prix_Achat] => 25.0
+    [active] => 1
+    [listePrix] => Array
+(
+)
+
+)
+
+*/
 $href = imageExiste($article['photo']);
-$titre = strtoupper($article['titre']);
+$titre = strtoupper($article['produit']);
 $lien = LINK . "?nav=articles&pos=$position";
 $active = "";
 $reserver = 'reserver';
@@ -15,7 +40,8 @@ if(isset($_SESSION['panierArticles'][$_SESSION['date']][$article['id_article']])
     $reserver = 'enlever';
     $modifier = '<input type="submit" name="reserver" value="'.$this->_trad['modifier'].'">';
 }
-$min = ($article['cap_min']<=1)? intval($article['capacite']*0.3) : $article['cap_min'];
+
+//$min = ($article['cap_min']<=1)? intval($article['capacite']*0.3) : $article['cap_min'];
 
 if(!empty($article['produits']['affiche'])){
     $entete = '';
@@ -100,13 +126,11 @@ echo <<<EOL
                 <div class="titre">$titre</div>
                 <div class="fiche">{$article['adresse']}<br>
                     {$article['cp']} {$article['ville']}<br>
-                    {$article['telephone']}<br>
-                    {$article['gsm']}
                 </div>
                     <input type="hidden" name="id" value="{$article['id_article']}">
                     <input type="hidden" name="pos" value="$position">
                     <div class="categorie">
-                        Cat. {$this->_trad['value'][$article['categorie']]} :: $min - {$article['capacite']} {$this->_trad['personnes']}
+                        Cat. {$this->_trad['value'][$article['categorie']]} ::
                     </div>
                     <div>
                         {$article['description']}
