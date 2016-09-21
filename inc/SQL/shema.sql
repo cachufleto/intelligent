@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Mer 14 Septembre 2016 à 22:06
+-- Généré le :  Mer 21 Septembre 2016 à 22:01
 -- Version du serveur :  5.7.9
 -- Version de PHP :  5.6.16
 
@@ -29,24 +29,22 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `articles`;
 CREATE TABLE IF NOT EXISTS `articles` (
   `id_article` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `produit` varchar(150) NOT NULL,
+  `fabricant` varchar(150) NOT NULL,
   `pays` varchar(20) NOT NULL,
   `ville` varchar(20) NOT NULL,
   `adresse` text NOT NULL,
   `cp` varchar(10) NOT NULL,
-  `titre` varchar(50) NOT NULL,
-  `telephone` varchar(10) DEFAULT NULL,
-  `gsm` varchar(10) DEFAULT NULL,
   `description` text NOT NULL,
   `photo` varchar(200) NOT NULL,
-  `capacite` int(3) UNSIGNED NOT NULL,
-  `cap_min` int(11) NOT NULL DEFAULT '1',
-  `tranche` enum('T1','T2','T3','T4') NOT NULL DEFAULT 'T1',
+  `ean` varchar(13) DEFAULT NULL,
+  `quantite` int(11) NOT NULL DEFAULT '1',
   `categorie` enum('R','C','F','T') NOT NULL DEFAULT 'R',
-  `prix_personne` float(4,1) NOT NULL DEFAULT '5.5',
+  `prix_Achat` float(4,1) NOT NULL DEFAULT '5.5',
   `active` int(1) DEFAULT '0',
   PRIMARY KEY (`id_article`),
   KEY `id_salle` (`id_article`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
