@@ -62,6 +62,7 @@ $_formulaire['ean'] = array(
 	'type' => 'text',
 	'content' => 'int',
 	'defaut' => $this->_trad['defaut']['ean'],
+	'length' => 13,
 	'obligatoire' => true);
 
 $_formulaire['prix_Achat'] = array(
@@ -73,7 +74,7 @@ $_formulaire['prix_Achat'] = array(
 $_formulaire['categorie'] = array(
 	'type' => 'radio',
 	'content' => 'text',
-	'option' => array('R', 'F', 'C', 'T'),
+	'option' => array('D', 'I', 'J'),
 	'defaut' => 'R',
 	'obligatoire' => true);
 

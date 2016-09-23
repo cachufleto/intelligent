@@ -5,7 +5,7 @@
  * Date: 22/06/2016
  * Time: 18:44
  */
-$disponibilite = disponibilite();
+$disponibilite = disponibiliteArticles();
 
 echo <<<EOL
 <div class="ligne">
@@ -23,12 +23,7 @@ echo <<<EOL
         </div><div>
             <form action="$lien" method="POST">
                 <input type="hidden" name="ord" value="titre">
-                <input type="submit" name="" value="{$this->_trad['champ']['titre']}">
-            </form>
-        </div><div>
-            <form action="$lien" method="POST">
-                <input type="hidden" name="ord" value="capacite">
-                <input type="submit" name="" value="{$this->_trad['champ']['capacite']}">
+                <input type="submit" name="" value="{$this->_trad['champ']['produit']}">
             </form>
         </div>
         <div>

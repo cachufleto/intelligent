@@ -23,14 +23,13 @@ class articles extends Bdd
 
     protected function setArticlesActive($id, $active)
     {
-
         $sql = "UPDATE articles SET active = $active WHERE id_article = $id";
         $this->executeRequete($sql);
     }
 
     protected function selectArticles()
     {
-        $sql = "SELECT * FROM articles where active = 1 " . recherchePernonnes();
+        $sql = "SELECT * FROM articles where active = 1 " . rechercheArticles();
         return $this->executeRequete($sql);
     }
 
@@ -38,7 +37,7 @@ class articles extends Bdd
     {
         $sql = "SELECT *
             FROM articles WHERE active = 1 " . ((!empty($listeId)) ? " AND $listeId " : "") .
-            recherchePernonnes() . " ORDER BY $order";
+            rechercheArticles() . " ORDER BY $order";
         return $this->executeRequete($sql);
     }
 
@@ -47,7 +46,6 @@ class articles extends Bdd
 // selection de tout les users sauffe le super-ADMIN
         $sql = "SELECT *
             FROM articles " . (!isSuperAdmin() ? " WHERE active != 0 " : "") .
-            recherchePernonnes() .
             " ORDER BY $order";
         return $this->executeRequete($sql);
     }
@@ -95,7 +93,7 @@ class articles extends Bdd
     {
         $sql = "SELECT * FROM articles WHERE id_article = " . $_id .
             (!isSuperAdmin() ? " AND active != 0" : "") .
-            recherchePernonnes();
+            rechercheArticles();
         return $this->executeRequete($sql);
     }
 

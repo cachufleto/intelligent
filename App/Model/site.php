@@ -38,10 +38,10 @@ class site extends Bdd
     protected function selectArticlesActive()
     {
         // selection de tout les users sauffe le super-ADMIN
-        $sql = "SELECT id_article, pays, ville, titre, capacite, categorie, photo, description, active
+        $sql = "SELECT *
             FROM articles
             WHERE active != 0
-            ORDER BY titre
+            ORDER BY produit
             LIMIT 0,3;";
         return $this->executeRequete($sql);
     }

@@ -30,7 +30,7 @@ class salles extends Bdd
 
     protected function selectSalles()
     {
-        $sql = "SELECT * FROM salles where active = 1 " . recherchePernonnes();
+        $sql = "SELECT * FROM salles where active = 1 " . rechercheSalles();
         return $this->executeRequete($sql);
     }
 
@@ -38,7 +38,7 @@ class salles extends Bdd
     {
         $sql = "SELECT id_salle, titre, capacite, categorie, photo
             FROM salles WHERE active = 1 " . ((!empty($listeId)) ? " AND $listeId " : "") .
-            recherchePernonnes() . " ORDER BY $order";
+            rechercheSalles() . " ORDER BY $order";
         return $this->executeRequete($sql);
     }
 
@@ -47,7 +47,7 @@ class salles extends Bdd
         // selection de tout les users sauffe le super-ADMIN
         $sql = "SELECT id_salle, titre, capacite, cap_min, categorie, photo, active, prix_personne, tranche
             FROM salles " . (!isSuperAdmin() ? " WHERE active != 0 " : "") .
-            recherchePernonnes() .
+            rechercheSalles() .
             " ORDER BY $order";
         return $this->executeRequete($sql);
     }
@@ -93,7 +93,7 @@ class salles extends Bdd
     {
         $sql = "SELECT * FROM salles WHERE id_salle = " . $_id .
             (!isSuperAdmin() ? " AND active != 0" : "") .
-            recherchePernonnes();
+            rechercheSalles();
         return $this->executeRequete($sql);
     }
 

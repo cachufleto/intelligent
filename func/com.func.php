@@ -20,10 +20,8 @@ function hashCrypt ($chaine)
 # RETURN string crypt
 function hashDeCrypt ($info)
 {
-
 	//password_verify($password, $hash)
 	return password_verify($info['valide'], $info['sql']);
-
 }
 
 function ouvrirSession($session, $control = false)
@@ -115,7 +113,7 @@ function data_methodes($indice, $default = false)
 	return $data;
 }
 
-function disponibilite()
+function disponibiliteSalles()
 {
 	$_trad = setTrad();
 	return "<form name='dispo' method='POST'>
@@ -123,6 +121,16 @@ function disponibilite()
 			<input type='date' name='date' value='{$_SESSION['date']}'>
 			{$_trad['nombrePersonnes']}
 			<input type='text' name='numpersonne' placeholder='Num. Pers.' value='{$_SESSION['numpersonne']}'>
+			<input type='submit' name='' value='OK'>
+		</form>";
+}
+
+function disponibiliteArticles()
+{
+	$_trad = setTrad();
+	return "<form name='dispo' method='POST'>
+			{$_trad['recherche']}
+			<input type='text' name='rechercheProduits' value='{$_SESSION['rechercheProduits']}'>
 			<input type='submit' name='' value='OK'>
 		</form>";
 }
@@ -137,11 +145,17 @@ function sortIndice($data)
 	return $sort;
 }
 
-function recherchePernonnes(){
+function rechercheSalles(){
 	if(!empty($_SESSION['numpersonne'])){
 		$max = $_SESSION['numpersonne'] * 0.9;
 		$min = $_SESSION['numpersonne'] * 1.1;
 		return " AND capacite > $max AND 	cap_min < $min ";
+	}
+}
+
+function rechercheArticles(){
+	if(!empty($_SESSION['rechercheProduits'])){
+		return " AND produit LIKE '%{$_SESSION['rechercheProduits']}%' AND description LIKE '%{$_SESSION['rechercheProduits']}%' ";
 	}
 }
 

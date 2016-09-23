@@ -57,8 +57,28 @@ class articles extends \App\articles
         if(!$this->activeArticles()){
             $alert = "<script>alert('{$this->_trad['erreur']['manqueProduit']}');</script>";
         }
-
         $table = $this->listeArticlesBO();
+        $tableau1 = $tableau = '';
+        if(is_array($table) AND !empty($table['info'])){
+            foreach($table['champs'] as $champ=>$info ){
+                $cols = ($champ == 'active')? 'colspan="2"': '';
+                $tableau1 .= '<th ' . $cols . '>
+                    <form action="' . LINK . '?nav=articles" method="POST">
+                        <input type="hidden" name="ord" value="' . $champ . '">
+                        <input type="submit" name="" value="' . $info . '">
+                    </form>
+                    </th>';
+            }
+
+            foreach($table['info'] as $ligne=>$article){
+                $class = ($ligne%2 == 1)? 'lng1':'lng2';
+                $tableau .= "<tr class='$class'>";
+                foreach($article as $champ=>$info ){
+                    $tableau .= "<td>$info</td>";
+                }
+                $tableau .= '        </tr>';
+            }
+        }
 
         include VUE . 'articles/gestionArticles.tpl.php';
     }

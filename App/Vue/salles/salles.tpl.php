@@ -31,5 +31,7 @@ if(!empty($table['info'])){
         </div>
 EOL;
     }
+} else {
+    echo 'Aucunne Salle disponible!';
 }
 echo '</div>' , $alert;

@@ -21,8 +21,7 @@ echo <<<EOL
             <div class="ligne">
 
                     <h4 class="in_catalogue">{$article['categorie']}</h4>
-                    <p>{$this->_trad['champ']['capacite']} {$article['capacite']} {$this->_trad['personnes']}<br>
-                        REF:{$article['ref']}
+                    <p>REF:{$article['ref']}
                     </p>
             </div>
             <div class="ligne">
@@ -31,5 +30,7 @@ echo <<<EOL
         </div>
 EOL;
     }
+} else {
+    echo 'Aucun article disponible!';
 }
 echo '</div>' , $alert;

@@ -174,7 +174,8 @@ function testmail()
     }
 
 }
-function dernieresOffres($salle)
+
+function dernieresOffresSalle($salle)
 {
     $_trad = setTrad();
 
@@ -188,6 +189,28 @@ function dernieresOffres($salle)
                 $salle['capacite'] . $_trad['personnes'] . ' / ' .
                 $_trad['value'][$salle['categorie']] . ' :: ' .
                 $salle['ville'] . ' (' . $salle['pays'] .')
+                </figcaption>
+
+        </figure>
+        </a>
+	</div>
+	';
+
+    return $offre;
+}
+
+function dernieresOffresArticles($article)
+{
+    $_trad = setTrad();
+
+    $offre = '
+	<div class="offre">
+        <a href="'. LINK . '?nav=ficheArticles&id=' . $article['id_article'] . '">
+        <figure>
+          <img class="ingOffre" src="' . imageExiste($article['photo']) . '" alt="" />
+            <figcaption>
+                <span class="titre">' . $article['produit'] . '</span> :: ' .
+                $_trad['value'][$article['categorie']] . '
                 </figcaption>
 
         </figure>

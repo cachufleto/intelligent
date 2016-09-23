@@ -5,7 +5,7 @@
  * Date: 22/06/2016
  * Time: 18:44
  */
-$disponibilite = disponibilite();
+$disponibilite = disponibiliteSalles();
 
 echo <<<EOL
 <div class="ligne">

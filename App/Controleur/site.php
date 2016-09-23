@@ -20,13 +20,31 @@ class site extends \Model\site
 
     public function home()
     {
+        $dernieresOffres = $this->homeArticles();
+        $dernieresOffres .= $this->homeSalles();
+        include VUE . 'site/home.tpl.php';
+    }
+
+    public function homeSalles()
+    {
         $salles = $this->selectSallesActive();
         $dernieresOffres = '<div id="dernieresOffres">';
         while($salle = $salles->fetch_assoc()){
-            $dernieresOffres .= dernieresOffres($salle);
+            $dernieresOffres .= dernieresOffresSalles($salle);
         }
         $dernieresOffres .= '</div>';
-        include VUE . 'site/home.tpl.php';
+        return $dernieresOffres;
+    }
+
+    public function homeArticles()
+    {
+        $articles = $this->selectArticlesActive();
+        $dernieresOffres = '<div id="dernieresOffres">';
+        while($article = $articles->fetch_assoc()){
+            $dernieresOffres .= dernieresOffresArticles($article);
+        }
+        $dernieresOffres .= '</div>';
+        return $dernieresOffres;
     }
 
     public function recupNav()

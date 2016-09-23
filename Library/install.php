@@ -30,7 +30,7 @@ class install extends Bdd
                 $this->userUpdateMDP($membre['mdp'], $membre['id']);
             }
             header("refresh:2;url=index.php");
-            echo $msg;
+            exit($msg);
         }
         exit('ERROR: merci de contacter votre administrateur.');
     }

@@ -33,6 +33,16 @@ class commande extends Bdd
         return $this->executeRequete($sql);
     }
 
+    protected function selectProduitsArticle($id)
+    {
+        $sql = "SELECT p.*, h.description
+            FROM produits p, plagehoraires h
+            WHERE id_salle = $id
+              AND p.id_plagehoraire = h.id
+            ORDER BY id_plagehoraire ASC";
+        return $this->executeRequete($sql);
+    }
+
     protected function setReservations()
     {
         $sql = "INSERT INTO `reservations` (`id`, `id_membre`, `date_facturacion`) VALUES (NULL, '{$_SESSION['user']['id']}', CURRENT_TIMESTAMP)";

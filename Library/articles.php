@@ -521,13 +521,15 @@ class articles extends \Model\articles
         $articles = $this->selectArticlesOrder($this->orderArticles(), $reservation);
         $panier = isset($_SESSION['panierArticles'][$_SESSION['date']])?
                     $_SESSION['panierArticles'][$_SESSION['date']] : [];
-    
+        if($articles->num_rows < 1){
+            //exit('PAS DE REGISTRE');
+        }
         while ($data = $articles->fetch_assoc()) {
-            $min = empty($data['cap_min'])? intval($data['capacite']*0.3) : $data['cap_min'];
+            //$min = empty($data['cap_min'])? intval($data['capacite']*0.3) : $data['cap_min'];
             $table['info'][] = array(
                 'ref'=>$data['id_article'],
-                'nom'=>html_entity_decode($data['titre']),
-                'capacite'=>"$min - {$data['capacite']}",
+                'nom'=>html_entity_decode($data['produit']),
+                //'capacite'=>"$min - {$data['capacite']}",
                 'categorie'=>$this->_trad['value'][$data['categorie']],
                 'photo'=>'<a href="' . LINK . '?nav=ficheArticles&id=' . $data['id_article'] . '&pos=' . $position . '" " >
                     <img class="trombi" src="' . imageExiste($data['photo']) . '" ></a>',
@@ -551,15 +553,17 @@ class articles extends \Model\articles
         //$this->_trad
     
         $table = array();
-    
+
         $table['champs']['id_article'] = 'REF';
-        $table['champs']['titre'] = $this->_trad['champ']['titre'];
-        $table['champs']['capacite'] = $this->_trad['champ']['capacite'];
-        $table['champs']['categorie'] = $this->_trad['champ']['categorie'];
         $table['champs']['produit'] = $this->_trad['champ']['produit'];
+        $table['champs']['fabricant'] = $this->_trad['champ']['fabricant'];
+        $table['champs']['prix_Achat'] = $this->_trad['champ']['prix_Achat'];
+        $table['champs']['categorie'] = $this->_trad['champ']['categorie'];
         $table['champs']['photo'] = $this->_trad['champ']['photo'];
-        $table['champs']['active'] = $this->_trad['champ']['active'];
-    
+        $table['champs']['ean'] = $this->_trad['champ']['ean'];
+        $table['champs']['quantite'] =   $this->_trad['champ']['quantite'];
+        $table['champs']['active'] =  'Mod/Ativer';
+
         $position = 1;
         $articles = $this->selectArticlesUsers($this->orderArticlesValide() . $this->orderArticles());
     
@@ -567,11 +571,13 @@ class articles extends \Model\articles
             $table['info'][] = array(
                 $data['id_article'],
                 html_entity_decode($data['produit']),
-                "prix ref: {$data['prix_Achat']}",
+                html_entity_decode($data['fabricant']),
+                number_format($data['prix_Achat'], 2, '.', ' '),
                 $this->_trad['value'][$data['categorie']],
-                //$this->listeProduits($data),
                     '<a href="' . LINK . '?nav=ficheArticles&id=' . $data['id_article'] . '&pos=' . $position . '" id="P-' . $position . '" >
                 <img class="trombi" src="' . imageExiste($data['photo']) . '" ></a>',
+                $data['ean'],
+                $data['quantite'],
                 '<a href="' . LINK . '?nav=ficheArticles&id=' . $data['id_article'] . '&pos=' . ($position - 1) . '" ><img width="25px" src="img/modifier.png"></a>',
                 ($data['active'] == 1) ? ' <a href="' . LINK . '?nav=articles&delete=' . $data['id_article'] . '#P-' . ($position - 1) . '"><img width="25px" src="img/activerOk.png"></a>' :
                     ' <a href="' . LINK . '?nav=articles&active=' . $data['id_article'] . '#P-' . ($position - 1) . '"><img width="25px" src="img/activerKo.png"></a>'
@@ -848,8 +854,7 @@ class articles extends \Model\articles
                 switch($ord){
                     case 'id_article':
                     case 'categorie':
-                    case 'capacite':
-                    case 'titre':
+                    case 'produit':
                         $_SESSION['orderArticles']['order'] = ($_SESSION['orderArticles']['champ'] != $ord)?
                             "ASC" : (($_SESSION['orderArticles']['order'] == "ASC")? "DESC" : "ASC" );
     
@@ -896,35 +901,23 @@ class articles extends \Model\articles
     {
         if (isset($_GET)) {
             if (!empty($_GET['delete'])) {
-    
                 $this->setArticlesActive($_GET['delete'], 0);
-    
             } elseif (!empty($_GET['active'])) {
-    
-                if(!empty($this->selectProduitsArticle($_GET['active'])->num_rows)){
-                    $this->setArticlesActive($_GET['active'], 1);
-                } else {
-                    return false;
-                }
+                $this->setArticlesActive($_GET['active'], 1);
             }
-    
         }
         return true;
     }
     
-    protected function urlReservation(){
-    
+    protected function urlReservation()
+    {
         if(isset($_GET['reserver']) OR isset($_POST['reserver'])){
-    
-            //$this->_trad
             if(utilisateurConnecte()){
-             return ($this->reservationArticles())? '' : $this->_trad['erreur']['produitChoix'];
+                return ($this->reservationArticles())? '' : $this->_trad['erreur']['produitChoix'];
             }
-    
             $_SESSION['urlReservation'] = $_GET;
             header('refresh:0;url=index.php?nav=actif');
             echo "<html>{$this->_trad['erreur']['produitConnexion']}</html>";
         }
-    
     }
 }

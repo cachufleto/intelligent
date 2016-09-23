@@ -40,11 +40,13 @@ $_trad['champ']['valide'] = "Validar";
 $_trad['champ']['ville'] = "Ciudad";
 
 /* trad pour valeurs par defaut dans les formulaires */
+$_trad['defaut']['adresse'] = "ZI Long-champ";
 $_trad['defaut']['ajouter'] = "Crear";
 $_trad['defaut']['capacite'] = "Capacidad";
 $_trad['defaut']['cap_min'] = "Minimo de Personas";
 $_trad['defaut']['cp'] = "Zip 00";
 $_trad['defaut']['description'] = "Descripcion...";
+$_trad['defaut']['ean'] = "9876543210123";
 $_trad['defaut']['gsm'] = "08 12 34 56 78";
 $_trad['defaut']['Inscription'] = "Inscribirse";
 $_trad['defaut']['MiseAJ'] = "Actualizar";
@@ -196,13 +198,16 @@ $_trad['titre']['validerInscription'] = "Validacion de inscripcion";
 $_trad['titre']['ventes'] = "pedidos";
 
 /* trad pour les Valeurs des options BDD */
-//$_trad['value']['ADM'] = "ADMINISTRADOR";
+$_trad['value']['ADM'] = "ADMIN.";
 $_trad['value']['C'] = "Conferencias";
-//$_trad['value']['COL'] = "COLABORADOR";
+$_trad['value']['COL'] = "INT";
+$_trad['value']['D'] = "Domestique";
 $_trad['value']['deMoi'] = "Acordarse de mi";
 $_trad['value']['F'] = "Eventos";
 $_trad['value']['f'] = "Mujer";
+$_trad['value']['I'] = "Industrial";
 $_trad['value']['indefini'] = "Indefinido(a)";
+$_trad['value']['J'] = "Juego";
 $_trad['value']['journee'] = "Tarde";
 $_trad['value']['m'] = "Hombre";
 $_trad['value']['matinee'] = "Mañana";
@@ -250,6 +255,7 @@ $_trad['personnes'] = " personnas ";
 $_trad['nombrePersonnes'] = " Capacidad: ";
 $_trad['priseEnCompteMDP'] = "Su Contraseña sera reiniticializada al validar su informacion con el link enviado a la direccion mail de registro.";
 $_trad['produitNonDispoble'] = "Productos no disponibles";
+$_trad['recherche'] = "Buscar";
 $_trad['rectifier'] = "Rectificar";
 $_trad['redirigeVerConnection'] = $_trad['-bienvenu'] . "<p>Sera usted dirigido a la pagina de <a href='index.php?nav=actif'>conexion!</a>.</p>";
 $_trad['reservationOk'] = "Lista de reservationes";
