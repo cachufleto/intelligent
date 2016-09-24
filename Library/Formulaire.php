@@ -60,40 +60,36 @@ class formulaire
 
                     $valeur1 = $_POST[$key];
                     $valeur2 = $_POST[$key.'2'];
-
                     // actions pour la modification
                     if(!empty($valeur1) OR !empty($valeur2)){
 
                         if (empty($valeur1)){
-
                             $ok = false;
-                            $this->_formulaire[$key]['message'] = $this->inputMessage($this->_formulaire[$key], $this->_trad['champ'][$key] . $this->_trad['erreur']['obligatoire']);
+                            $this->_formulaire[$key]['message'] = $this->inputMessage(
+                                                $this->_formulaire[$key],
+                                                $this->_trad['champ'][$key] . $this->_trad['erreur']['obligatoire']);
                             $valide = '';
-
                         }
 
                         if (empty($valeur2)){
-
                             // l'un des deux champs est remplie
                             $ok = false;
-                            $this->_formulaire[$key]['message'] = $this->inputMessage( $this->_formulaire[$key], $this->_trad['erreur']['veuillezDeRectifier'] . $this->_trad['champ'][$key]);
+                            $this->_formulaire[$key]['message'] = $this->inputMessage(
+                                                $this->_formulaire[$key],
+                                                $this->_trad['erreur']['veuillezDeRectifier'] . $this->_trad['champ'][$key]);
+
                             $this->msg .= $this->_trad['erreur']['vousAvezOublieDeRectifier'] . $this->_trad['champ'][$key];
                             $valide = '';
-
                         }
 
                         if ( !empty($valeur1) && !empty($valeur2) && $valeur1 != $valeur2){
-
                             // les deux valeurs sont differents
                             $ok = false;
                             $this->_formulaire[$key]['message'] = $this->inputMessage( $this->_formulaire[$key], $this->_trad['erreur']['deuxValeursDifferents'] . $this->_trad['champ'][$key]);
                             $this->msg .= $this->_trad['erreur']['vousAvezUneErreurDans'] . $this->_trad['champ'][$key];
                             $valide = '';
-
                         }
                     }
-
-
                 }
 
                 $this->_formulaire[$key]['valide'] = (
@@ -120,7 +116,6 @@ class formulaire
 
             }
         }
-
         return $ok;
     }
 

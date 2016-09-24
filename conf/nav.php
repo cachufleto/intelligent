@@ -165,7 +165,7 @@ $_pages['validerChangementMDP'] = array(
 
 // Onglets à activer dans le menu de navigation selon le profil listeMenu();
 //$_reglesAll = array('home', 'inscription', 'salles', 'reservation', 'recherche', 'actif');
-$_reglesAll = array('home', 'inscription', 'articles', 'reservation', 'actif');
+$_reglesAll = array('home', 'inscription', 'articles', 'actif');
 //$_reglesMembre = array('home', 'profil', 'salles', 'reservation', 'recherche', 'out');
 $_reglesMembre = array('home', 'profil', 'articles', 'reservation', 'commandes', 'out');
 //$_reglesAdmin = array('home', 'profil', 'salles', 'reservation', 'recherche', 'backoffice', 'out');

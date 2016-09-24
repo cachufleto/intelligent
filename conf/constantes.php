@@ -51,4 +51,6 @@ define('TVA', 0.2);
 $debug = ( preg_match('/localhost$/',$_SERVER["HTTP_HOST"]))? true : false;
 define("DEBUG", $debug);
 
-if(!file_exists(APP . 'Public' . DIRECTORY_SEPARATOR . 'index.php')) exit("<br>" . APP . 'Public/index.php');
+if(!file_exists(APP . 'Public' . DIRECTORY_SEPARATOR . 'index.php')) {
+    exit("<br>" . APP . 'Public/index.php');
+}

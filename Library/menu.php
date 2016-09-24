@@ -38,27 +38,37 @@ class menu
 
         if(!utilisateurAdmin()) return;
 
-        foreach($this->_reglesAdmin as $key)
-            if(!isset($this->_pages[$key]))
+        foreach($this->_reglesAdmin as $key){
+            if(!isset($this->_pages[$key])){
                 exit($this->_trad['laRubrique'] . $key . $this->_trad['pasDansMenuAdmin']);
+            }
+        }
 
-        foreach($this->_reglesMembre as $key)
-            if(!isset($this->_pages[$key]))
+        foreach($this->_reglesMembre as $key){
+            if(!isset($this->_pages[$key])){
                 exit($this->_trad['laRubrique'] . $key . $this->_trad['pasDansMenuMembre']);
+            }
+        }
 
-        foreach($this->_reglesAll as $key)
-            if(!isset($this->_pages[$key]))
+        foreach($this->_reglesAll as $key){
+            if(!isset($this->_pages[$key])){
                 exit($this->_trad['laRubrique'] . $key . $this->_trad['pasDansMenu']);
+            }
+        }
 
         // control du footer
-        foreach($this->navFooter as $key)
-            if(!isset($this->_pages[$key]))
+        foreach($this->navFooter as $key){
+            if(!isset($this->_pages[$key])){
                 exit($this->_trad['laRubrique'] . $key . $this->_trad['pasDansMenuFooter']);
+            }
+        }
 
         // control du menu administrateur
-        foreach($this->navAdmin as $key)
-            if(!isset($this->_pages[$key]))
+        foreach($this->navAdmin as $key){
+            if(!isset($this->_pages[$key])){
                 exit($this->_trad['laRubrique'] . $key . $this->_trad['pasDansMenuAdmin']);
+            }
+        }
 
         return;
     }

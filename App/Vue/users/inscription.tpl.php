@@ -14,7 +14,7 @@ echo <<<EOL
 </div>
 <div class="ligne">
     <div id="formulaire">
-        $info;
+        $info
     </div>
 </div>
 EOL;

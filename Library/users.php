@@ -101,7 +101,7 @@ class users extends \Model\users
         } else {
     
             // la variable $pseudo existe grace a l'extract fait prealablemrent.
-            if($membre = $this->selecMembreJeton($this->form->_formulaire['jeton']['valide'])){
+            if($membre = $this->selecMembreJeton($this->form->_formulaire['jeton']['defaut'])){
                 $this->userUpdateMDP($this->form->_formulaire['mdp']['valide'], $membre);
                 $this->updateMembreJeton($membre);
                 header('location:index.php?nav=actif');
@@ -597,13 +597,11 @@ class users extends \Model\users
         $id_membre = $this->selecMembreJeton($jeton);
         $_jeton = false;
         if ($_POST) {
-    
             if ($jeton != $_POST['jeton']) {
                 //tentative de détournement
-                exit("$jeton != ".$_POST['jeton']);
                 header('location:index.php?nav=expiration');
             }
-    
+
             $this->form->_formulaire['jeton']['defaut'] = $_POST['jeton'];
             if (isset($_POST['valide']) && $this->form->postCheck(true)) {
                 $this->mdpValider();
