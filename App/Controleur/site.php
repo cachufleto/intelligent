@@ -1,6 +1,9 @@
 <?php
 namespace site;
+use App\App;
 use App\formulaire;
+include CONTROLEUR . 'articles.php';
+use articles\articles;
 
 include_once MODEL . 'site.php';
 //include_once FUNC . 'site.func.php';
@@ -20,8 +23,15 @@ class site extends \Model\site
 
     public function home()
     {
+        $_SESSION['rechercheProduits'] = '';
+        $articles = new articles();
+        ob_start();
+        $articles->articles();
+        $listeArticles = ob_get_contents();
+        ob_end_clean();
         $dernieresOffres = $this->homeArticles();
         $dernieresOffres .= $this->homeSalles();
+
         include VUE . 'site/home.tpl.php';
     }
 

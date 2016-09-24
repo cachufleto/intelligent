@@ -128,7 +128,7 @@ function disponibiliteSalles()
 function disponibiliteArticles()
 {
 	$_trad = setTrad();
-	return "<form name='dispo' method='POST'>
+	return "<form name='dispo' method='POST' action='?nav=articles'>
 			{$_trad['recherche']}
 			<input type='text' name='rechercheProduits' value='{$_SESSION['rechercheProduits']}'>
 			<input type='submit' name='' value='OK'>

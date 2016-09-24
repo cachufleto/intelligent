@@ -157,17 +157,21 @@ $_pages['changermotpasse'] = array(
 	'link' => LINK,
 	'affiche' => false);
 
+$_pages['validerChangementMDP'] = array(
+	'link' => LINK,
+	'affiche' => false);
+
 
 
 // Onglets à activer dans le menu de navigation selon le profil listeMenu();
 //$_reglesAll = array('home', 'inscription', 'salles', 'reservation', 'recherche', 'actif');
-$_reglesAll = array('home', 'inscription', 'salles', 'articles', 'reservation', 'actif');
+$_reglesAll = array('home', 'inscription', 'articles', 'reservation', 'actif');
 //$_reglesMembre = array('home', 'profil', 'salles', 'reservation', 'recherche', 'out');
-$_reglesMembre = array('home', 'profil', 'salles', 'articles', 'reservation', 'commandes', 'out');
+$_reglesMembre = array('home', 'profil', 'articles', 'reservation', 'commandes', 'out');
 //$_reglesAdmin = array('home', 'profil', 'salles', 'reservation', 'recherche', 'backoffice', 'out');
-$_reglesAdmin = array('home', 'profil', 'salles', 'articles', 'reservation', 'backoffice', 'out');
+$_reglesAdmin = array('home', 'profil', 'articles', 'reservation', 'backoffice', 'out');
 
-$navAdmin = array('home', 'salles', 'articles', 'users', 'commandes', 'out' );
+$navAdmin = array('home', 'articles', 'users', 'commandes', 'out' );
 
 //$navFooter = array('mentions', 'cgv', 'plan', 'newsletter', 'contact' );
 $navFooter = array('mentions', 'cgv', 'contact' );

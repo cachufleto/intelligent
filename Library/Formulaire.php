@@ -524,7 +524,7 @@ class formulaire
     # Vérifie la valeur alphanumerique d'une chaine de caracteres
     # $value => valeur à tester
     # RETURN Boolean
-    protected function testFormatMail($valeur)
+    public function testFormatMail($valeur)
     {
         return filter_var($valeur, FILTER_VALIDATE_EMAIL);
     }

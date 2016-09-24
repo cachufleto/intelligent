@@ -1,4 +1,6 @@
 <?php
+$disponibilite = disponibiliteArticles();
+
 echo <<<EOL
 <!DOCTYPE html>
 <html lang="{$_SESSION['lang']}">
@@ -20,6 +22,11 @@ echo <<<EOL
 <!-- ENTETE -->
 <header class="mainHeader">
 	<a class="logo" href="?"><img src="{$link}img/intelligent.png" alt="intelligent" class="logo"></a>
+	<div class="recherche">
+        <div>
+		$disponibilite
+        </div>
+    </div>
 	<nav>
 		<ul>
 			$navPp

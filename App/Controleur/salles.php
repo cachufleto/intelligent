@@ -54,6 +54,7 @@ class salles extends \App\salles
     public function backOff_salles()
     {
         $this->nav = 'gestionSalles';
+        $alert = '';
         if(!$this->activeSalles()){
             $alert = "<script>alert('{$this->_trad['erreur']['manqueProduit']}');</script>";
         }

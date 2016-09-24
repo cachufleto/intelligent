@@ -600,6 +600,7 @@ class users extends \Model\users
     
             if ($jeton != $_POST['jeton']) {
                 //tentative de détournement
+                exit("$jeton != ".$_POST['jeton']);
                 header('location:index.php?nav=expiration');
             }
     
