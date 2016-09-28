@@ -199,4 +199,15 @@ function reperDate($date)
 	return $form;
 }
 
+function listeInfoHeeden($data){
 
+	if(DEBUG) {
+		ob_start();
+		echo '<div style="display:none">';
+		print_r($data);
+		echo '</div>';
+		$affiche = ob_get_contents();
+		ob_end_clean();
+		return $affiche;
+	}
+}

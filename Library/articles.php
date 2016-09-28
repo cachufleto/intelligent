@@ -264,7 +264,7 @@ class articles extends \Model\articles
                 }
             }
         }
-    
+    /*
         if(!$erreur && intval($this->form->_formulaire['capacite']['valide']*.9) < $this->form->_formulaire['cap_min']['valide']){
     
             $erreur = true;
@@ -272,12 +272,12 @@ class articles extends \Model\articles
                 ': '.$this->_trad['erreur']['capaciteMinSuperieur'];
             $this->form->_formulaire['cap_min']['valide'] = intval($this->form->_formulaire['capacite']['valide']*.9);
         }
-    
-        if($this->controlTranche()){
+    */
+        /*if($this->controlTranche()){
             $erreur = true;
             $this->form->_formulaire['tranche']['message'] = $this->_trad['erreur']['surLe'] . $this->_trad['champ']['tranche'] .
                 ': '.$this->_trad['erreur']['repartitionTranche'];
-        }
+        } */
     
         // si une erreur c'est produite
         if($erreur)
@@ -521,22 +521,20 @@ class articles extends \Model\articles
         }
         while ($data = $articles->fetch_assoc()) {
             //$min = empty($data['cap_min'])? intval($data['capacite']*0.3) : $data['cap_min'];
-            $table['info'][] = array(
-                'ref'=>$data['id_article'],
-                'nom'=>html_entity_decode($data['produit']),
-                //'capacite'=>"$min - {$data['capacite']}",
-                'categorie'=>$this->_trad['value'][$data['categorie']],
-                'photo'=>'<a href="' . LINK . '?nav=ficheArticles&id=' . $data['id_article'] . '&pos=' . $position . '" " >
-                    <img class="trombi" src="' . imageExiste($data['photo']) . '" ></a>',
-                'panier'=>(isset($panier[$data['id_article']])) ?
-                    '<a href="' . LINK . '?nav=' . $this->nav . '&enlever=' . $data['id_article'] . '&pos=' . $position . '" >' . $this->_trad['enlever'] . '</a>' :
-                    ' <a href="' . LINK . '?nav=' . $this->nav . '&ajouter=' . $data['id_article'] . '&pos=' . $position . '">' . $this->_trad['ajouter'] . '</a>',
-                /*'total' => (isset($panier[$data['id_article']]['total'])?
-                            "[ Total:" . number_format($panier[$data['id_article']]['total'], 2) . "€ ]" :
-                            ""), */
-                'position'=>'<a id="P-' . $position . '"></a>'
-    
-            );
+                 $data['ref'] = $data['ean'];
+                 $data['nom'] = html_entity_decode($data['produit']);
+                 //'capacite'=>"$min - {$data['capacite']}",
+                 $data['categorie'] =$this->_trad['value'][$data['categorie']];
+                 $data['photo'] ='<a href="' . LINK . '?nav=ficheArticles&id=' . $data['id_article'] . '&pos=' . $position . '" >
+                    <img class="trombi" src="' . imageExiste($data['photo']) . '" ></a>';
+                 $data['panier'] =(isset($panier[$data['id_article']])) ?
+                     '<a href="' . LINK . '?nav=' . $this->nav . '&enlever=' . $data['id_article'] . '&pos=' . $position . '" >' . $this->_trad['enlever'] . '</a>' :
+                     ' <a href="' . LINK . '?nav=' . $this->nav . '&ajouter=' . $data['id_article'] . '&pos=' . $position . '">' . $this->_trad['ajouter'] . '</a>';
+                 /*'total' => (isset($panier[$data['id_article']]['total'])?
+                             "[ Total:" . number_format($panier[$data['id_article']]['total'], 2) . "€ ]" :
+                             ""), */
+                 $data['position'] = '<a id="P-' . $position . '"></a>';
+            $table['info'][] = $data;
             $position++;
         }
     
@@ -553,6 +551,7 @@ class articles extends \Model\articles
         $table['champs']['produit'] = $this->_trad['champ']['produit'];
         $table['champs']['fabricant'] = $this->_trad['champ']['fabricant'];
         $table['champs']['prix_Achat'] = $this->_trad['champ']['prix_Achat'];
+        $table['champs']['prix_vente'] = $this->_trad['champ']['prix_Vente'];
         $table['champs']['categorie'] = $this->_trad['champ']['categorie'];
         $table['champs']['photo'] = $this->_trad['champ']['photo'];
         $table['champs']['ean'] = $this->_trad['champ']['ean'];
@@ -563,16 +562,20 @@ class articles extends \Model\articles
         $articles = $this->selectArticlesUsers($this->orderArticlesValide() . $this->orderArticles());
     
         while ($data = $articles->fetch_assoc()) {
+            if(!isset($table['info'])){
+                _debug($data, 'ARTICLE ' . __FUNCTION__ );
+            }
             $table['info'][] = array(
                 $data['id_article'],
                 html_entity_decode($data['produit']),
                 html_entity_decode($data['fabricant']),
                 number_format($data['prix_Achat'], 2, '.', ' '),
+                number_format(($data['prix_Achat']*1.3), 2, '.', ' '),
                 $this->_trad['value'][$data['categorie']],
                     '<a href="' . LINK . '?nav=ficheArticles&id=' . $data['id_article'] . '&pos=' . $position . '" id="P-' . $position . '" >
                 <img class="trombi" src="' . imageExiste($data['photo']) . '" ></a>',
                 $data['ean'],
-                $data['quantite'],
+                $data['stock'],
                 '<a href="' . LINK . '?nav=ficheArticles&id=' . $data['id_article'] . '&pos=' . ($position - 1) . '" ><img width="25px" src="img/modifier.png"></a>',
                 ($data['active'] == 1) ? ' <a href="' . LINK . '?nav=articles&delete=' . $data['id_article'] . '#P-' . ($position - 1) . '"><img width="25px" src="img/activerOk.png"></a>' :
                     ' <a href="' . LINK . '?nav=articles&active=' . $data['id_article'] . '#P-' . ($position - 1) . '"><img width="25px" src="img/activerKo.png"></a>'

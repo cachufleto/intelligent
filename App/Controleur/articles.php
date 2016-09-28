@@ -71,12 +71,13 @@ class articles extends \App\articles
             }
 
             foreach($table['info'] as $ligne=>$article){
+                $debugInfo = listeInfoHeeden($article);
                 $class = ($ligne%2 == 1)? 'lng1':'lng2';
                 $tableau .= "<tr class='$class'>";
                 foreach($article as $champ=>$info ){
                     $tableau .= "<td>$info</td>";
                 }
-                $tableau .= '        </tr>';
+                $tableau .= $debugInfo .'</tr>';
             }
         }
 

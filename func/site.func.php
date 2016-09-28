@@ -202,7 +202,7 @@ function dernieresOffresSalle($salle)
 function dernieresOffresArticles($article)
 {
     $_trad = setTrad();
-
+    $info = listeInfoHeeden($article);
     $offre = '
 	<div class="offre">
         <a href="'. LINK . '?nav=ficheArticles&id=' . $article['id_article'] . '">
@@ -213,8 +213,9 @@ function dernieresOffresArticles($article)
                 $_trad['value'][$article['categorie']] . '
                 </figcaption>
 
-        </figure>
+            </figure>
         </a>
+        '. $info .'
 	</div>
 	';
 

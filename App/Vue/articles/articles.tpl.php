@@ -10,7 +10,7 @@ if(!empty($table['info'])){
         $class = ($ligne%2 == 1)? 'lng1':'lng2' ;
         $nom = strtoupper($article['nom']);
         $active = isset($_SESSION['panier'][$_SESSION['date']][$article['ref']])? "active" : "";
-
+$info = listeInfoHeeden($article);
 echo <<<EOL
         <div class="quart">
             {$article['position']}
@@ -28,6 +28,7 @@ echo <<<EOL
 
             </div>
             <div class="reserver $active">{$article['panier']}</div>
+            $info
         </div>
 EOL;
     }

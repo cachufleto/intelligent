@@ -30,7 +30,7 @@ class site extends \Model\site
         $listeArticles = ob_get_contents();
         ob_end_clean();
         $dernieresOffres = $this->homeArticles();
-        $dernieresOffres .= $this->homeSalles();
+        //$dernieresOffres .= $this->homeSalles();
 
         include VUE . 'site/home.tpl.php';
     }
