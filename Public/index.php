@@ -26,6 +26,8 @@ session_start();
 // class de l'application
 require LIB . 'App.php';
 /*************************************************************/
+_debug(['GET'=>$_GET, 'POST'=>$_POST], 'HREF');
+
 ob_start();
 
 // application

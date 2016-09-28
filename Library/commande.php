@@ -25,10 +25,11 @@ class commande extends \Model\commande
         if (isset($_SESSION['panierArticles']) && !empty($_SESSION['panierArticles'])) {
             $listeOrdenee = sortIndice($_SESSION["panierArticles"]);
             foreach ($listeOrdenee as $key => $id) {
-                    $data = $this->selectArticleId($id);
-                    $article = $data->fetch_assoc();
-                    $article['quantite'] = $_SESSION['panierArticles'][$id];
-                    $listePrix[] = $this->listeProduitsPrixFacture($article);
+                $data = $this->selectArticleId($id);
+                $article = $data->fetch_assoc();
+                $article['quantite'] = $_SESSION['panierArticles'][$id];
+                $this->listeProduitsPrixFacture($article);
+                $listePrix[] = $article;
             }
         }
         return $listePrix;
@@ -55,6 +56,9 @@ class commande extends \Model\commande
         $articles = $this->selectArticlesCommandes();
         if ($articles->num_rows >0) {
             while ($Commandes = $articles->fetch_assoc()) {
+                if(empty($listePrix)){
+                    _debug($Commandes, 'COMMANDES '.__FUNCTION__);
+                }
                 $listePrix[] = $Commandes;
             }
         }
@@ -65,12 +69,15 @@ class commande extends \Model\commande
     protected function listeProduitsGestionCommandes()
     {
         $listePrix = [];
-        $salles = $this->selectProduitsGestionCommandes();
-        $Commandes = $salles->fetch_assoc();
+        $articles = $this->selectProduitsGestionCommandes();
+        $Commandes = $articles->fetch_assoc();
 
         if (isset($Commandes) && !empty($Commandes)) {
-            while ($Commandes = $salles->fetch_assoc()) {
-                $listePrix[] = $Commandes;
+            while ($liste = $Commandes->fetch_assoc()) {
+                if(empty($listePrix)){
+                    _debug($liste, 'COMMANDES '.__FUNCTION__);
+                }
+                $listePrix[] = $liste;
             }
         }
 

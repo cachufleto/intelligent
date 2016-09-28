@@ -500,10 +500,13 @@ class articles extends \Model\articles
         $liste = '';
         if(isset($_SESSION['panierArticles']) && is_array($_SESSION['panierArticles'])){
             $listeOrdenee = sortIndice($_SESSION["panierArticles"]);
-            foreach ($listeOrdenee as $quantite=>$article) {
+            foreach ($listeOrdenee as $key=>$article) {
+                if($article){
                     $liste .= ((empty($liste)) ? '' : ',') . $article;
+                }
             }
         }
+
         $liste =  !empty($liste)? " id_article in ($liste) " : " id_article = -1 ";
         return $this->listeArticles($liste);
     }
@@ -537,7 +540,7 @@ class articles extends \Model\articles
             $table['info'][] = $data;
             $position++;
         }
-    
+
         return $table;
     }
     
@@ -797,10 +800,14 @@ class articles extends \Model\articles
         $listePrix = [];
         if(isset($_SESSION['panierArticles']) && !empty($_SESSION['panierArticles'])){
             foreach ($_SESSION["panierArticles"] as $id=>$quantite) {
+                if(!empty($id) AND !empty($quantite)){
                     $data = $this->selectArticleId($id);
                     $article = $data->fetch_assoc();
                     $article['quantite'] = $quantite;
                     $listePrix[$id][] = $article;
+                } else {
+                    unset($_SESSION["panierArticles"][$id]);
+                }
             }
         }
     
@@ -868,13 +875,11 @@ class articles extends \Model\articles
                 unset($_SESSION['panierArticles'][$_SESSION['date']][$_POST['id']]);
             }
         } else if (!empty($_GET)) {
-            if (isset($_GET['panier'])) {
-                /*if(!(utilisateurConnecte())){
-                    return false;
-                }*/
-                header('location:?nav=ficheArticles&id='.$_GET['panier'].'&pos='.$_GET['pos']);
-    
+            //exit(print_r($_GET));
+            if (isset($_GET['ajouter'])) {
+                $_SESSION['panierArticles'][$_GET['ajouter']] = isset($_SESSION['panierArticles'][$_GET['ajouter']]) ? $_SESSION['panierArticles'][$_GET['ajouter']]+1 : 1;
             } else if (isset($_GET['enlever'])) {
+                exit('ENLEVER ' . __FUNCTION__);
                 unset($_SESSION['panierArticles'][$_SESSION['date']][$_GET['enlever']]);
             }
         }

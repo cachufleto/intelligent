@@ -9,6 +9,7 @@ echo <<<EOL
 EOL;
 $_liste = '';
 $_total = 0;
+
 foreach($listePrix as $date=>$produit){
     $_liste .= "<div class='ligne'>
                 <div class='titre'>{$produit['produit']}</div>

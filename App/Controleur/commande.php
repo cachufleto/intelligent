@@ -44,6 +44,8 @@ class commande extends \App\commande
         //$this->_trad
         $facture = $this->generationProduitsFacture();
         $id = $this->setReservations();
+        debug($facture);
+        debug($id);
         $date_facturation = date('Y-m-d H:i:s');
         foreach($facture as $key=>$commande){
             $commande['id_reservation'] = $id;
@@ -51,6 +53,7 @@ class commande extends \App\commande
             $commande['prix_ttc'] = $commande['quantite'] * ($commande['prix'] - $commande['reduction'] ) * (1 + TVA);
             $this->unStockComandesArticles($commande);
             $this->setComandesArticles($commande);
+            unset($_SESSION['panierArticles']);
         }
         //unset($_SESSION['panierArticles']);
         header('refresh:2;url=index.php');
