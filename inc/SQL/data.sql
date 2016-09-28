@@ -25,8 +25,8 @@ SET time_zone = "+00:00";
 --
 
 INSERT INTO `membres` (`id`, `pseudo`, `mdp`, `nom`, `prenom`, `email`, `sexe`, `telephone`, `gsm`, `ville`, `cp`, `adresse`, `statut`, `inscription`, `active`) VALUES
-(2, 'Membre', 'membre', 'Paz', 'Carlos', 'carlos.paz@gmail.com', 'm', '0606060606', '0662474323', 'Boulogne-Billancourt', 92100, 'Rue escuder', 'COL', CURRENT_TIMESTAMP , 1),
-(3, 'Membre2', 'membre2', 'Paz', 'Carlos', 'carlos.dupriez@gmail.com', 'm', '1212121212', '0662474323', 'Boulogne-Billancourt', 92100, 'Rue escuder', 'MEM', CURRENT_TIMESTAMP, 1);
+(2, 'Membre', 'membre', 'Paz', 'Carlos', 'carlos.paz@gmail.com', 'm', '0606060606', '0662474323', 'Boulogne-Billancourt', 92100, 'Rue escudier', 'COL', CURRENT_TIMESTAMP , 1),
+(3, 'Membre2', 'membre2', 'Paz', 'Carlos', 'carlos.dupriez@gmail.com', 'm', '1212121212', '0662474323', 'Boulogne-Billancourt', 92100, 'Rue escudier', 'MEM', CURRENT_TIMESTAMP, 1);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Mer 21 Septembre 2016 à 22:01
+-- Généré le :  Mer 28 Septembre 2016 à 00:17
 -- Version du serveur :  5.7.9
 -- Version de PHP :  5.6.16
 
@@ -38,13 +38,13 @@ CREATE TABLE IF NOT EXISTS `articles` (
   `description` text NOT NULL,
   `photo` varchar(200) NOT NULL,
   `ean` varchar(13) DEFAULT NULL,
-  `quantite` int(11) NOT NULL DEFAULT '1',
-  `categorie` enum('R','C','F','T') NOT NULL DEFAULT 'R',
-  `prix_Achat` float(4,1) NOT NULL DEFAULT '5.5',
+  `stock` int(11) NOT NULL DEFAULT '1',
+  `categorie` enum('D','I','J') NOT NULL DEFAULT 'J',
+  `prix_Achat` float(8,2) DEFAULT NULL,
   `active` int(1) DEFAULT '0',
   PRIMARY KEY (`id_article`),
   KEY `id_salle` (`id_article`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `articles_plagehoraires` (
   `id_salles` int(10) UNSIGNED NOT NULL,
   `id_plagehoraire` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='relationelle';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='relationelle';
 
 -- --------------------------------------------------------
 
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `checkinscription` (
   `id_membre` int(11) NOT NULL,
   `checkinscription` varchar(250) NOT NULL,
   `inscription` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `commandes` (
   `prix_TTC` float(8,2) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `reservations` (`id_salle`,`date_reserve`,`tranche`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Historique des rÃ©servations';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Historique des commandes';
 
 -- --------------------------------------------------------
 
@@ -122,14 +122,14 @@ CREATE TABLE IF NOT EXISTS `membres` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `pseudo` (`pseudo`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Contenu de la table `membres`
 --
 
 INSERT INTO `membres` (`id`, `pseudo`, `mdp`, `nom`, `prenom`, `email`, `sexe`, `telephone`, `gsm`, `ville`, `cp`, `adresse`, `statut`, `inscription`, `active`) VALUES
-  (1, 'Admin', 'Admin', 'Paz', 'Carlos', 'carlos.paz.dupriez@gmail.com', 'm', '0606060606', '0662474323', 'Boulogne-Billancourt', 92100, 'Rue escuder', 'ADM', '2016-05-25 11:02:02', 1);
+(1, 'Admin', 'Admin', 'Paz', 'Carlos', 'carlos.paz.dupriez@gmail.com', 'm', '0606060606', '0662474323', 'Boulogne-Billancourt', 92100, 'Rue escuder', 'ADM', '2016-05-25 11:02:02', 1);
 
 -- --------------------------------------------------------
 
@@ -145,17 +145,7 @@ CREATE TABLE IF NOT EXISTS `plagehoraires` (
   `heure_entree` time NOT NULL,
   `heure_sortie` time NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-
---
--- Contenu de la table `plagehoraires`
---
-
-INSERT INTO `plagehoraires` (`id`, `libelle`, `description`, `heure_entree`, `heure_sortie`) VALUES
-  (1, 'matinee', '8:00h - 12:00h', '08:00:00', '12:00:00'),
-  (2, 'journee', '1300h - 17:00h', '13:00:00', '17:00:00'),
-  (3, 'soiree', '18:00h - 22:00h', '18:00:00', '22:00:00'),
-  (4, 'nocturne', '22:00h - 5:00h', '22:00:00', '23:59:00');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -170,7 +160,7 @@ CREATE TABLE IF NOT EXISTS `produits` (
   `id_salle` int(10) UNSIGNED DEFAULT NULL,
   `id_plagehoraire` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Prix des salles';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Prix des salles';
 
 -- --------------------------------------------------------
 
@@ -188,7 +178,7 @@ CREATE TABLE IF NOT EXISTS `promotions` (
   `date_debut` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `dete_fin` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -202,7 +192,7 @@ CREATE TABLE IF NOT EXISTS `reservations` (
   `id_membre` int(10) UNSIGNED NOT NULL,
   `date_facturacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -230,7 +220,7 @@ CREATE TABLE IF NOT EXISTS `salles` (
   `active` int(1) DEFAULT '0',
   PRIMARY KEY (`id_salle`),
   KEY `id_salle` (`id_salle`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -245,7 +235,30 @@ CREATE TABLE IF NOT EXISTS `salles_plagehoraires` (
   `id_article` int(10) UNSIGNED NOT NULL,
   `id_plagehoraire` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='relationelle';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='relationelle';
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `ventes`
+--
+
+DROP TABLE IF EXISTS `ventes`;
+CREATE TABLE IF NOT EXISTS `ventes` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_reservation` int(10) UNSIGNED NOT NULL,
+  `id_article` int(10) UNSIGNED DEFAULT NULL,
+  `date_facturacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_reserve` datetime NOT NULL,
+  `ean` varchar(13) NOT NULL,
+  `quantite` int(11) NOT NULL,
+  `prix` float(8,2) NOT NULL,
+  `reduction` float(8,2) NOT NULL,
+  `prix_TTC` float(8,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `reservations` (`date_reserve`,`ean`),
+  KEY `id_article` (`id_article`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Historique des rÃ©servations';
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
