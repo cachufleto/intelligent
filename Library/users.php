@@ -596,13 +596,16 @@ class users extends \Model\users
         $form = '';
         $id_membre = $this->selecMembreJeton($jeton);
         $_jeton = false;
-        if ($_POST) {
+
+        if ($id_membre AND $_POST) {
+            $this->form->_formulaire['jeton']['valide'] = $jeton;
+            $this->form->_formulaire['jeton']['defaut'] = isset($_POST['jeton'])? $_POST['jeton'] : false;
+
             if ($jeton != $_POST['jeton']) {
                 //tentative de détournement
                 header('location:index.php?nav=expiration');
             }
 
-            $this->form->_formulaire['jeton']['defaut'] = $_POST['jeton'];
             if (isset($_POST['valide']) && $this->form->postCheck(true)) {
                 $this->mdpValider();
             }
@@ -615,14 +618,13 @@ class users extends \Model\users
                 $form = $this->form->formulaireAfficher();
             }
     
+        } else if ($id_membre) {
+            $this->form->_formulaire['jeton']['defaut'] = $jeton;
+            $form = $this->form->formulaireAfficher();
         } else {
-            if ($id_membre) {
-                $this->form->_formulaire['jeton']['defaut'] = $jeton;
-                $form = $this->form->formulaireAfficher();
-            } else {
-                header("refresh:5;url=index.php?nav=expiration");
-            }
+            header("refresh:5;url=index.php?nav=expiration");
         }
+
         include VUE . 'users/userMDP.tpl.php';
     }
 }

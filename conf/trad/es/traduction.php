@@ -224,6 +224,7 @@ $_trad['value']['T4'] = "Cuatro grupo";
 /* trad pour les autres textes */
 $_trad['activer'] = "Activar";
 $_trad['admin'] = "Adminitrador";
+$_trad['ajouter'] = "Agregar";
 $_trad['ajouterArticle'] = "Agresar un articulo <a href=" . LINK . "?nav=editerArticles>AGREGAR</a>";
 $_trad['ajouterSalle'] = "Agresar una sala <a href=" . LINK . "?nav=editerSalles>AGREGAR</a>";
 $_trad['Bonjour'] = "Apreciado";

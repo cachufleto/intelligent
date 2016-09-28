@@ -25,7 +25,7 @@ $href = imageExiste($article['photo']);
 $titre = strtoupper($article['produit']);
 $lien = LINK . "?nav=articles&pos=$position";
 $active = "";
-$reserver = 'reserver';
+$reserver = 'ajouter';
 $modifier = '';
 //$formdate = disponibilite();
 
@@ -78,7 +78,7 @@ echo <<<EOL
             </div>
             <div class="reserver lien">
                 <a href="$lien"><button type="button">{$this->_trad['revenir']}</button></a> :
-                <a href="?nav=reservation"><button type="button">{$this->_trad['nav']['reservation']}</button></a>
+                <a href="?nav=panier"><button type="button">{$this->_trad['nav']['panier']}</button></a>
             </div>
         </div>
     </div>

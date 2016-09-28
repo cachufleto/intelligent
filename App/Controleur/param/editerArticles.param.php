@@ -78,7 +78,7 @@ $_formulaire['categorie'] = array(
 	'defaut' => 'R',
 	'obligatoire' => true);
 
-$_formulaire['quantite'] = array(
+$_formulaire['stock'] = array(
 	'type' => 'text',
 	'content' => 'int',
 	'defaut' => 0,

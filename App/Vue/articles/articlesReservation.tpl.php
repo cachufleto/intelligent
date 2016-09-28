@@ -9,7 +9,7 @@ if(!empty($table['info'])){
     foreach($table['info'] as $ligne=>$article){
         $class = ($ligne%2 == 1)? 'lng1':'lng2' ;
         $nom = strtoupper($article['nom']);
-        $active = isset($_SESSION['panier'][$_SESSION['date']][$article['ref']])? "active" : "";
+        $active = isset($_SESSION['panierArticles'][$article['ref']])? "active" : "";
 
 echo <<<EOL
         <div class="quart">
@@ -21,14 +21,12 @@ echo <<<EOL
             <div class="ligne">
 
                     <h4 class="in_catalogue">{$article['categorie']}</h4>
-                    <p>Jusqu'à {$article['capacite']} personnes<br>
                         REF:{$article['ref']}
                     </p>
             </div>
             <div class="ligne">
             </div>
-            <div class="reserver $active">{$article['reservation']}</div>
-        </div>
+            </div>
 EOL;
     }
 }
@@ -40,29 +38,26 @@ echo '
 <div class="ligne">
     <hr>
     <div class="reserve">';
-$listePrix = $this->listeProduitsReservationPrixTotal();
-
 $total = 0;
 $reservation = '';
 if(!empty($listePrix)){
     $reservation .= "<div class='ligne'><h4>{$this->_trad['votreReservation']}</h4></div>";
 foreach($listePrix as $date=>$data){
-    $reservation .= "<div class='ligne'><div class='ligne date'>" .
-        reperDate($date)
-        . "</div>";
-    foreach($data as $key=>$info){
-        $article = $info['article'];
-        $titre = $article['titre'];
+    foreach($data as $key=>$article){
+        //$article = $info['article'];
+        $titre = $article['produit'];
         $reservation .= "<div class='ligne'><hr></div>";
-        foreach($info['reservation'] as $_ligne=>$reserve) {
+        //foreach($article['reservation'] as $_ligne=>$reserve) {
+        $prix = $article['prix_Achat'] * 1.3;
+        $panier = $article['prix_Achat'] * 1.3 * $article['quantite'];
             $reservation .= "<div class='ligne'>
                             <div class='titre'>$titre</div>
-                            <div class='tronche'>{$this->_trad['value'][$reserve['libelle']]} :</div>
-                            <div class='personne'>{$reserve['num']} pers.</div>
-                            <div class='prix'>". number_format($reserve['prix'],2) . "€</div></div>";
-            $total = $total + $reserve['prix'];
+                            <div class='tronche'>".number_format($prix,2)." :</div>
+                            <div class='personne'>{$article['quantite']}</div>
+                            <div class='prix'>". number_format($panier,2) . "€</div></div>";
+            $total = $total + $panier;
             $titre = "&nbsp;";
-        }
+        //}
     }
 }
     $reservation .= "<div class='ligne'>

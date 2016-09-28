@@ -207,14 +207,16 @@ class articles extends \App\articles
     }
 
 
-    public function reservation()
+    public function panier()
     {
         //$this->_trad
         $this->reservationArticles();
-
         $table = $this->selectArticlesReservations();
+        _debug($table, 'Table :: selectArticlesReservations');
         $this->form->msg = (!empty($table))? $this->_trad['reservationOk'] : $this->_trad['erreur']['reservationVide'];
         $alert = $this->urlReservation();
+        _debug($alert, 'Alert :: urlReservation');
+        _debug($listePrix = $this->listeProduitsReservationPrixTotal(), 'ListePrix :: listeProduitsReservationPrixTotal');
 
         include VUE . "articles/articlesReservation.tpl.php";
     }

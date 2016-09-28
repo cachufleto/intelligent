@@ -25,8 +25,9 @@ echo <<<EOL
                     </p>
             </div>
             <div class="ligne">
+
             </div>
-            <div class="reserver $active">{$article['reservation']}</div>
+            <div class="reserver $active">{$article['panier']}</div>
         </div>
 EOL;
     }

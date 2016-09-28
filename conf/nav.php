@@ -15,7 +15,7 @@ $_pages['home'] = array(
 $_pages['detail'] = array(
 	'link' => LINK,
 	'affiche' => false);
-
+/*
 $_pages['reservation'] = array(
 	'link' => LINK,
 	'affiche' => false);
@@ -23,7 +23,7 @@ $_pages['reservation'] = array(
 $_pages['reservationArticle'] = array(
 	'link' => LINK,
 	'affiche' => false);
-
+*/
 $_pages['recherche'] = array(
 	'link' => LINK,
 	'affiche' => false);
@@ -59,19 +59,19 @@ $_pages['newsletter'] = array(
 $_pages['contact'] = array(
 	'link' => LINK,
 	'affiche' => false);
-
+/*
 $_pages['salles'] = array(
 	'link' => LINK,
 	'affiche' => false);
-
+*/
 $_pages['articles'] = array(
 	'link' => LINK,
 	'affiche' => false);
-
+/*
 $_pages['ficheSalles'] = array(
 	'link' => LINK,
 	'affiche' => false);
-
+*/
 $_pages['ficheArticles'] = array(
 	'link' => LINK,
 	'affiche' => false);
@@ -136,19 +136,19 @@ $_pages['users'] = array(
 $_pages['commandes'] = array(
 	'link' => LINK,
 	'affiche' => false);
-
+/*
 $_pages['gestionSalles'] = array(
 	'link' => LINK,
 	'affiche' => false);
-
+*/
 $_pages['gestionArtcles'] = array(
 	'link' => LINK,
 	'affiche' => false);
-
+/*
 $_pages['editerSalles'] = array(
 	'link' => LINK,
 	'affiche' => false);
-
+*/
 $_pages['editerArticles'] = array(
 	'link' => LINK,
 	'affiche' => false);
@@ -161,15 +161,23 @@ $_pages['validerChangementMDP'] = array(
 	'link' => LINK,
 	'affiche' => false);
 
+$_pages['expiration'] = array(
+	'link' => LINK,
+	'affiche' => false);
+
+$_pages['validerCommande'] = array(
+	'link' => LINK,
+	'affiche' => false);
+
 
 
 // Onglets à activer dans le menu de navigation selon le profil listeMenu();
 //$_reglesAll = array('home', 'inscription', 'salles', 'reservation', 'recherche', 'actif');
-$_reglesAll = array('home', 'inscription', 'articles', 'actif');
+$_reglesAll = array('home', 'inscription', 'articles', 'panier', 'actif');
 //$_reglesMembre = array('home', 'profil', 'salles', 'reservation', 'recherche', 'out');
-$_reglesMembre = array('home', 'profil', 'articles', 'reservation', 'commandes', 'out');
+$_reglesMembre = array('home', 'profil', 'articles', 'panier', 'commandes', 'out');
 //$_reglesAdmin = array('home', 'profil', 'salles', 'reservation', 'recherche', 'backoffice', 'out');
-$_reglesAdmin = array('home', 'profil', 'articles', 'reservation', 'backoffice', 'out');
+$_reglesAdmin = array('home', 'profil', 'articles', 'panier', 'backoffice', 'out');
 
 $navAdmin = array('home', 'articles', 'users', 'commandes', 'out' );
 

@@ -34,6 +34,7 @@ $__app = new \App\App();
 if ($__app->nav != 'erreur404'){
 	$app = $__app->getControleur();
 	$app->{$__app->action}();
+
 } else {
 	$app = $__app->getControleur();
 	$app->{$__app->action}('erreur404');
@@ -41,7 +42,6 @@ if ($__app->nav != 'erreur404'){
 //$arg = ($__app->nav == 'erreur404')? $__app->nav : '';
 
 //$app->{$__app->action}($arg);
-
 _debug($__app->route[$__app->nav], 'Route pour: ' . $__app->nav);
 
 $contentPage = ob_get_contents();
@@ -51,6 +51,8 @@ ob_start();
 if(DEBUG) {
 	debugPhpInfo();
 	debugCost();
+	_debug($_POST, 'POST');
+	_debug($_SESSION, 'SESSION');
 	debug($_debug);
 }
 debugTestMail();

@@ -498,18 +498,13 @@ class articles extends \Model\articles
     protected function selectArticlesReservations()
     {
         $liste = '';
-        if(isset($_SESSION['panierArticles']) && !empty($_SESSION['panierArticles'])){
-            $listeOrdenee = sortIndice($_SESSION["panier"]);
-            foreach ($listeOrdenee as $key => $date) {
-                foreach($_SESSION["panier"][$date] as $key => $value) {
-                    $liste .= ((empty($liste)) ? '' : ',') . $key;
-                }
+        if(isset($_SESSION['panierArticles']) && is_array($_SESSION['panierArticles'])){
+            $listeOrdenee = sortIndice($_SESSION["panierArticles"]);
+            foreach ($listeOrdenee as $quantite=>$article) {
+                    $liste .= ((empty($liste)) ? '' : ',') . $article;
             }
-    
         }
-    
         $liste =  !empty($liste)? " id_article in ($liste) " : " id_article = -1 ";
-    
         return $this->listeArticles($liste);
     }
     
@@ -517,7 +512,7 @@ class articles extends \Model\articles
     {
         $table = array();
         $position = 1;
-        $this->nav = ($reservation)? 'reservation' : $this->nav;
+        $this->nav = ($reservation)? 'panier' : $this->nav;
         $articles = $this->selectArticlesOrder($this->orderArticles(), $reservation);
         $panier = isset($_SESSION['panierArticles'][$_SESSION['date']])?
                     $_SESSION['panierArticles'][$_SESSION['date']] : [];
@@ -533,9 +528,9 @@ class articles extends \Model\articles
                 'categorie'=>$this->_trad['value'][$data['categorie']],
                 'photo'=>'<a href="' . LINK . '?nav=ficheArticles&id=' . $data['id_article'] . '&pos=' . $position . '" " >
                     <img class="trombi" src="' . imageExiste($data['photo']) . '" ></a>',
-                'reservation'=>(isset($panier[$data['id_article']])) ?
+                'panier'=>(isset($panier[$data['id_article']])) ?
                     '<a href="' . LINK . '?nav=' . $this->nav . '&enlever=' . $data['id_article'] . '&pos=' . $position . '" >' . $this->_trad['enlever'] . '</a>' :
-                    ' <a href="' . LINK . '?nav=' . $this->nav . '&reserver=' . $data['id_article'] . '&pos=' . $position . '">' . $this->_trad['reserver'] . '</a>',
+                    ' <a href="' . LINK . '?nav=' . $this->nav . '&ajouter=' . $data['id_article'] . '&pos=' . $position . '">' . $this->_trad['ajouter'] . '</a>',
                 /*'total' => (isset($panier[$data['id_article']]['total'])?
                             "[ Total:" . number_format($panier[$data['id_article']]['total'], 2) . "€ ]" :
                             ""), */
@@ -629,26 +624,14 @@ class articles extends \Model\articles
     protected function getIndisponibilite()
     {
         $data = [];
-        if(isset($_SESSION['panierArticles'])){
-            foreach($_SESSION['panierArticles'] as $date => $article){
-                foreach($article as $id => $item){
-                    if($reserves = $this->selectArticleReserves($date, $id)){
-                        while ($info = $reserves->fetch_assoc()){
-                            unset($_SESSION['panierArticles'][$date][$id][$info['tranche']]);
-                            //echo($_SESSION['panierArticles'][$date][$id][$info['tranche']]);
-                        }
-                    }
-                    // on detruit le set de la sale si vide
-                    if(empty($_SESSION['panierArticles'][$date][$id])){
-                        unset($_SESSION['panierArticles'][$date][$id]);
-                    }
+        if(isset($_SESSION['panierArticles']) AND is_array($_SESSION['panierArticles'])){
+            foreach($_SESSION['panierArticles'] as $article => $quantite){
+                // on detruit le set de la sale si vide
+                if($quantite < 1){
+                    unset($_SESSION['panierArticles'][$article]);
+                } else {
+                    $data[$article] = $quantite;
                 }
-    
-                // on detruit la set de la date si vide
-                if(empty($_SESSION['panierArticles'][$date])){
-                    unset($_SESSION['panierArticles'][$date]);
-                }
-    
             }
         }
     
@@ -810,13 +793,11 @@ class articles extends \Model\articles
     {
         $listePrix = [];
         if(isset($_SESSION['panierArticles']) && !empty($_SESSION['panierArticles'])){
-            $listeOrdenee = sortIndice($_SESSION["panier"]);
-            foreach ($listeOrdenee as $key => $date) {
-                foreach($_SESSION['panierArticles'][$date] as $id=>$reserv){
+            foreach ($_SESSION["panierArticles"] as $id=>$quantite) {
                     $data = $this->selectArticleId($id);
                     $article = $data->fetch_assoc();
-                    $listePrix[$date][] = ['article'=>$article, 'reservation'=>$this->listeProduitsPrixReservation($date, $article)];
-                }
+                    $article['quantite'] = $quantite;
+                    $listePrix[$id][] = $article;
             }
         }
     
@@ -874,26 +855,28 @@ class articles extends \Model\articles
     protected function reservationArticles()
     {
         if (!empty($_POST)) {
-            if (isset($_POST['reserver']) && $_SESSION['dateTimeOk']) {
-                if(isset($_POST['prix'])) {
-                    $_SESSION['panierArticles'][$_SESSION['date']][$_POST['id']] = isset($_POST['prix']) ? $_POST['prix'] : [];
-                } else {
+            if (isset($_POST['ajouter'])) {
+                /*if(isset($_POST['prix'])) {*/
+                    $_SESSION['panierArticles'][$_POST['id']] = isset($_SESSION['panierArticles'][$_POST['id']]) ? $_SESSION['panierArticles'][$_POST['id']]+1 : 1;
+                /*} else {
                     return false;
-                }
+                }*/
             } else if (isset($_POST['enlever'])) {
                 unset($_SESSION['panierArticles'][$_SESSION['date']][$_POST['id']]);
             }
         } else if (!empty($_GET)) {
-            if (isset($_GET['reserver']) && $_SESSION['dateTimeOk']) {
-                if(!(utilisateurConnecte())){
+            if (isset($_GET['panier'])) {
+                /*if(!(utilisateurConnecte())){
                     return false;
-                }
-                header('location:?nav=ficheArticles&id='.$_GET['reserver'].'&pos='.$_GET['pos']);
+                }*/
+                header('location:?nav=ficheArticles&id='.$_GET['panier'].'&pos='.$_GET['pos']);
     
             } else if (isset($_GET['enlever'])) {
                 unset($_SESSION['panierArticles'][$_SESSION['date']][$_GET['enlever']]);
             }
         }
+        //_debug($_SESSION['panierArticles'], 'Panier Articles :: reservationArticles');
+
         return true;
     }
     
@@ -911,13 +894,13 @@ class articles extends \Model\articles
     
     protected function urlReservation()
     {
-        if(isset($_GET['reserver']) OR isset($_POST['reserver'])){
-            if(utilisateurConnecte()){
+        if(isset($_GET['panier']) OR isset($_POST['panier'])){
+            //if(utilisateurConnecte()){
                 return ($this->reservationArticles())? '' : $this->_trad['erreur']['produitChoix'];
-            }
+            //}
             $_SESSION['urlReservation'] = $_GET;
-            header('refresh:0;url=index.php?nav=actif');
-            echo "<html>{$this->_trad['erreur']['produitConnexion']}</html>";
+            //header('refresh:0;url=index.php?nav=actif');
+            //echo "<html>{$this->_trad['erreur']['produitConnexion']}</html>";
         }
     }
 }

@@ -182,6 +182,7 @@ function listeCapacites($data, $info)
 		$prixSalle[$i]['libelle'] = $_prixPlage[$info['id_plagehoraire']]['libelle'];
 		$prixSalle[$i]['description'] = $info['description'];
 	}
+	_debug($prixSalle, __FILE__ .'::' . __FUNCTION__ .'::' . __LINE__);
 	return $prixSalle;
 }
 

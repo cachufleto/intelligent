@@ -9,23 +9,20 @@ echo <<<EOL
 EOL;
 $_liste = '';
 $_total = 0;
-foreach($listePrix as $date=>$data){
-    foreach($data as $key=>$info){
-        foreach($info as $item=>$produit) {
-            $_liste .= "
-                    <div class='titre'>{$produit['titre']}</div>
-                    <div class='tronche'>$date</div>
-                    <div class='personne'>{$produit['libelle']} {$produit['num']} pers.</div>
-                    <div class='prix'>{$produit['prix']}€</div>";
-            $_total = $_total + $produit['prix'];
-            //$_liste .= $info['reservation']['reserve'];
-            //$_total = $_total + $info['reservation']['couts'];
-        }
-    }
+foreach($listePrix as $date=>$produit){
+    $_liste .= "<div class='ligne'>
+                <div class='titre'>{$produit['produit']}</div>
+                <div class='tronche'>{$produit['fabricant']}</div>
+                <div class='personne'>{$this->_trad['value'][$produit['categorie']]}</div>
+                <div class='tronche'>{$produit['quantite']}</div>
+                <div class='tronche'>{$produit['prix']}€</div>
+                <div class='prix'>{$produit['prix_total']}€</div>
+                </div>  ";
+        $_total += $produit['prix_total'];
 }
-$_total = number_format ($_total, 2);
-$TTC = round($_total*(1+TVA),2);
-$TVA = number_format ($TTC - $_total, 2);
+$TVA = number_format(round($_total*TVA,2), 2, ',', ' ');
+$TTC = number_format(round(($_total+$_total*TVA),2), 2, ',', ' ');
+$_total = number_format($_total, 2, ',', ' ');
 //number_format ($TTC, 2);
 if(!empty($_total)){
     echo <<<EOL

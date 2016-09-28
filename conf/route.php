@@ -109,11 +109,14 @@ $route['ficheArticles']['action'] = (utilisateurAdmin() && isset($_SESSION['BO']
 $route['rechercheArticles']['Controleur'] = 'articles';
 $route['rechercheArticles']['action'] = 'recherche';
 
-$route['reservationArticles']['Controleur'] = 'articles';
-$route['reservationArticles']['action'] = 'reservation';
+$route['panier']['Controleur'] = 'articles';
+$route['panier']['action'] = 'panier';
 
 $route['articles']['Controleur'] = 'articles';
 $route['articles']['action'] = (utilisateurAdmin() && isset($_SESSION['BO']))? 'backOff_articles' : 'articles';
+
+$route['validerCommande']['Controleur'] = 'commande';
+$route['validerCommande']['action'] = 'validerCommande';
 
 /****** ADMINISTRATION ******/
 

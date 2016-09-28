@@ -238,6 +238,7 @@ class App extends Bdd
         // REGLE D'orientation des pages actif et out ver connection
         if('actif' == $this->nav || 'out' == $this->nav) {
             $this->nav = 'connection';
+            debug($this->nav);
         }
 
         // cas spécifique

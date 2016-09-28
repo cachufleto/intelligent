@@ -15,7 +15,7 @@ include_once LIB . 'commande.php';
 class commande extends \App\commande
 {
     var $form = false;
-    var $nav = 'commandes';
+    var $nav = 'commande';
 
     public function __construct()
     {
@@ -25,11 +25,18 @@ class commande extends \App\commande
 
     public function validerCommande()
     {
-        //$nav = 'commande';
-        //$this->_trad
+        $this->urlReservation();
         $listePrix = $this->listeProduitsFacture();
-
         include_once VUE . 'commande/validerCommande.tpl.php';
+    }
+
+    protected function urlReservation()
+    {
+            if(utilisateurConnecte()){
+                return true;
+            }
+            header('refresh:0;url=index.php?nav=actif');
+            echo "<html>{$this->_trad['erreur']['produitConnexion']}</html>";
     }
 
     public function validerFacture()
@@ -41,10 +48,11 @@ class commande extends \App\commande
         foreach($facture as $key=>$commande){
             $commande['id_reservation'] = $id;
             $commande['date_facturation'] = $date_facturation;
-            $commande['prix_ttc'] = ($commande['prix'] - $commande['reduction'] ) * (1 + TVA);
-            $this->setComandes($commande);
+            $commande['prix_ttc'] = $commande['quantite'] * ($commande['prix'] - $commande['reduction'] ) * (1 + TVA);
+            $this->unStockComandesArticles($commande);
+            $this->setComandesArticles($commande);
         }
-        unset($_SESSION['panier']);
+        //unset($_SESSION['panierArticles']);
         header('refresh:2;url=index.php');
         echo "<h4>{$this->_trad['factureOk']}</h4>";
     }
@@ -53,7 +61,8 @@ class commande extends \App\commande
     {
         //$nav = 'commande';
         //$this->_trad
-        $listePrix = $this->listeProduitsCommandes();
+        //$listePrix = $this->listeProduitsCommandes();
+        $listePrix = $this->listeArticlesCommandes();
 
         include_once VUE . 'commande/commandes.tpl.php';
     }

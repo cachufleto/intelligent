@@ -12,14 +12,14 @@ foreach($listePrix as $reservee=>$produit){
     $row = (($t1 < time())? (($t1 > (time() - 60*60*24))? 'now_' : 'old_') : 'row_') .($i%2);
 
     $_liste .= "<div class='ligne $row'>
-                    <a href='?nav=ficheSalles&id={$produit['id_salle']}&reservee=".
+                    <a href='?nav=ficheSalles&id={$produit['id_article']}&reservee=".
                     date('Y-m-d', $t1)
                     ."'>
-                    <div class='titre'>{$produit['titre']}</div>
+                    <div class='titre'>{$produit['produit']}</div>
                     <div class='tronche'>".
                     date('d M Y ', $t1)
                     ."</div>
-                    <div class='personne'>{$_prixPlage[$produit['tranche']]['horaire']} / {$produit['capacitee']} pers.</div>
+                    <div class='personne'>{$produit['ean']} / {$produit['quantite']}</div>
                     <div class='prix'>{$produit['prix']}€</div>
                     </a>
                 </div>";
@@ -31,7 +31,7 @@ echo <<<EOL
 </div>
 <div id="commandes" class="ligne commandes">
 <div class='ligne row'>
-<div class='titre'>{$this->_trad['salle']}</div>
+<div class='titre'>{$this->_trad['article']}</div>
 <div class='tronche'>{$this->_trad['dateReservee']}</div>
 <div class='personne'>{$this->_trad['horarirePers']}</div>
 <div class='prix'>{$this->_trad['prix']} €</div>

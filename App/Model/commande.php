@@ -23,6 +23,14 @@ class commande extends Bdd
         return $this->executeRequete($sql);
     }
 
+    protected function selectArticleId($_id)
+    {
+        $sql = "SELECT * FROM articles WHERE id_article = " . $_id .
+            (!isSuperAdmin() ? " AND active != 0" : "") .
+            rechercheArticles();
+        return $this->executeRequete($sql);
+    }
+
     protected function selectProduitsSalle($id)
     {
         $sql = "SELECT p.*, h.description
@@ -45,18 +53,27 @@ class commande extends Bdd
 
     protected function setReservations()
     {
-        $sql = "INSERT INTO `reservations` (`id`, `id_membre`, `date_facturacion`) VALUES (NULL, '{$_SESSION['user']['id']}', CURRENT_TIMESTAMP)";
+        $sql = "INSERT INTO `reservations` (`id`, `id_membre`, `date_facturacion`)
+                VALUES (NULL, '{$_SESSION['user']['id']}', CURRENT_TIMESTAMP)";
         return $this->executeRequeteInsert($sql);
     }
 
-    protected function setComandes($commande)
+    protected function unStockComandesArticles($commande)
     {
-        $sql = "INSERT INTO `commandes` (`id`, `id_reservation`, `id_salle`, `date_facturacion`, `date_reserve`,
-                                      `tranche`, `capacitee`, `prix`, `reduction`, `prix_ttc`)
-                              VALUES (NULL, '{$commande['id_reservation']}', '{$commande['id_salle']}',
-                                      '{$commande['date_facturation']}', '{$commande['date']}',
-                                      '{$commande['tranche']}', '{$commande['capacitee']}', '{$commande['prix']}',
-                                      '{$commande['reduction']}', '{$commande['prix_ttc']}');";
+        $sql = "UPDATE articles SET stock = (stock - {$commande['quantite']})
+                WHERE id_article = {$commande['id_article']};";
+        return $this->executeRequeteInsert($sql);
+
+    }
+
+    protected function setComandesArticles($commande)
+    {
+        $sql = "INSERT INTO `ventes` (`id`, `id_reservation`, `id_article`, `date_facturacion`, `date_reserve`,
+                      `ean`, `quantite`, `prix`, `reduction`, `prix_ttc`)
+              VALUES (NULL, '{$commande['id_reservation']}', '{$commande['id_article']}',
+                      '{$commande['date_facturation']}', '{$commande['date']}',
+                      '{$commande['ean']}', '{$commande['quantite']}', '{$commande['prix']}',
+                      '{$commande['reduction']}', '{$commande['prix_ttc']}');";
         return $this->executeRequeteInsert($sql);
     }
 
@@ -73,6 +90,20 @@ class commande extends Bdd
               AND c.id_salle = s.id_salle
               AND r.id = c.id_reservation
             ORDER BY c.date_reserve ASC, c.tranche ASC";
+        return $this->executeRequete($req);
+    }
+
+    protected function selectArticlesCommandes()
+    {
+        $req = "SELECT
+                r.id, r.date_facturacion,
+                v.id_article, v.date_reserve, v.ean, v.quantite, v.prix, v.reduction, v.prix_TTC,
+                a.produit
+            FROM `reservations` as r, `ventes` as v, `articles` as a
+            WHERE r.id_membre = {$_SESSION['user']['id']}
+              AND v.id_article = a.id_article
+              AND r.id = v.id_reservation
+            ORDER BY v.date_reserve ASC, a.produit ASC";
         return $this->executeRequete($req);
     }
 
