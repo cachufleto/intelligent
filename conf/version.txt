@@ -1,6 +1,1 @@
-V 1.06/09
-<!--
-V 1.06/09 : site OO
-V 1.01/09 : site de base depui Lokisalle
--->
-
+V 1.29/09
