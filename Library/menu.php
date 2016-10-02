@@ -96,19 +96,18 @@ class menu
         $menu = $this->liste_nav($_menu);
         $class = $menu['class'];
         $li = $menu['menu'];
-
+        $i = $menu['accesskey'] + 1;
         if (isset($_SESSION['user'])) {
             $li .= "<li class='" . $class . "'><a href='' class='admin'>[";
-            $li .= ($_SESSION['user']['statut'] != 'MEM') ? $this->_trad['value'][$_SESSION['user']['statut']] . "::" : "";
             $li .= $_SESSION['user']['user'] . ']</a></li>';
+            $li .= "<li class='drapeau'>" .
+                "<a href='" . LINK . "?nav=out'><img width='25px' src='img/out.png'></a>".
+                "</li>";
         }
 
-        $langfr = ($_SESSION['lang'] == 'fr')? 'active' : '';
-        $langes = ($_SESSION['lang'] == 'es')? 'active' : '';
+        $lang = ($_SESSION['lang'] == 'fr')? 'es' : 'fr';
         $li .= "<li class='drapeau'>" .
-            (($_SESSION['lang'] == 'es') ?
-                "<a class='$langfr' href='" . LINK . "?$_link&lang=fr'><img width='25px' src='img/drapeaux_fr.png'></a>" :
-                "<a class='$langes' href='" . LINK . "?$_link&lang=es'><img width='25px' src='img/drapeaux_es.png'></a>") .
+            "<a href='" . LINK . "?$_link&lang=$lang' accesskey='".$i."'><img width='25px' src='img/drapeaux_$lang.png'></a>".
             "</li>";
 
         return $li;
@@ -138,18 +137,19 @@ class menu
         // generation de la liste de nav
         $col = count($_liste)+1;
         $menu = '';
+        $i = 0;
         foreach ($_liste as $item){
-            $info = $this->_pages[$item];
+            $i++;
+            //$info = $this->_pages[$item];
             $active = ($item == $this->nav)? 'active' : '';
             $active = ($item == $this->nav || ($item == 'actif' && $this->nav == 'connection'))? 'active' : $active;
             $class = (isset($this->_pages[$item]['class']))? $this->_pages[$item]['class'] : 'menu';
             $menu .= '
 		<li class="' . $active .' '. $class.' col-'.$col.'">
-			<a href="'. LINK .'?nav='. $item .'">' . $this->_trad['nav'][$item] . '</a>
+			<a href="'. LINK .'?nav='. $item .'" accesskey="'.$i.'" title="'.$item.'">' . $this->_trad['nav'][$item] . '</a>
 		</li>';
         }
-
-        return array('menu'=>$menu, 'class'=>$class . ' col-'.$col);
+        return array('menu'=>$menu, 'class'=>$class . ' col-'.$col, 'accesskey' => $i);
     }
 
     public function footer()

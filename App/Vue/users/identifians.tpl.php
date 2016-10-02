@@ -7,10 +7,10 @@ if ($_jeton) {
 }
 
 echo <<<EOL
-<div class="ligne">
-    <h1>{$this->_trad['titre']['validerInscription']}</h1>
-</div>
-<div class="ligne">
+<div id="three-column" class="container">
+    <header>
+        <h2>{$this->_trad['titre'][$this->nav]}</h2>
+    </header>
     $info
 </div>
 EOL;

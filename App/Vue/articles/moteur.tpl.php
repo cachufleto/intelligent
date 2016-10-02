@@ -7,9 +7,6 @@
  */
 echo <<<EOL
 <div class="ligne">
-    <h1>{$this->_trad['nav'][$this->nav]}</h1>
-</div>
-<div class="ligne">
     <p>{$this->form->msg}</p>
     <div class="trier">
         <div>{$this->_trad['trierPar']}</div>

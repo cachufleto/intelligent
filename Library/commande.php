@@ -35,14 +35,14 @@ class commande extends \Model\commande
         return $listePrix;
     }
 
-    protected function listeProduitsCommandes()
+    protected function _listeProduitsCommandes()
     {
         $listePrix = [];
-        $salles = $this->selectProduitsCommandes();
-        $Commandes = $salles->fetch_assoc();
+        $articles = $this->selectProduitsCommandes();
+        //$Commandes = $articles->fetch_assoc();
 
-        if (isset($Commandes) && !empty($Commandes)) {
-            while ($Commandes = $salles->fetch_assoc()) {
+        if (!empty($articles->num_rows)) {
+            while ($Commandes = $articles->fetch_assoc()) {
                 $listePrix[] = $Commandes;
             }
         }
@@ -96,12 +96,12 @@ class commande extends \Model\commande
 
         $i = $_total = 0;
 
-        if ($prix = $this->selectProduitsSalle($data['id_salle'])) {
+        if ($prix = $this->selectProduitsArticle($data['id_article'])) {
             while ($info = $prix->fetch_assoc()) {
                 $prixSalle = listeCapacites($data, $info);
                 $i++;
-                $reservation = (isset($_SESSION['panier'][$date][$data['id_salle']])) ?
-                    $_SESSION['panier'][$date][$data['id_salle']] : [];
+                $reservation = (isset($_SESSION['panier'][$date][$data['id_article']])) ?
+                    $_SESSION['panier'][$date][$data['id_article']] : [];
 
                 foreach ($prixSalle as $key => $produit) {
                     if (isset($reservation[$i]) && $reservation[$i] == $key) {

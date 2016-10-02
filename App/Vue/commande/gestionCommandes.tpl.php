@@ -16,8 +16,8 @@ foreach($listePrix as $reservee=>$produit){
                     <div class='titre'>{$produit['titre']}</div>
                     <div class='membre'>{$produit['prenom']} {$produit['nom']}</div>
                     <div class='tronche'>".
-                        date('d M Y ', $t1)
-                    ."</div>
+        date('d M Y ', $t1)
+        ."</div>
                     <div class='personne'>{$_prixPlage[$produit['tranche']]['horaire']} / {$produit['capacitee']} pers.</div>
                     <div class='prix'>{$produit['prix']}€</div>
                     </a>
@@ -25,17 +25,18 @@ foreach($listePrix as $reservee=>$produit){
 }
 
 echo <<<EOL
-<div class="ligne">
-    <h1>{$this->_trad['nav'][$this->nav]}</h1>
-</div>
-<div id="commandes" class="ligne commandes">
-<div class='ligne row'>
-<div class='titre'>{$this->_trad['salle']}</div>
-<div class='membre'>{$this->_trad['client']}</div>
-<div class='tronche'>{$this->_trad['dateReservee']}</div>
-<div class='personne'>{$this->_trad['horarirePers']}</div>
-<div class='prix'>{$this->_trad['prix']} €</div>
-</div>
-    $_liste
+<div id="three-column" class="container">
+    <header>
+        <h2>{$this->_trad['titre'][$this->nav.'Admin']}</h2>
+    </header>
+    <div id="commandes" class="ligne commandes">
+        <div class='ligne row'>
+            <div class='titre'>{$this->_trad['article']}</div>
+            <div class='membre'>{$this->_trad['client']}</div>
+            <div class='tronche'>{$this->_trad['dateReservee']}</div>
+            <div class='prix'>{$this->_trad['prix']} €</div>
+        </div>
+        $_liste
+    </div>
 </div>
 EOL;

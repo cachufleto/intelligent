@@ -1,9 +1,9 @@
 <?php
 echo <<<EOL
-<div class="ligne">
-    <h1>{$this->_trad['titre']['profil']}</h1>
-</div>
-<div class="ligne">
+<div id="three-column" class="container">
+    <header>
+        <h2>{$this->_trad['titre'][$this->nav]}</h2>
+    </header>
     <div id="formulaire">
         {$this->form->msg}
         <form action="#" method="POST">

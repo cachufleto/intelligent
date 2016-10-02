@@ -1,6 +1,5 @@
 <?php
 namespace site;
-use App\App;
 use App\formulaire;
 include CONTROLEUR . 'articles.php';
 use articles\articles;
@@ -29,31 +28,18 @@ class site extends \Model\site
         $articles->articles();
         $listeArticles = ob_get_contents();
         ob_end_clean();
-        $dernieresOffres = $this->homeArticles();
-        //$dernieresOffres .= $this->homeSalles();
-
+        $derniersOffres = $this->homeArticles();
         include VUE . 'site/home.tpl.php';
-    }
-
-    public function homeSalles()
-    {
-        $salles = $this->selectSallesActive();
-        $dernieresOffres = '<div id="dernieresOffres">';
-        while($salle = $salles->fetch_assoc()){
-            $dernieresOffres .= dernieresOffresSalles($salle);
-        }
-        $dernieresOffres .= '</div>';
-        return $dernieresOffres;
     }
 
     public function homeArticles()
     {
         $articles = $this->selectArticlesActive();
-        $dernieresOffres = '<div id="dernieresOffres">';
+        $dernieresOffres = '';
+        $i = 1;
         while($article = $articles->fetch_assoc()){
-            $dernieresOffres .= dernieresOffresArticles($article);
+            $dernieresOffres .= dernieresOffresArticles($article, $i++);
         }
-        $dernieresOffres .= '</div>';
         return $dernieresOffres;
     }
 
@@ -74,6 +60,11 @@ class site extends \Model\site
 
     public function backoffice()
     {
+
+        header('location:?nav=articles');
+        exit();
+
+        /*
         $this->nav = 'backoffice';
         //$this->_trad
         if($this->nav=$this->recupNav()){
@@ -83,16 +74,14 @@ class site extends \Model\site
 
         $activite = (!empty($_POST))? '<textarea name="notreAtivite"></textarea>' : 'Activité';
         $dernieresOffres = (!empty($_POST))? '<textarea name="notreAtivite"></textarea>' :  'Derniéres Offres';
-
         include VUE . 'site/backoffice.tpl.php';
+        */
 
     }
 
     public function contact()
     {
-        //$this->_trad
         $listConctact = array();
-
         $membres = $this->userSelectContactAll();
 
         if ($membres->num_rows > 0) {
@@ -109,13 +98,11 @@ class site extends \Model\site
         include VUE . 'site/static.tpl.php';
     }
 
-        public function erreur404($nav)
+    public function erreur404()
     {
-        //$this->_trad
-
         $this->form->msg = ($this->nav=='erreur404')?
-            $this->_trad['erreur']['erreur404'] :
-            $this->_trad['enConstruccion'];
+        $this->_trad['erreur']['erreur404'] :
+        $this->_trad['enConstruccion'];
 
         include VUE . 'site/erreur404.tpl.php';
     }

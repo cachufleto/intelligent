@@ -327,12 +327,12 @@ class users extends \Model\users
             // l'utilisateur est automatiquement connécté
             // et re-dirigé ver l'accueil
             urlSuivante();
-            /*$_nav = 'index.php';
+            $_nav = 'index.php';
             if (utilisateurAdmin()){
                 $_nav = 'index.php?nav=backoffice';
             }
             header('Location:'.$_nav);
-            exit();*/
+            exit();
         }
         //return $msg;
     }

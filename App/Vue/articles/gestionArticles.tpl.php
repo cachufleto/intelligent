@@ -1,10 +1,11 @@
 <?php
-echo <<<TPL
-<div class="ligne">
-    <h1>{$this->_trad['titre']['gestionArticles']}</h1>
+
+echo <<<EOL
+<div id="three-column" class="container">
+    <header>
+        <h2>{$this->_trad['titre'][$this->nav]}</h2>
+    </header>
     <span id="ajout">{$this->_trad['ajouterArticle']}</span>
-</div>
-<div class="ligne">
     {$this->form->msg}
     <table>
     <tr>
@@ -13,4 +14,4 @@ echo <<<TPL
     {$tableau}
     </table>
 </div>
-TPL;
+EOL;

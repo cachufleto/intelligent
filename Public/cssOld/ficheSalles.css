@@ -1,0 +1,204 @@
+#ficheSalles{
+    width: 800px;
+    margin-left:calc(50% - 400px);
+}
+
+.champs img{
+    width: 250px;
+    height: auto;
+}
+
+#fiche {
+    width: 958px;
+    margin-left: calc( 49% - 470px);
+    padding: 10px;
+    border: solid #ccc 2px;
+    box-shadow: 8px 8px 4px #CCC;
+    border-radius: 10px;
+    background-color: white;
+    margin-bottom: 60px;
+}
+
+#fiche .ligne{
+    float: left;
+    width: 100%;
+}
+
+#fiche .ligne .lien{
+    position: relative;
+}
+
+#fiche .ligne .ville{
+    float: inherit;
+    width: 100%;
+    font-size: 1.8em;
+    color: #6D1907;
+    text-align: center;
+    height: 50px;
+}
+
+#fiche .salle {
+    padding: inherit;
+}
+
+#fiche .photo{
+    float: left;
+    width: 470px;
+}
+
+#fiche .photo img{
+    width: 470px;
+    height: 350px;
+}
+
+#fiche .info{
+    float: left;
+    padding-left: 10px;
+    width: calc(100% - 480px);
+}
+
+#fiche .info .titre{
+    font-size: 1.8em;
+    width: 100%;
+}
+
+#fiche .info .fiche{
+    width: 100%;
+    padding-bottom: 15px;
+    height: 64px;
+}
+
+#fiche .description{
+    width: 100%;
+}
+#fiche .reserver {
+    width: 100%;
+}
+
+#fiche .categorie,
+#fiche .reserver{
+    width: 100%;
+    float: left;
+}
+
+#fiche .reserver{
+    height: 25px;
+    width: 48%;
+    background-color: #E15007;
+    color: whitesmoke;
+    padding: 5px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    text-align: center;
+    border: solid #ccc 1px;
+    box-shadow: 4px 4px 2px #CCC;
+    border-radius: 6px;
+}
+
+#fiche .reserver a{
+    color: #F6F6EF;
+    text-decoration: none;
+    font-size: medium;
+    font-weight: bold;
+}
+
+#fiche .active {
+    background-color: darkorange;
+}
+#fiche .lien {
+    background-color: #55787D ;
+
+}
+
+.tronche,
+.personne,
+.prix {
+    width: 31%;
+}
+
+.personne,
+.prix {
+    width: 31%;
+    text-align: right;
+}
+.total{
+    background-color: #CCCCCC;
+}
+
+.couts{
+    border-bottom: double;
+}
+
+#fiche .date{
+    font-style: italic;
+    font-family:"Verdana Pro SemiBold";
+}
+
+@media only screen and (max-width : 780px) {
+
+    #fiche {
+        width: 430px;
+        margin-left: 0;
+        padding: 5px;
+        border: solid #ccc 2px;
+        box-shadow: 8px 8px 4px #CCC;
+        border-radius: 10px;
+        background-color: white;
+        /* margin-bottom: 60px; */
+    }
+
+    #fiche .photo img{
+        width: 431px;
+        height: auto;
+    }
+
+    #fiche .info{
+        float: left;
+        padding-left: 10px;
+        width: 350px;
+    }
+
+}
+
+@media only screen and (max-width: 780px){
+    #fiche .photo {
+        float: left;
+        width: 430px;
+    }
+
+}
+
+@media only screen and (max-width : 473px) {
+
+    #fiche {
+        width: 300px;
+        margin-left:0;
+        padding:5px;
+        border: solid #ccc 2px;
+        box-shadow: 8px 8px 4px #CCC;
+        border-radius: 10px;
+        background-color: white;
+        /* margin-bottom: 60px; */
+    }
+
+    #fiche .photo {
+        float: left;
+        width: 294px;
+    }
+
+    #fiche .photo img{
+        width: 295px;
+        height: auto;
+    }
+
+    #fiche .info{
+        float: left;
+        padding-left: 5px;
+        width: 250px;
+    }
+
+    #fiche .reserver {
+        height: 54px;
+    }
+}
+

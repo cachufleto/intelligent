@@ -175,11 +175,11 @@ $_pages['validerCommande'] = array(
 //$_reglesAll = array('home', 'inscription', 'salles', 'reservation', 'recherche', 'actif');
 $_reglesAll = array('home', 'inscription', 'articles', 'panier', 'actif');
 //$_reglesMembre = array('home', 'profil', 'salles', 'reservation', 'recherche', 'out');
-$_reglesMembre = array('home', 'profil', 'articles', 'panier', 'commandes', 'out');
+$_reglesMembre = array('home', 'articles', 'panier', 'commandes', 'profil');
 //$_reglesAdmin = array('home', 'profil', 'salles', 'reservation', 'recherche', 'backoffice', 'out');
-$_reglesAdmin = array('home', 'profil', 'articles', 'panier', 'backoffice', 'out');
+$_reglesAdmin = array('articles', 'panier', 'profil', 'backoffice');
 
-$navAdmin = array('home', 'articles', 'users', 'commandes', 'out' );
+$navAdmin = array('articles', 'users', 'commandes');
 
 //$navFooter = array('mentions', 'cgv', 'plan', 'newsletter', 'contact' );
 $navFooter = array('mentions', 'cgv', 'contact' );

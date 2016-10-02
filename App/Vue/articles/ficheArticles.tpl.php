@@ -36,10 +36,11 @@ if(isset($_SESSION['panierArticles'][$_SESSION['date']][$article['id_article']])
 }
 
 echo <<<EOL
- <div class="ligne">
-    <h1>{$this->_trad['titre']['ficheArticles']}</h1>
-</div>
-<div class="ligne">
+<div id="three-column" class="container">
+    <header>
+        <h2>{$this->_trad['nav'][$this->nav]}</h2>
+    </header>
+
     <form name="" method="POST" action="?nav=ficheArticles&id={$article['id_article']}&pos=$position">
     <div id="fiche" class="article">
         <div class="ligne">
@@ -83,6 +84,6 @@ echo <<<EOL
         </div>
     </div>
     </form>
-</div>
 $alert
+</div>
 EOL;

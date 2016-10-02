@@ -20,10 +20,10 @@ foreach($table['info'] as $ligne=>$membre){
 }
 
 echo <<<EOL
-<div class="ligne">
-    <h1>{$this->_trad['titre']['users']}</h1>
-</div>
-<div class="ligne">
+<div id="three-column" class="container">
+    <header>
+        <h2>{$this->_trad['titre'][$this->nav]}</h2>
+    </header>
     <p>{$this->form->msg}</p>
     <table>
         <tr>

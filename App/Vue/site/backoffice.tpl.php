@@ -1,11 +1,10 @@
 <?php
-$link = LINK;
 echo <<<EOL
-<div class="ligne">
-    <h1>{$this->_trad['titre']['backoffice']}</h1>
-</div>
-<div class="ligne">
-    <form name="index" action="$link?nav=backoffice" method="POST">
+<div id="three-column" class="container">
+    <header>
+        <h2>{$this->_trad['titre'][$this->nav]}</h2>
+    </header>
+    <form name="index" action="{$this->_trad['URLSite']}?nav=backoffice" method="POST">
         <div class=" col-2">
             <input type="submit" value="modifier" name="activite">
             $activite

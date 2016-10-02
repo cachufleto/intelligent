@@ -1,14 +1,12 @@
 <?php
-//$cgv = '**';
 echo <<<EOL
-<div class="ligne">
-    <h1>{$this->_trad['titre']['home']}</h1>
-</div>
-<div class="homeG">
-    $listeArticles
-</div>
-<div class="homeD">
-    <h3>{$this->_trad['dernieresOffres']}</h3>
-    $dernieresOffres
-</div>
+	   <div id="banner" class="container">
+			<img src="{$this->_trad['URLSite']}img/Robot_Agricole1200x400.jpg" width="1200" height="400" alt="" />
+		</div>
+		<div id="three-column" class="container">
+			<header>
+				<h2>{$this->_trad['dernieresOffres']}</h2>
+			</header>
+			$derniersOffres
+		</div>
 EOL;

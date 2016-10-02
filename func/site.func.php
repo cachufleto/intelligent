@@ -199,26 +199,26 @@ function dernieresOffresSalle($salle)
     return $offre;
 }
 
-function dernieresOffresArticles($article)
+function dernieresOffresArticles($article, $i)
 {
     $_trad = setTrad();
     $info = listeInfoHeeden($article);
+
     $offre = '
-	<div class="offre">
-        <a href="'. LINK . '?nav=ficheArticles&id=' . $article['id_article'] . '">
-        <figure>
-          <img class="ingOffre" src="' . imageExiste($article['photo']) . '" alt="" />
-            <figcaption>
-                <span class="titre">' . $article['produit'] . '</span> :: ' .
-                $_trad['value'][$article['categorie']] . '
-                </figcaption>
-
-            </figure>
-        </a>
-        '. $info .'
-	</div>
-	';
-
+    		<div class="tbox'.$i.'">
+				<div class="box-style box-style0'.$i.'">
+					<div class="content">
+					    <a href="'. LINK . '?nav=ficheArticles&id=' . $article['id_article'] . '" class="image image-full">
+					    <img src="' . imageExiste($article['photo']) . '" alt="' . $article['produit'] . '"></a>
+						<h2>' . $article['produit'] . '</h2>
+						<p>' . $article['description'] . '</p>
+						' . $_trad['value'][$article['categorie']] . '<br>
+						<a href="'. LINK . '?nav=ficheArticles&id=' . $article['id_article'] . '" class="button-style">
+						' . $_trad['plusInfo'] . '</a> </div>
+						'.$info.'
+				</div>
+			</div>
+    ';
     return $offre;
 }
 

@@ -8,7 +8,6 @@
 
 namespace App;
 include_once LIB . 'menu.php';
-use App\menu;
 
 class App extends Bdd
 {
@@ -72,13 +71,13 @@ class App extends Bdd
 
     protected function setLinks()
     {
-        $this->_linkCss[] = LINK . 'css/style.css';
-        $this->_linkCss[] = LINK . 'css/tablette.css';
-        $this->_linkCss[] = LINK . 'css/smart.css';
+        $this->_linkCss[] = array('link'=>LINK . 'css/style.css', 'media'=>'all');
+        $this->_linkCss[] = array('link'=>LINK . 'css/tablette.css', 'media'=>'all');
+        $this->_linkCss[] = array('link'=>LINK . 'css/smart.css', 'media'=>'all');
 
         if (isSuperAdmin()) {
             // ajout du css admin
-            $this->_linkCss[] = LINK . 'css/admin.css';
+            $this->_linkCss[] = array('link'=>LINK . 'css/admin.css', 'media'=>'all');
         }
 
         $this->_linkJs[] = LINK . 'js/script.js';
@@ -88,8 +87,9 @@ class App extends Bdd
     {
         $_link = '';
         foreach($this->_linkCss as $key=>$link) {
+            $media  = isset($link['media'])? " media={$link['media']}" : "";
             $_link .= '
-    <link href="' . $link . '" rel="stylesheet">';
+    <link href="' . $link['link'] . '" rel="stylesheet" '.$media.'>';
         }
         return $_link;
     }
@@ -254,7 +254,7 @@ class App extends Bdd
             $controleur = $this->route['erreur404']['Controleur'];
             include_once CONTROLEUR . $controleur;
             $this->action = $this->route['erreur404']['action'];
-            $controleur = $controleur.'\\'.$controleur;
+            $this->controleur = $controleur.'\\'.$controleur;
             $app = new $app();
         }
 

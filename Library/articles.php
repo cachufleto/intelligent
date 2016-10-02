@@ -528,8 +528,8 @@ class articles extends \Model\articles
                  $data['nom'] = html_entity_decode($data['produit']);
                  //'capacite'=>"$min - {$data['capacite']}",
                  $data['categorie'] =$this->_trad['value'][$data['categorie']];
-                 $data['photo'] ='<a href="' . LINK . '?nav=ficheArticles&id=' . $data['id_article'] . '&pos=' . $position . '" >
-                    <img class="trombi" src="' . imageExiste($data['photo']) . '" ></a>';
+                 $data['link'] =LINK . '?nav=ficheArticles&id=' . $data['id_article'] . '&pos=' . $position;
+                 $data['photo'] =imageExiste($data['photo']);
                  $data['panier'] =(isset($panier[$data['id_article']])) ?
                      '<a href="' . LINK . '?nav=' . $this->nav . '&enlever=' . $data['id_article'] . '&pos=' . $position . '" >' . $this->_trad['enlever'] . '</a>' :
                      ' <a href="' . LINK . '?nav=' . $this->nav . '&ajouter=' . $data['id_article'] . '&pos=' . $position . '">' . $this->_trad['ajouter'] . '</a>';
@@ -818,10 +818,7 @@ class articles extends \Model\articles
     
     protected function treeProduitsArticle($_id)
     {
-    
         $existProduits = $this->selectProduitsArticle($_id);
-    
-        $produit = array();
         while($exist = $existProduits->fetch_assoc()){
             if(!isset($_POST['plagehoraire'][$exist['id_plagehoraire']])){
                 $this->deleteProduit($exist['id']);
@@ -829,11 +826,9 @@ class articles extends \Model\articles
                 unset($this->form->_formulaire['plagehoraire']['valide'][$exist['id_plagehoraire']]);
             }
         }
-    
         foreach($this->form->_formulaire['plagehoraire']['valide'] as $plage_horaire => $info){
             $this->setProduit($_id, $plage_horaire);
         }
-    
         return true;
     }
     
@@ -848,7 +843,6 @@ class articles extends \Model\articles
                     case 'produit':
                         $_SESSION['orderArticles']['order'] = ($_SESSION['orderArticles']['champ'] != $ord)?
                             "ASC" : (($_SESSION['orderArticles']['order'] == "ASC")? "DESC" : "ASC" );
-    
                         $_SESSION['orderArticles']['champ'] = $ord;
                     break;
                 }

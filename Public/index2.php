@@ -44,10 +44,10 @@ debugTestMail();
 $debug = ob_get_contents();
 ob_end_clean();
 
-if(file_exists(APP . 'Public/css/' . $route[$nav]['action'] . '.css')){
+if(file_exists(RACINE_SERVER . 'Public/css/' . $route[$nav]['action'] . '.css')){
 	$_linkCss[] = LINK . 'css/' . $route[$nav]['action'] . '.css';
 }
-if(file_exists(APP . 'Public/js/' . $route[$nav]['action'] . '.js')){
+if(file_exists(RACINE_SERVER . 'Public/js/' . $route[$nav]['action'] . '.js')){
 	$_linkJs[] = LINK . 'js/' . $route[$nav]['action'] . '.js';
 }
 

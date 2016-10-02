@@ -1,0 +1,78 @@
+body {
+	background-color: #FFFFF8;
+}
+
+
+.valide {
+	color:blue !important;
+	font-size: 1.5em;
+	width: 250px;
+	padding-left: 12px;
+}
+
+.mainHeader nav {
+	/*height: 82px;*/
+}
+
+.mainHeader nav ul {
+	width: 820px;
+}
+
+.mainFooter nav, .mainHeader nav{
+	background-color: #3c9c89;
+}
+table {
+	width: 100%;
+	border-collapse: inherit;
+	border-spacing: 0;
+}
+
+table td {
+	border: 0px solid black;
+}
+
+table th {
+	background-color: #F49B01;
+	color: white;
+}
+
+table tr,
+table th {
+	text-align: center;
+}
+
+table tr.lng1{
+	background-color: #E7E5E5;
+}
+
+table tr.lng2{
+	background-color: #F6F6EF;
+}
+
+img.trombi {
+	width: 180px;
+}
+
+table a{
+	color: #6D1907;
+}
+
+@media only screen and (max-width : 780px) {
+
+	.mainHeader nav ul {
+		width: 460px;
+	}
+	.mainHeader nav {
+		height: 84px;
+	}
+}
+
+@media only screen and (max-width : 473px) {
+
+	.mainHeader nav ul {
+		width: 265px;
+	}
+	.mainHeader nav {
+		height: 124px;
+	}
+}
