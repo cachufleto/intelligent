@@ -5,7 +5,7 @@
 # $req => string SQL
 # BLOQUANT
 # RETURN object
-/*
+
 # Fonction hashCrypt()
 # RETURN string crypt
 function hashCrypt ($chaine)
@@ -15,7 +15,7 @@ function hashCrypt ($chaine)
 	return password_hash($chaine, PASSWORD_BCRYPT, $options);
 
 }
-*/
+
 # Fonction hashCrypt()
 # RETURN string crypt
 function hashDeCrypt ($info)

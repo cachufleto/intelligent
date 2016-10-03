@@ -15,7 +15,7 @@ echo <<<EOL
         </div>
         <div class="ligneForm">
             <label class="label">{$this->_trad['motPasseOublie']}</label>
-            <div class="champs"><a href="{$this->_trad['URLSite']}    ?nav=changermotpasse">{$this->_trad['demandeDeMotPasse']}</a></div>
+            <div class="champs"><a href="{$this->_trad['URLSite']}?nav=changermotpasse">{$this->_trad['demandeDeMotPasse']}</a></div>
         </div>
     </div>
 </div>
