@@ -24,12 +24,16 @@ class commande extends \Model\commande
         $listePrix = [];
         if (isset($_SESSION['panierArticles']) && !empty($_SESSION['panierArticles'])) {
             $listeOrdenee = sortIndice($_SESSION["panierArticles"]);
-            foreach ($listeOrdenee as $key => $id) {
-                $data = $this->selectArticleId($id);
-                $article = $data->fetch_assoc();
-                $article['quantite'] = $_SESSION['panierArticles'][$id];
-                $this->listeProduitsPrixFacture($article);
-                $listePrix[] = $article;
+            foreach ($listeOrdenee as $id => $quantite) {
+                if($quantite){
+                    $data = $this->selectArticleId($id);
+                    $article = $data->fetch_assoc();
+                    $article['quantite'] = $quantite;
+                    $this->listeProduitsPrixFacture($article);
+                    $listePrix[] = $article;
+                } else {
+                    unset($_SESSION["panierArticles"][$id]);
+                }
             }
         }
         return $listePrix;
@@ -124,9 +128,10 @@ class commande extends \Model\commande
         $listePrix = [];
         if (isset($_SESSION['panierArticles']) && !empty($_SESSION['panierArticles'])) {
             $listeOrdenee = sortIndice($_SESSION["panierArticles"]);
-            foreach ($listeOrdenee as $key => $id) {
+            foreach ($listeOrdenee as $id => $quantite) {
                     $data = $this->selectArticleId($id);
                     $article = $data->fetch_assoc();
+                    $article['quantite'] = $quantite;
                     $listePrix[] = $this->generationProduitsPrixFacture($article);
             }
         }
@@ -149,7 +154,6 @@ class commande extends \Model\commande
 
     protected function generationProduitsPrixFacture($data)
     {
-        $data['quantite'] = $_SESSION['panierArticles'][$data['id_article']];
         $data['prix'] = $data['prix_Achat']* 1.3;
         $data['prix_total'] = $data['prix'] * $data['quantite'];
         return $data;

@@ -13,6 +13,7 @@ require LIB . 'Bdd.php';
 require LIB . 'formulaire.php';
 // functions de debug
 require FUNC . 'debug.php';
+_debug('<a href="http://www.robotshop.com/eu/fr">SITE INFO</a>', 'SITE INFO');
 // functions communes du noyeau
 require FUNC . 'functions.php';
 // function Template
@@ -42,7 +43,6 @@ if ($__app->nav != 'erreur404'){
 	$app->{$__app->action}('erreur404');
 }
 //$arg = ($__app->nav == 'erreur404')? $__app->nav : '';
-
 //$app->{$__app->action}($arg);
 _debug($__app->route[$__app->nav], 'Route pour: ' . $__app->nav);
 

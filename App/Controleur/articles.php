@@ -83,7 +83,7 @@ class articles extends \App\articles
 
         include VUE . 'articles/gestionArticles.tpl.php';
     }
-
+/*
     public function backOff_editProduits($id)
     {
         //$this->_trad
@@ -112,7 +112,7 @@ class articles extends \App\articles
 
        header('Location:?nav=ficheArticles&id=' . $_GET['id'] . '&pos=' . $_GET['pos']);
     }
-
+*/
 
     public function backOff_ficheArticles()
     {

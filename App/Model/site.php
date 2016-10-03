@@ -30,7 +30,7 @@ class site extends Bdd
         $sql = "SELECT *
             FROM articles
             WHERE active != 0
-            ORDER BY produit
+            ORDER BY id_article DESC
             LIMIT 0,3;";
         return $this->executeRequete($sql);
     }

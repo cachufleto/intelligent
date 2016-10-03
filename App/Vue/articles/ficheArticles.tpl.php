@@ -22,7 +22,7 @@
         (
         )*/
 $href = imageExiste($article['photo']);
-$titre = strtoupper($article['produit']);
+$titre = strtoupper($article['article']);
 $lien = LINK . "?nav=articles&pos=$position";
 $active = "";
 $reserver = 'ajouter';
@@ -38,13 +38,13 @@ if(isset($_SESSION['panierArticles'][$_SESSION['date']][$article['id_article']])
 echo <<<EOL
 <div id="three-column" class="container">
     <header>
-        <h2>{$this->_trad['nav'][$this->nav]}</h2>
+        <h2>{$this->_trad['nav'][$this->nav]} :: {$article['article']}</h2>
     </header>
 
     <form name="" method="POST" action="?nav=ficheArticles&id={$article['id_article']}&pos=$position">
     <div id="fiche" class="article">
         <div class="ligne">
-            <div class="ville">{$article['ville']} ({$article['pays']})</div>
+            <div class="ville">{$article['fabricant']} ({$article['ref']})</div>
             <div>{$this->form->msg}</div>
         </div>
         <div class="ligne">
@@ -53,8 +53,8 @@ echo <<<EOL
             </div>
             <div class="info">
                 <div class="titre">$titre</div>
-                <div class="fiche">{$article['fabricant']}<br>
-                    {$article['prix_Achat']} {$article['ean']}<br>
+                <div class="fiche">{$article['description']}<br>
+                    {$article['dimention']} {$article['spec']}<br>
                 </div>
                     <input type="hidden" name="id" value="{$article['id_article']}">
                     <input type="hidden" name="pos" value="$position">

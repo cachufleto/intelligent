@@ -5,7 +5,7 @@
 # $req => string SQL
 # BLOQUANT
 # RETURN object
-
+/*
 # Fonction hashCrypt()
 # RETURN string crypt
 function hashCrypt ($chaine)
@@ -15,7 +15,7 @@ function hashCrypt ($chaine)
 	return password_hash($chaine, PASSWORD_BCRYPT, $options);
 
 }
-
+*/
 # Fonction hashCrypt()
 # RETURN string crypt
 function hashDeCrypt ($info)
@@ -36,7 +36,6 @@ function ouvrirSession($session, $control = false)
 
 	setcookie( 'Intelligent[pseudo]' , ($control)? $session['pseudo'] : '' , time()+360000 );
 }
-
 
 function envoiMail($message, $to = WEBMAIL)
 {
@@ -77,13 +76,13 @@ function setPrixPlage()
 	include CONF . 'parametres.param.php';
 	return $_prixPlage;
 }
-
+/*
 function setPrixTranches()
 {
 	include CONF . 'parametres.param.php';
 	return $_tranches;
 }
-
+*/
 function imageExiste($photo, $rep = 'photo')
 {
 	if(file_exists( RACINE_SERVER . RACINE_SITE . $rep . '/' . $photo)){
@@ -112,7 +111,7 @@ function data_methodes($indice, $default = false)
 	$data = (int)(isset($_GET[$indice])? $_GET[$indice] : $data);
 	return $data;
 }
-
+/*
 function disponibiliteSalles()
 {
 	$_trad = setTrad();
@@ -124,7 +123,7 @@ function disponibiliteSalles()
 			<input type='submit' name='' value='OK'>
 		</form>";
 }
-
+*/
 function disponibiliteArticles()
 {
 	$_trad = setTrad();
@@ -141,10 +140,12 @@ function sortIndice($data)
 		$sort[] = $id;
 	}
 	sort($sort);
-
-	return $sort;
+	foreach ($sort as $id) {
+		$_data[$id] = $data[$id];
+	}
+	return $_data;
 }
-
+/*
 function rechercheSalles(){
 	if(!empty($_SESSION['numpersonne'])){
 		$max = $_SESSION['numpersonne'] * 0.9;
@@ -152,13 +153,15 @@ function rechercheSalles(){
 		return " AND capacite > $max AND 	cap_min < $min ";
 	}
 }
-
+*/
 function rechercheArticles(){
 	if(!empty($_SESSION['rechercheProduits'])){
-		return " AND produit LIKE '%{$_SESSION['rechercheProduits']}%' AND description LIKE '%{$_SESSION['rechercheProduits']}%' ";
+		return " AND (article LIKE '%{$_SESSION['rechercheProduits']}%'
+				OR description LIKE '%{$_SESSION['rechercheProduits']}%'
+				OR spec LIKE '%{$_SESSION['rechercheProduits']}%') ";
 	}
 }
-
+/*
 function listeCapacites($data, $info)
 {
 	//$_trad = setTrad();
@@ -198,7 +201,7 @@ function reperDate($date)
                             </form>" : "<input style='background-color: #6D1907' type='button' value='$__date'>";
 	return $form;
 }
-
+*/
 function listeInfoHeeden($data){
 
 	if(DEBUG) {

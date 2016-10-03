@@ -26,13 +26,13 @@ class articles extends Bdd
         $sql = "UPDATE articles SET active = $active WHERE id_article = $id";
         $this->executeRequete($sql);
     }
-
+/*
     protected function selectArticles()
     {
         $sql = "SELECT * FROM articles where active = 1 " . rechercheArticles();
         return $this->executeRequete($sql);
     }
-
+*/
     protected function selectArticlesOrder($order, $listeId)
     {
         $sql = "SELECT *
@@ -49,7 +49,7 @@ class articles extends Bdd
             " ORDER BY $order";
         return $this->executeRequete($sql);
     }
-
+/*
 
     protected function selectListeDistinc($champ, $table)
     {
@@ -58,7 +58,7 @@ class articles extends Bdd
         return $this->executeRequete($sql);
 
     }
-
+*/
     protected function selectProduitsArticle($id)
     {
         $sql = "SELECT p.*, h.description
@@ -68,7 +68,7 @@ class articles extends Bdd
             ORDER BY id_plagehoraire ASC";
         return $this->executeRequete($sql);
     }
-
+/*
     protected function setProduit($_id, $key)
     {
         $sql = "INSERT INTO `produits` (`id`, `id_article`, `id_plagehoraire`) VALUES (NULL, '$_id', '$key');";
@@ -80,7 +80,7 @@ class articles extends Bdd
         $sql = "DELETE FROM `produits` WHERE `id` = $idproduit";
         return $this->executeRequete($sql);
     }
-
+*/
     protected function setArticle($sql_champs, $sql_value)
     {
         // insertion en BDD
@@ -96,7 +96,7 @@ class articles extends Bdd
             rechercheArticles();
         return $this->executeRequete($sql);
     }
-
+/*
     protected function selectArticleReserves($date, $id)
     {
         $sql = "SELECT tranche FROM commandes WHERE date_reserve = '$date' AND id_article = $id";
@@ -111,5 +111,5 @@ class articles extends Bdd
               AND c.date_reserve = '$date'
               AND c.id_reservation = r.id";
         return $this->executeRequete($sql);
-    }
+    }*/
 }

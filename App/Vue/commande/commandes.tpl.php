@@ -5,6 +5,7 @@ include CONF . 'parametres.param.php';
 $_liste = '';
 $_total = 0;
 $i = 1;
+
 foreach($listePrix as $reservee=>$produit){
     $i++;
     $d1 = new DateTime($produit['date_reserve'], new DateTimeZone('Europe/Paris'));
@@ -15,7 +16,7 @@ foreach($listePrix as $reservee=>$produit){
                     <a href='?nav=ficheSalles&id={$produit['id_article']}&reservee=".
         date('Y-m-d', $t1)
         ."'>
-                    <div class='titre'>{$produit['produit']}</div>
+                    <div class='titre'>{$produit['article']}</div>
                     <div class='tronche'>".
         date('d M Y ', $t1)
         ."</div>
@@ -34,7 +35,7 @@ echo <<<EOL
         <div class='ligne row'>
             <div class='titre'>{$this->_trad['article']}</div>
             <div class='tronche'>{$this->_trad['dateReservee']}</div>
-            <div class='personne'>{$this->_trad['horarirePers']}</div>
+            <div class='personne'>{$this->_trad['prix']}</div>
             <div class='prix'>{$this->_trad['prix']} €</div>
         </div>
         $_liste

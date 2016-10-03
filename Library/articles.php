@@ -18,7 +18,7 @@ class articles extends \Model\articles
         parent::__construct();
         $this->getIndisponibilite();
     }
-
+/*
     protected function ListeDistinc($champ, $table, $info)
     {
         //$this->_trad
@@ -56,7 +56,7 @@ class articles extends \Model\articles
     
         return true;
     }
-    
+*/
     # Fonction modCheck()
     # Control des informations Postées
     # convertion avec htmlentities
@@ -82,7 +82,7 @@ class articles extends \Model\articles
     
         return true;
     }
-    
+
     # Fonction modCheck()
     # Control des informations Postées
     # convertion avec htmlentities
@@ -104,7 +104,7 @@ class articles extends \Model\articles
         $fiche['listePrix'] =  $this->listeProduitsReservationPrix($fiche);
         return $fiche;
     }
-    
+/*
     protected function remplaceAccents($str, $charset='utf-8')
     {
         $str = htmlentities($str, ENT_NOQUOTES, $charset);
@@ -119,10 +119,10 @@ class articles extends \Model\articles
     protected function nomImage()
     {
     
-        $pays = (!empty($this->form->_formulaire['pays']['value']))? $this->form->_formulaire['pays']['value'] : $this->form->_formulaire['pays']['sql'];
-        $ville = (!empty($this->form->_formulaire['ville']['value']))? $this->form->_formulaire['ville']['value'] : $this->form->_formulaire['ville']['sql'];
-        $titre = (!empty($this->form->_formulaire['titre']['value']))? $this->form->_formulaire['titre']['value'] : $this->form->_formulaire['titre']['sql'];
-        $nomImage = str_replace(' ', '_', $this->remplaceAccents($pays.'_'.$ville.'_'.$titre, $charset='utf-8'));
+        $fabricant = (!empty($this->form->_formulaire['fabricant']['value']))? $this->form->_formulaire['fabricant']['value'] : $this->form->_formulaire['fabricant']['sql'];
+        $ean = (!empty($this->form->_formulaire['ean']['value']))? $this->form->_formulaire['ean']['value'] : $this->form->_formulaire['ean']['sql'];
+        $produit = (!empty($this->form->_formulaire['article']['value']))? $this->form->_formulaire['article']['value'] : $this->form->_formulaire['article']['sql'];
+        $nomImage = str_replace(' ', '_', $this->remplaceAccents($produit.'_'.$fabricant.'_'.$ean, $charset='utf-8'));
     
         return $nomImage;
     }
@@ -160,7 +160,7 @@ class articles extends \Model\articles
     
         //return $msg;
     }
-    
+*/
     # Fonction ficheArticlesValider()
     # Verifications des informations en provenance du formulaire
     # @_formulaire => tableau des items
@@ -178,7 +178,7 @@ class articles extends \Model\articles
         $id_article = $this->form->_formulaire['id_article']['sql'];
         $exclure = array('pos','valide','id_article','photo');
         foreach ($this->form->_formulaire as $key => $info){
-    
+            $_minLen = isset($info['minlength'])? $info['minlength'] : $minLen;
             $label = $this->_trad['champ'][$key];
             $valeur = (isset($info['valide']))? $info['valide'] : NULL;
             if(!in_array($key,$exclure))
@@ -190,7 +190,7 @@ class articles extends \Model\articles
     
                         $erreur = true;
                         $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label.
-                            ': ' . $this->_trad['erreur']['doitContenirEntre'] . $minLen .
+                            ': ' . $this->_trad['erreur']['doitContenirEntre'] . $_minLen .
                             ' et ' . $info['maxlength'] . $this->_trad['erreur']['caracteres'];
     
                     }
@@ -205,9 +205,7 @@ class articles extends \Model\articles
     
                         switch($key){
     
-                            case 'capacite':
-                            case 'cap_min':
-                            case 'tranche':
+                            case 'stock':
                                 if(empty($valeur = intval($valeur)))
                                 {
                                     $erreur = true;
@@ -217,7 +215,7 @@ class articles extends \Model\articles
                                 $this->form->_formulaire[$key]['valide'] = $valeur;
                                 break;
     
-                            case 'prix_personne':
+                            case 'prix_Achat':
                                 if(($valeur = doubleval(str_replace(',', '.', $valeur))) < PRIX)
                                 {
                                     $erreur = true;
@@ -247,7 +245,7 @@ class articles extends \Model\articles
                                 break;
     
                             default:
-                                $long = (isset($info['maxlength']))? $info['maxlength'] : 250;
+                                $long = (isset($info['maxlength']))? $info['maxlength'] : 255;
                                 if(!empty($valeur) && !$this->form->testLongeurChaine($valeur, $long))
                                 {
                                     $erreur = true;
@@ -278,7 +276,7 @@ class articles extends \Model\articles
             $this->form->_formulaire['tranche']['message'] = $this->_trad['erreur']['surLe'] . $this->_trad['champ']['tranche'] .
                 ': '.$this->_trad['erreur']['repartitionTranche'];
         } */
-    
+    /* *******************************/
         // si une erreur c'est produite
         if($erreur)
         {
@@ -314,7 +312,7 @@ class articles extends \Model\articles
     
         //return $msg;
     }
-    
+/*
     protected function controlTranche()
     {
         $max = $this->form->_formulaire['capacite']['valide'];
@@ -349,7 +347,7 @@ class articles extends \Model\articles
         return false;
     
     }
-
+*/
     # Fonction editerArticlesValider()
     # Verifications des informations en provenance du formulaire
     # @_formulaire => tableau des items
@@ -368,7 +366,7 @@ class articles extends \Model\articles
         $controlTelephone = true;
     
         foreach ($this->form->_formulaire as $key => $info){
-            _debug($info, $key);
+            $_minLen = isset($info['minlength'])? $info['minlength'] : $minLen;
             $label = $this->_trad['champ'][$key];
             $valeur = (isset($info['valide']))? $info['valide'] : NULL;
     
@@ -378,7 +376,7 @@ class articles extends \Model\articles
     
                     $erreur = true;
                     $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label.
-                        ': ' . $this->_trad['erreur']['doitContenirEntre'] . $minLen .
+                        ': ' . $this->_trad['erreur']['doitContenirEntre'] . $_minLen .
                         ' et ' . $info['maxlength'] . $this->_trad['erreur']['caracteres'];
     
                 } elseif ($this->form->testObligatoire($info) && empty($valeur)){
@@ -390,9 +388,7 @@ class articles extends \Model\articles
     
                     switch($key){
     
-                        case 'capacite':
-                        case 'cap_min':
-                        case 'tranche':
+                        case 'stock':
                             if(empty($valeur = intval($valeur)))
                             {
                                 $erreur = true;
@@ -403,7 +399,7 @@ class articles extends \Model\articles
                             $this->form->_formulaire[$key]['valide'] = $valeur;
                             break;
     
-                        case 'prix_personne':
+                        case 'prix_Achat':
                             if(($valeur = doubleval(str_replace(',', '.', $valeur))) < PRIX)
                             {
                                 $erreur = true;
@@ -414,11 +410,9 @@ class articles extends \Model\articles
                             $this->form->_formulaire[$key]['valide'] = $valeur;
                             break;
     
-                        /*
                         case 'photo':
-    
                         break;
-                        */
+
                         case 'categorie':
     
                             if(empty($valeur))
@@ -436,7 +430,7 @@ class articles extends \Model\articles
                             {
                                 $erreur = true;
                                 $this->form->_formulaire[$key]['message'] = $this->_trad['erreur']['surLe'] . $label .
-                                    ': '.$this->_trad['erreur']['minimumAphaNumerique'].' ' . $minLen . ' '.$this->_trad['erreur']['caracteres'];
+                                    ': '.$this->_trad['erreur']['minimumAphaNumerique'].' ' . $_minLen . ' '.$this->_trad['erreur']['caracteres'];
     
                             }
     
@@ -458,9 +452,9 @@ class articles extends \Model\articles
     
         }else{
     
-            $nomImage  = trim($this->form->_formulaire['pays']['valide']);
-            $nomImage .= '_' . trim($this->form->_formulaire['ville']['valide']);
-            $nomImage .= '_' . trim($this->form->_formulaire['produit']['valide']);
+            $nomImage  = trim($this->form->_formulaire['fabricant']['valide']);
+            $nomImage .= '_' . trim($this->form->_formulaire['ref']['valide']);
+            $nomImage .= '_' . trim($this->form->_formulaire['ean']['valide']);
             $nomImage .= str_replace(' ', '_', $nomImage);
     
             $erreur = $this->form->controlImageUpload('photo', $this->form->_formulaire['photo'], $nomImage)? true : $erreur;
@@ -481,7 +475,7 @@ class articles extends \Model\articles
     
         //return $msg;
     }
-    
+
     protected function orderArticlesValide()
     {
         if(isset($_SESSION['orderArticles']['orderActive'])){
@@ -494,14 +488,14 @@ class articles extends \Model\articles
     
         return ($_SESSION['orderArticles']['orderActive'])? "active ASC, " : '';
     }
-    
+
     protected function selectArticlesReservations()
     {
         $liste = '';
         if(isset($_SESSION['panierArticles']) && is_array($_SESSION['panierArticles'])){
             $listeOrdenee = sortIndice($_SESSION["panierArticles"]);
-            foreach ($listeOrdenee as $key=>$article) {
-                if($article){
+            foreach ($listeOrdenee as $article=>$quantite) {
+                if($quantite){
                     $liste .= ((empty($liste)) ? '' : ',') . $article;
                 }
             }
@@ -510,7 +504,7 @@ class articles extends \Model\articles
         $liste =  !empty($liste)? " id_article in ($liste) " : " id_article = -1 ";
         return $this->listeArticles($liste);
     }
-    
+
     protected function listeArticles($reservation = false)
     {
         $table = array();
@@ -524,8 +518,7 @@ class articles extends \Model\articles
         }
         while ($data = $articles->fetch_assoc()) {
             //$min = empty($data['cap_min'])? intval($data['capacite']*0.3) : $data['cap_min'];
-                 $data['ref'] = $data['ean'];
-                 $data['nom'] = html_entity_decode($data['produit']);
+                 $data['nom'] = html_entity_decode($data['article']);
                  //'capacite'=>"$min - {$data['capacite']}",
                  $data['categorie'] =$this->_trad['value'][$data['categorie']];
                  $data['link'] =LINK . '?nav=ficheArticles&id=' . $data['id_article'] . '&pos=' . $position;
@@ -533,9 +526,9 @@ class articles extends \Model\articles
                  $data['panier'] =(isset($panier[$data['id_article']])) ?
                      '<a href="' . LINK . '?nav=' . $this->nav . '&enlever=' . $data['id_article'] . '&pos=' . $position . '" >' . $this->_trad['enlever'] . '</a>' :
                      ' <a href="' . LINK . '?nav=' . $this->nav . '&ajouter=' . $data['id_article'] . '&pos=' . $position . '">' . $this->_trad['ajouter'] . '</a>';
-                 /*'total' => (isset($panier[$data['id_article']]['total'])?
-                             "[ Total:" . number_format($panier[$data['id_article']]['total'], 2) . "€ ]" :
-                             ""), */
+                 //'total' => (isset($panier[$data['id_article']]['total'])?
+                 //            "[ Total:" . number_format($panier[$data['id_article']]['total'], 2) . "€ ]" :
+                 //            ""),
                  $data['position'] = '<a id="P-' . $position . '"></a>';
             $table['info'][] = $data;
             $position++;
@@ -543,7 +536,7 @@ class articles extends \Model\articles
 
         return $table;
     }
-    
+
     protected function listeArticlesBO()
     {
         //$this->_trad
@@ -551,14 +544,14 @@ class articles extends \Model\articles
         $table = array();
 
         $table['champs']['id_article'] = 'REF';
-        $table['champs']['produit'] = $this->_trad['champ']['produit'];
+        $table['champs']['article'] = $this->_trad['champ']['article'];
         $table['champs']['fabricant'] = $this->_trad['champ']['fabricant'];
         $table['champs']['prix_Achat'] = $this->_trad['champ']['prix_Achat'];
         $table['champs']['prix_vente'] = $this->_trad['champ']['prix_Vente'];
         $table['champs']['categorie'] = $this->_trad['champ']['categorie'];
         $table['champs']['photo'] = $this->_trad['champ']['photo'];
         $table['champs']['ean'] = $this->_trad['champ']['ean'];
-        $table['champs']['quantite'] =   $this->_trad['champ']['quantite'];
+        $table['champs']['stock'] =   $this->_trad['champ']['stock'];
         $table['champs']['active'] =  'Mod/Ativer';
 
         $position = 1;
@@ -570,7 +563,7 @@ class articles extends \Model\articles
             }
             $table['info'][] = array(
                 $data['id_article'],
-                html_entity_decode($data['produit']),
+                html_entity_decode($data['article']),
                 html_entity_decode($data['fabricant']),
                 number_format($data['prix_Achat'], 2, '.', ' '),
                 number_format(($data['prix_Achat']*1.3), 2, '.', ' '),
@@ -579,16 +572,19 @@ class articles extends \Model\articles
                 <img class="trombi" src="' . imageExiste($data['photo']) . '" ></a>',
                 $data['ean'],
                 $data['stock'],
-                '<a href="' . LINK . '?nav=ficheArticles&id=' . $data['id_article'] . '&pos=' . ($position - 1) . '" ><img width="25px" src="img/modifier.png"></a>',
-                ($data['active'] == 1) ? ' <a href="' . LINK . '?nav=articles&delete=' . $data['id_article'] . '#P-' . ($position - 1) . '"><img width="25px" src="img/activerOk.png"></a>' :
-                    ' <a href="' . LINK . '?nav=articles&active=' . $data['id_article'] . '#P-' . ($position - 1) . '"><img width="25px" src="img/activerKo.png"></a>'
+                '<a href="' . LINK . '?nav=ficheArticles&id=' . $data['id_article'] . '&pos=' . ($position - 1) . '" >
+                <img width="25px" src="img/modifier.png"></a>',
+                ($data['active'] == 1) ? ' <a href="' . LINK . '?nav=articles&delete=' . $data['id_article'] . '#P-' . ($position - 1) . '">
+                    <img width="25px" src="img/activerOk.png"></a>' :
+                    ' <a href="' . LINK . '?nav=articles&active=' . $data['id_article'] . '#P-' . ($position - 1) . '">
+                    <img width="25px" src="img/activerKo.png"></a>'
             );
             $position++;
         }
     
         return $table;
     }
-    
+/*
     protected function listeProduits(array $data)
     {
         $prix_article = $ref ='';
@@ -626,7 +622,7 @@ class articles extends \Model\articles
     
         return $data;
     }
-    
+*/
     protected function getIndisponibilite()
     {
         $data = [];
@@ -643,7 +639,7 @@ class articles extends \Model\articles
     
         return $data;
     }
-    
+/*
     protected function listeProduitsReservation(array $data)
     {
         //$this->_trad
@@ -688,6 +684,9 @@ class articles extends \Model\articles
     
             }
         }
+        //return ['tableau'=>$tableau, 'reserve'=>$reserve];
+        return ['affiche'=>$affiche, 'disponibilite'=>$disponibilite];
+    }
     /*
         $ref = '';
         foreach($affiche as $col){
@@ -706,11 +705,8 @@ class articles extends \Model\articles
             return ['tableau'=>$this->_trad['produitNonDispoble'], 'reserve'=>''];
         }
     */
-        //return ['tableau'=>$tableau, 'reserve'=>$reserve];
-        return ['affiche'=>$affiche, 'disponibilite'=>$disponibilite];
-    }
-    
-    protected function listeProduitsPrixReservation($date, $data)
+
+    protected function listeProduitsPrixReservation($data)
     {
        $_listeReservation = [];
         $i = $_total = 0;
@@ -718,8 +714,8 @@ class articles extends \Model\articles
             while($info = $prix->fetch_assoc() ){
                 $prixArticle= listeCapacites($data, $info);
                 $i++;
-                $reservation = (isset($_SESSION['panierArticles'][$date][$data['id_article']]))?
-                                $_SESSION['panierArticles'][$date][$data['id_article']] : [];
+                $reservation = (isset($_SESSION['panierArticles'][$data['id_article']]))?
+                                $_SESSION['panierArticles'][$data['id_article']] : [];
     
                 foreach($prixArticle as $key =>$produit){
                     if(isset($reservation[$i]) && $reservation[$i] == $key){
@@ -759,23 +755,25 @@ class articles extends \Model\articles
         //return ['reserve'=>$reserve, 'couts'=>$_total];
         return $_listeReservation;
     }
-    
+
     protected function listeProduitsReservationPrix($data)
     {
         $listePrix = [];
         if(isset($_SESSION['panierArticles']) && !empty($_SESSION['panierArticles'])){
             $listeOrdenee = sortIndice($_SESSION["panierArticles"]);
-            foreach ($listeOrdenee as $key => $date) {
-                if(isset($_SESSION["panierArticles"][$date][$data['id_article']])){
-                    $listePrix[$date] = $this->listeProduitsPrixReservation($date, $data);
-                    /*"<div class='tronche'>{$produit['libelle']} :</div>
-                            <div class='personne'>{$produit['num']} pers.</div>
-                            <div class='prix'>{$produit['prix']}€</div>";
+            foreach ($listeOrdenee as $article => $quantite) {
+                if(isset($_SESSION["panierArticles"][$data['id_article']])){
+                    $listePrix[] = $this->listeProduitsPrixReservation($data);
+                    /*
+                    "<div class='tronche'>{$data['article']} :</div>
+                            <div class='personne'>{$produit['ref']} pers.</div>
+                            <div class='prix'>{$produit['prix_Achat']}€</div>";
                     $reserve = ($_total)? $_listeReservation .
                         "<div class='tronche couts'>Cout :</div>
                                 <div class='personne couts'>&nbsp;</div>
                                 <div class='prix couts'>" . number_format ($_total, 2) . "€</div>"
-                        : "";*/
+                        : "";
+                    */
     
                 }
             }
@@ -794,7 +792,7 @@ class articles extends \Model\articles
                                 <div class='personne total'>&nbsp;</div>
                                 <div class='prix total'>" . number_format ($_total, 2) . "€</div>";
     }
-    
+
     protected function listeProduitsReservationPrixTotal()
     {
         $listePrix = [];
@@ -814,7 +812,7 @@ class articles extends \Model\articles
         return $listePrix;
     
     }
-    
+/*
     
     protected function treeProduitsArticle($_id)
     {
@@ -831,31 +829,28 @@ class articles extends \Model\articles
         }
         return true;
     }
-    
+*/
     protected function orderArticles()
     {
-        if(isset($_SESSION['orderArticles']['champ'])){
+        if(isset($_POST['ord'])){
             if(isset($_POST['ord'])){
                 $ord = $_POST['ord'];
                 switch($ord){
                     case 'id_article':
                     case 'categorie':
-                    case 'produit':
+                    case 'article':
+                    case 'active':
                         $_SESSION['orderArticles']['order'] = ($_SESSION['orderArticles']['champ'] != $ord)?
                             "ASC" : (($_SESSION['orderArticles']['order'] == "ASC")? "DESC" : "ASC" );
                         $_SESSION['orderArticles']['champ'] = $ord;
                     break;
                 }
             }
-        } else {
-            $_SESSION['orderArticles'] = array();
-            $_SESSION['orderArticles']['champ'] = 'categorie';
-            $_SESSION['orderArticles']['order'] = 'ASC';
         }
     
         return $_SESSION['orderArticles']['champ'] . " " . $_SESSION['orderArticles']['order'];
     }
-    
+
     protected function reservationArticles()
     {
         if (!empty($_POST)) {
@@ -873,7 +868,7 @@ class articles extends \Model\articles
             if (isset($_GET['ajouter'])) {
                 $_SESSION['panierArticles'][$_GET['ajouter']] = isset($_SESSION['panierArticles'][$_GET['ajouter']]) ? $_SESSION['panierArticles'][$_GET['ajouter']]+1 : 1;
             } else if (isset($_GET['enlever'])) {
-                exit('ENLEVER ' . __FUNCTION__);
+                //exit('ENLEVER ' . __FUNCTION__);
                 unset($_SESSION['panierArticles'][$_SESSION['date']][$_GET['enlever']]);
             }
         }
@@ -881,7 +876,7 @@ class articles extends \Model\articles
 
         return true;
     }
-    
+
     protected function activeArticles()
     {
         if (isset($_GET)) {
@@ -893,7 +888,7 @@ class articles extends \Model\articles
         }
         return true;
     }
-    
+
     protected function urlReservation()
     {
         if(isset($_GET['panier']) OR isset($_POST['panier'])){

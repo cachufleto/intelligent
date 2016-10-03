@@ -3,10 +3,10 @@
 // Items du formulaire
 $_formulaire = array();
 
-$_formulaire['produit'] = array(
+$_formulaire['article'] = array(
 	'type' => 'text',
 	'content' => 'text',
-	'maxlength' => 20,
+	'minlength' => 5,
 	'defaut' => $this->_trad['champ']['produit'],
 	'obligatoire' => true);
 
@@ -14,33 +14,20 @@ $_formulaire['produit'] = array(
 $_formulaire['fabricant'] = array(
 	'type' => 'text',
 	'content' => 'text',
-	'maxlength' => 20,
 	'defaut' => $this->_trad['champ']['fabricant'],
 	'obligatoire' => true);
 	
-$_formulaire['pays'] = array(
+$_formulaire['ref'] = array(
 	'type' => 'text',
 	'content' => 'text',
 	'maxlength' => 20,
-	'defaut' => $this->_trad['champ']['pays'],
+	'defaut' => $this->_trad['champ']['ref'],
 	'obligatoire' => false);
 
-$_formulaire['ville'] = array(
+$_formulaire['dimention'] = array(
 	'type' => 'text',
 	'content' => 'text',
-	'defaut' => $this->_trad['defaut']['ville'],
-	'obligatoire' => false);
-
-$_formulaire['adresse'] = array(
-	'type' => 'textarea',
-	'content' => 'text',
-	'defaut' => $this->_trad['defaut']['adresse'],
-	'maxlength' => 300,
-	'obligatoire' => false);
-
-$_formulaire['cp'] = array(
-	'type' => 'text',
-	'content' => 'num',
+	'maxlength' => 400,
 	'defaut' => $this->_trad['defaut']['cp'],
 	'obligatoire' => false);
 
@@ -56,6 +43,13 @@ $_formulaire['description'] = array(
 	'content' => 'text',
 	'defaut' => $this->_trad['defaut']['description'],
 	'maxlength' => 800,
+	'obligatoire' => true);
+
+$_formulaire['spec'] = array(
+	'type' => 'textarea',
+	'content' => 'text',
+	'defaut' => $this->_trad['defaut']['description'],
+	'maxlength' => 1600,
 	'obligatoire' => true);
 
 $_formulaire['ean'] = array(
@@ -81,8 +75,17 @@ $_formulaire['categorie'] = array(
 $_formulaire['stock'] = array(
 	'type' => 'text',
 	'content' => 'int',
+	'minlength' => 1,
 	'defaut' => 0,
 	'obligatoire' => true);
+
+$_formulaire['note'] = array(
+	'type' => 'textarea',
+	'content' => 'text',
+	'defaut' =>'',
+	'maxlength' => 1600,
+	'obligatoire' => false);
+
 
 // ############## SUBMIT ############
 $_formulaire['valide'] = array(

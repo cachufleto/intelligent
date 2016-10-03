@@ -209,8 +209,8 @@ function dernieresOffresArticles($article, $i)
 				<div class="box-style box-style0'.$i.'">
 					<div class="content">
 					    <a href="'. LINK . '?nav=ficheArticles&id=' . $article['id_article'] . '" class="image image-full">
-					    <img src="' . imageExiste($article['photo']) . '" alt="' . $article['produit'] . '"></a>
-						<h2>' . $article['produit'] . '</h2>
+					    <img src="' . imageExiste($article['photo']) . '" alt="' . $article['article'] . '"></a>
+						<h2>' . $article['article'] . '</h2>
 						<p>' . $article['description'] . '</p>
 						' . $_trad['value'][$article['categorie']] . '<br>
 						<a href="'. LINK . '?nav=ficheArticles&id=' . $article['id_article'] . '" class="button-style">

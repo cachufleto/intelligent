@@ -122,6 +122,11 @@ class App extends Bdd
         $_SESSION['numpersonne'] = isset($_POST['numpersonne'])? $_POST['numpersonne'] : $_SESSION['numpersonne'];
         $_SESSION['rechercheProduits'] = isset($_SESSION['rechercheProduits'])? $_SESSION['rechercheProduits'] : '';
         $_SESSION['rechercheProduits'] = isset($_POST['rechercheProduits'])? $_POST['rechercheProduits'] : $_SESSION['rechercheProduits'];
+        if(!isset($_SESSION['orderArticles']['champ'])){
+            $_SESSION['orderArticles'] = array();
+            $_SESSION['orderArticles']['champ'] = 'categorie';
+            $_SESSION['orderArticles']['order'] = 'ASC';
+        }
     }
 
     protected function SetDate()

@@ -5,8 +5,8 @@ echo <<<EOL
 				<h2>{$this->_trad['titre'][$this->nav]}</h2>
 			</header>
 EOL;
-if(file_exists(APP . 'Public/statics/' . $this->nav . '.xhtml')){
-    include APP . 'Public/statics/' . $this->nav . '.xhtml';
+if(file_exists(RACINE_SERVER . RACINE_SITE . 'statics/' . $this->nav . '.xhtml')){
+    include RACINE_SERVER . RACINE_SITE . 'statics/' . $this->nav . '.xhtml';
 } else {
     echo $this->_trad['erreur']['statics'];
 }

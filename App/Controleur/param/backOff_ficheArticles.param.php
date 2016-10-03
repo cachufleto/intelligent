@@ -21,6 +21,7 @@ $_formulaire['valide']['annuler']  = $this->_trad['Out'];
 $_formulaire['valide']['origin']  = (isset($_POST['valide']) && $_POST['valide'] == $this->_trad['defaut']['modifier'])?
 	$this->_trad['defaut']['MiseAJ'] : '';
 
+// on rajoute la position
 $_formulaire['pos'] = array(
 	'type' => 'hidden',
 	'content' => 'text',

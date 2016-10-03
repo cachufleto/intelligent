@@ -64,12 +64,12 @@ class commande extends Bdd
         $req = "SELECT
                 r.id, r.date_facturacion,
                 v.id_article, v.date_reserve, v.ean, v.quantite, v.prix, v.reduction, v.prix_TTC,
-                a.produit
+                a.article
             FROM `reservations` as r, `ventes` as v, `articles` as a
             WHERE r.id_membre = {$_SESSION['user']['id']}
               AND v.id_article = a.id_article
               AND r.id = v.id_reservation
-            ORDER BY v.date_reserve ASC, a.produit ASC";
+            ORDER BY v.date_reserve ASC, a.article ASC";
         return $this->executeRequete($req);
     }
 

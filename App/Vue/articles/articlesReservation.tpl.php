@@ -7,7 +7,7 @@ if(!empty($listePrix)){
     foreach($listePrix as $date=>$data){
         foreach($data as $key=>$article){
             //$article = $info['article'];
-            $titre = $article['produit'];
+            $titre = $article['article'];
             $reservation .= "<div class='ligne'><hr></div>";
             //foreach($article['reservation'] as $_ligne=>$reserve) {
             $prix = $article['prix_Achat'] * 1.3;
